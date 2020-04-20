@@ -4,22 +4,14 @@ import gql from 'graphql-tag';
 
 import { logout } from './helpers';
 import ErrorPage from '../../pages/_error';
-
-// TODO: Set-up your real user query here
-const GET_CURRENT_USER = gql`
-  query getCurrentUser {
-    me {
-      id
-    }
-  }
-`;
+import UserGql from '../../lib/userGql';
 
 type AuthContextParams = [{ data: any }, typeof logout];
 
 const AuthContext = createContext<AuthContextParams>([{ data: null }, logout]);
 
 const AuthProvider: React.FC = ({ children }) => {
-  const { loading, data, error } = useQuery(GET_CURRENT_USER);
+  const { loading, data, error } = useQuery(UserGql.GET_CURRENT_USER);
 
   // Usally you dont see this, because we have no "loading" state on SSR
   if (loading) {

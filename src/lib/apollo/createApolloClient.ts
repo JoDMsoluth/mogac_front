@@ -6,7 +6,7 @@ import { HttpLink } from 'apollo-link-http';
 import { setContext } from 'apollo-link-context';
 import fetch from 'isomorphic-unfetch';
 import cookie from 'cookie';
-
+import dotenv from 'dotenv';
 /**
  * Get the user token from cookie
  */
@@ -15,7 +15,7 @@ const getToken = (req?: IncomingMessage) => {
     req ? req.headers.cookie || '' : document.cookie,
   );
 
-  return cookies.token;
+  return cookies.qid;
 };
 
 const createApolloClient = (initialState = {}, ctx: NextPageContext) => {
@@ -33,6 +33,7 @@ const createApolloClient = (initialState = {}, ctx: NextPageContext) => {
     }
   }
 
+  console.log('server url : ', process.env.GRAPHQL_URL);
   const httpLink = new HttpLink({
     uri: process.env.GRAPHQL_URL, // Server URL (must be absolute)
     credentials: 'same-origin',

@@ -1,15 +1,13 @@
 import React from 'react';
 import { NextPage } from 'next';
-import { useTranslation } from 'react-i18next';
-import { useApolloClient } from '@apollo/react-hooks';
-
-import { NameSpace } from '../lib/i18n';
+import LoginForm from '../component/home/LoginForm';
 
 const IndexPage: NextPage = () => {
-  const { t } = useTranslation(NameSpace.COMMON);
-  const apolloClient = useApolloClient();
-
-  return <div>{t('greetings', { version: apolloClient.version })}</div>;
+  return (
+    <div>
+      <LoginForm />
+    </div>
+  );
 };
 
 export default IndexPage;
