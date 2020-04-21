@@ -13,7 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Copyright from '../common/layout/Copyright';
 import Link from 'next/link';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import UserGql from '../../lib/userGql';
 import { useRouter } from 'next/router';
 
@@ -56,7 +56,9 @@ const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [login, { data }] = useMutation(UserGql.LOGIN);
+
   console.log('login data', data);
+
   const changeEmail = useCallback(
     (e) => {
       setEmail(e.target.value);
@@ -72,10 +74,10 @@ const LoginForm = () => {
 
   const onSubmitLogin = (e) => {
     e.preventDefault();
-    login({ variables: { req: { email, password } } });
+    console.log('email, password', email, password);
+    login({ variables: { email, password } });
     setEmail('');
     setPassword('');
-    history.reload();
   };
 
   return (
@@ -129,6 +131,7 @@ const LoginForm = () => {
             >
               Sign In
             </Button>
+            <button onClick={onSubmitLogin}>ok</button>
             <Grid container>
               <Grid item xs>
                 <Link href="#">

@@ -1,5 +1,5 @@
 module.exports = {
   env: {
-    GRAPHQL_URL: 'http://localhost:3061',
+    GRAPHQL_URL: 'http://localhost:3061/graphql',
   },
 };

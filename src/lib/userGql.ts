@@ -2,10 +2,12 @@ import gql from 'graphql-tag';
 
 // email, password
 const LOGIN = gql`
-  mutation login($req: loginReq!) {
-    login(req: $req) {
+  mutation login($email: String!, $password: String!) {
+    login(req: { email: $email, password: $password }) {
       jwt
-      user
+      user {
+        name
+      }
     }
   }
 `;
@@ -45,11 +47,20 @@ const GET_CURRENT_USER = gql`
   }
 `;
 
+const GET_USER_BY_ID = gql`
+  query getUserById {
+    getUserById(id: "5e9937bba6e38b2a900d4886") {
+      phone
+    }
+  }
+`;
+
 const UserGql = {
   LOGIN,
   LOGOUT,
   SIGNUP,
   GET_CURRENT_USER,
+  GET_USER_BY_ID,
 };
 
 export default UserGql;
