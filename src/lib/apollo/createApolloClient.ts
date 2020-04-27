@@ -1,21 +1,16 @@
-import { IncomingMessage } from 'http';
 import { NextPageContext } from 'next';
 import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
 import { setContext } from 'apollo-link-context';
 import fetch from 'isomorphic-unfetch';
-import cookie from 'cookie';
-import dotenv from 'dotenv';
+import Cookies from 'js-cookie';
 /**
  * Get the user token from cookie
  */
-const getToken = (req?: IncomingMessage) => {
-  const cookies = cookie.parse(
-    req ? req.headers.cookie || '' : document.cookie,
-  );
-
-  return cookies.qid;
+const getToken = () => {
+  const token = Cookies.get('qid');
+  return token;
 };
 
 const createApolloClient = (initialState = {}, ctx: NextPageContext) => {
@@ -42,8 +37,7 @@ const createApolloClient = (initialState = {}, ctx: NextPageContext) => {
   });
 
   const authLink = setContext((_request, { headers }) => {
-    const token = getToken(ctx?.req);
-
+    const token = getToken();
     return {
       headers: {
         ...headers,

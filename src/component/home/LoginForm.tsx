@@ -13,9 +13,10 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Copyright from '../common/layout/Copyright';
 import Link from 'next/link';
-import { useMutation, useQuery } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/react-hooks';
 import UserGql from '../../lib/userGql';
-import { useRouter } from 'next/router';
+import Router from 'next/router';
+import { saveTokenInCookies } from '../../utils/auth/helpers';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -52,12 +53,9 @@ const useStyles = makeStyles((theme) => ({
 
 const LoginForm = () => {
   const classes = useStyles();
-  const history = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [login, { data }] = useMutation(UserGql.LOGIN);
-
-  console.log('login data', data);
+  const [login] = useMutation(UserGql.LOGIN);
 
   const changeEmail = useCallback(
     (e) => {
@@ -72,13 +70,23 @@ const LoginForm = () => {
     [password],
   );
 
-  const onSubmitLogin = (e) => {
-    e.preventDefault();
-    console.log('email, password', email, password);
-    login({ variables: { email, password } });
-    setEmail('');
-    setPassword('');
-  };
+  const onSubmitLogin = useCallback(
+    async (e) => {
+      e.preventDefault();
+      console.log('email, password', email, password);
+      try {
+        const result = await login({ variables: { email, password } });
+        console.log('result', result);
+        if (result!.data) {
+          saveTokenInCookies(result!.data.login.jwt);
+          Router.replace('/');
+        }
+      } catch (e) {
+        alert('wrong id or password');
+      }
+    },
+    [email, password],
+  );
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -127,11 +135,10 @@ const LoginForm = () => {
               variant="contained"
               color="primary"
               className={classes.submit}
-              onSubmit={onSubmitLogin}
+              onClick={onSubmitLogin}
             >
               Sign In
             </Button>
-            <button onClick={onSubmitLogin}>ok</button>
             <Grid container>
               <Grid item xs>
                 <Link href="#">

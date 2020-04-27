@@ -1,8 +1,9 @@
 import React, { useState, ReactNode } from 'react';
 import { Container } from '@material-ui/core';
 import AppBurgerBar from './AppBurgerBar';
-import AppHeader from './AppHeader';
+import AppHeader from './header/AppHeader';
 import AppFooter from './AppFooter';
+import { useAuth } from '../../../utils/auth/AuthProvider';
 
 interface LayoutProps {
   children: ReactNode;
@@ -11,6 +12,9 @@ interface LayoutProps {
 export const drawerWidth = 240;
 
 const AppLayout = ({ children }: LayoutProps) => {
+  const [data, logout] = useAuth();
+  console.log('auth', data, logout);
+
   const [open, setOpen] = useState(false);
 
   const handleDrawerOpen = () => {

@@ -6,16 +6,10 @@ import { Helmet } from 'react-helmet';
 import './_app.scss';
 import { withApollo } from '../lib/apollo';
 import AppLayout from '../component/common/layout/AppLayout';
+import WithAuth from '../utils/auth/WithAuth';
 import { useRouter } from 'next/router';
 
 const App = ({ Component, pageProps }: AppProps) => {
-  const getInitialProps = async (context: AppContext) => {
-    const { ctx, Component } = context;
-    let pageProps = {};
-
-    return { pageProps };
-  };
-
   const router = useRouter();
   useEffect(() => {
     // Remove the server-side injected CSS.
@@ -84,15 +78,15 @@ const App = ({ Component, pageProps }: AppProps) => {
           },
         ]}
       />
-      {router.pathname.length === 1 ? (
+      {router.pathname === '/signup' ? (
         <Component {...pageProps} />
       ) : (
-        <AppLayout>
+        <WithAuth>
           <Component {...pageProps} />
-        </AppLayout>
+        </WithAuth>
       )}
     </>
   );
 };
 
-export default withApollo()(App);
+export default withApollo({ ssr: true })(App);

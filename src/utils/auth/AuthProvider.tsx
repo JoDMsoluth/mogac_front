@@ -1,33 +1,32 @@
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useEffect } from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
 
 import { logout } from './helpers';
-import ErrorPage from '../../pages/_error';
 import UserGql from '../../lib/userGql';
-
+import LoginForm from '../../component/home/LoginForm';
+import AppLayout from '../../component/common/layout/AppLayout';
 type AuthContextParams = [{ data: any }, typeof logout];
 
 const AuthContext = createContext<AuthContextParams>([{ data: null }, logout]);
 
 const AuthProvider: React.FC = ({ children }) => {
+  useEffect(() => {});
   const { loading, data, error } = useQuery(UserGql.GET_CURRENT_USER);
 
   // Usally you dont see this, because we have no "loading" state on SSR
   if (loading) {
     return <div>Loading...</div>;
   }
-
+  console.log('auth data', data);
   // JWT token expired or any API-level errors, you can use redirects here
   if (error) {
-    console.error(error);
-
-    return <ErrorPage statusCode={401} />;
+    console.log('session error');
+    return <LoginForm />;
   }
 
   return (
     <AuthContext.Provider value={[{ data }, logout]}>
-      {children}
+      <AppLayout>{children}</AppLayout>
     </AuthContext.Provider>
   );
 };

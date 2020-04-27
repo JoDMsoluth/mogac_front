@@ -67,13 +67,13 @@ const AppBurgerBar = ({ open, handleDrawerClose }: AppHeaderProps) => {
                 </ListItem>
               </a>
             </Link>
-            <Link href="/sns">
+            <Link href="/blog">
               <a>
                 <ListItem button>
                   <ListItemIcon>
                     <Inbox />
                   </ListItemIcon>
-                  <ListItemText primary="SNS" />
+                  <ListItemText primary="Blog" />
                 </ListItem>
               </a>
             </Link>

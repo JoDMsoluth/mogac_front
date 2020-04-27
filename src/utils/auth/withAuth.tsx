@@ -1,13 +1,12 @@
-import React from 'react';
-
+import React, { ReactNode } from 'react';
 import { AuthProvider } from './AuthProvider';
 
-const withAuth = (Component: React.FC) => () => {
-  return (
-    <AuthProvider>
-      <Component />
-    </AuthProvider>
-  );
+interface withAuthProps {
+  children: ReactNode;
+}
+
+const WithAuth = ({ children }: withAuthProps) => {
+  return <AuthProvider>{children}</AuthProvider>;
 };
 
-export default withAuth;
+export default WithAuth;

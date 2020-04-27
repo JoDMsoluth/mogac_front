@@ -1,22 +1,20 @@
-import cookie from 'cookie';
+import Cookies from 'js-cookie';
 import { addMonths } from 'date-fns';
+import Router from 'next/router';
 
 /**
  * Ideally server should send a cookie header
  */
 const saveTokenInCookies = (token: string) => {
-  document.cookie = cookie.serialize('token', token, {
+  console.log('token', token);
+  Cookies.set('qid', token, {
     expires: addMonths(new Date(), 1), // Save for 1 month
-    path: '/',
-    httpOnly: true,
-    secure: true,
   });
+  console.log('document.cookie', Cookies.get('qid'));
 };
 
 const removeTokenFromCookies = () => {
-  document.cookie = cookie.serialize('token', null, {
-    expires: new Date(-1),
-  });
+  Cookies.remove('qid');
 };
 
 /**
@@ -24,7 +22,7 @@ const removeTokenFromCookies = () => {
  */
 const logout = () => {
   removeTokenFromCookies();
-
+  Router.replace('/');
   // Here you can do some logout-related stuff like page reloading
 };
 

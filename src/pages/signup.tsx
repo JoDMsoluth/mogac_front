@@ -1,16 +1,17 @@
 import React from 'react';
-import CssBaseline from '@material-ui/core/CssBaseline';
+import { NextPage } from 'next';
 import TeamHeader from '../component/team/TeamHeader';
 import TeamListCard from '../component/team/TeamListCard';
+import SignUp from '../component/home/Signup';
 
-export default function TeamPage() {
+const SignUpPage: NextPage = () => {
   return (
     <>
-      <CssBaseline />
       <main>
-        <TeamHeader />
-        <TeamListCard />
+        <SignUp />
       </main>
     </>
   );
-}
+};
+
+export default SignUpPage;

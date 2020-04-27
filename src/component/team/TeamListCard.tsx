@@ -8,6 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import Link from 'next/link';
 
 interface TeamListCardProps {}
 
@@ -59,9 +60,13 @@ const TeamListCard = () => {
                   </Typography>
                 </CardContent>
                 <CardActions>
-                  <Button size="small" color="primary">
-                    View
-                  </Button>
+                  <Link href="/view/post">
+                    <a>
+                      <Button size="small" color="primary">
+                        View
+                      </Button>
+                    </a>
+                  </Link>
                   <Button size="small" color="primary">
                     Edit
                   </Button>

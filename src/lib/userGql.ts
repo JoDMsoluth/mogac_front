@@ -55,12 +55,19 @@ const GET_USER_BY_ID = gql`
   }
 `;
 
+const IS_AUTH = gql`
+  query isAuth {
+    isAuth
+  }
+`;
+
 const UserGql = {
   LOGIN,
   LOGOUT,
   SIGNUP,
   GET_CURRENT_USER,
   GET_USER_BY_ID,
+  IS_AUTH,
 };
 
 export default UserGql;

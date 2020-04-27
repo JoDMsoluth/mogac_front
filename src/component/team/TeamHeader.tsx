@@ -29,7 +29,7 @@ const TeamHeader = () => {
             color="textPrimary"
             gutterBottom
           >
-            Album layout
+            layout example
           </Typography>
           <Typography
             variant="h5"
