@@ -13,7 +13,7 @@ import SideBar from './SideBar';
 import post1 from './blog-post1';
 import post2 from './blog-post2';
 import post3 from './blog-post3';
-import CommentList from '../../comment/CommentList';
+import CommentComponent from '../../comment';
 
 const useStyles = makeStyles((theme) => ({
   mainGrid: {
@@ -102,7 +102,7 @@ export default function PostView() {
           </Grid>
         </main>
       </Container>
-      <CommentList />
+      <CommentComponent />
     </>
   );
 }

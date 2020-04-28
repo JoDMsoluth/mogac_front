@@ -79,7 +79,7 @@ const LoginForm = () => {
         console.log('result', result);
         if (result!.data) {
           saveTokenInCookies(result!.data.login.jwt);
-          Router.replace('/');
+          Router.reload();
         }
       } catch (e) {
         alert('wrong id or password');

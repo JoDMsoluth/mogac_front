@@ -22,7 +22,7 @@ const removeTokenFromCookies = () => {
  */
 const logout = () => {
   removeTokenFromCookies();
-  Router.replace('/');
+  Router.reload();
   // Here you can do some logout-related stuff like page reloading
 };
 
