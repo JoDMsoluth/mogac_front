@@ -3,7 +3,6 @@ import { AppProps, AppContext } from 'next/app';
 
 import { Helmet } from 'react-helmet';
 
-import './_app.scss';
 import { withApollo } from '../lib/apollo';
 import WithAuth from '../utils/auth/WithAuth';
 import { useRouter } from 'next/router';
@@ -91,4 +90,4 @@ const App = ({ Component, pageProps }: AppProps) => {
   );
 };
 
-export default withApollo({ ssr: true })(App);
+export default withApollo()(App);

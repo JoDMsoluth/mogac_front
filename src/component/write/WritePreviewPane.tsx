@@ -1,23 +1,24 @@
 import react from 'react';
 import styled from 'styled-components';
+import ReactMarkdown from 'markdown-to-jsx';
+import Markdown from '../blog/view/Markdown';
 
 interface WritePreviewPaneProps {
   markdown: string;
-  setMarkdown: any;
 }
 
-export default function WritePreviewPane({
-  markdown,
-  setMarkdown,
-}: WritePreviewPaneProps) {
+export default function WritePreviewPane({ markdown }: WritePreviewPaneProps) {
   return (
     <>
-      <div>asdfsf</div>
+      <S.PreviewWrap>
+        <Markdown>{markdown}</Markdown>
+      </S.PreviewWrap>
     </>
   );
 }
 
 const S: any = {};
-S.WriteHeadBarWrap = styled.div`
-  height: 2rem;
+S.PreviewWrap = styled.div`
+  padding: 1rem;
+  line-height: 1.7rem;
 `;

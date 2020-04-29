@@ -13,9 +13,7 @@ export default function WriteComponent() {
     <EditPane markdown={markdown} setMarkdown={setMarkdown} />
   );
   const TagBarLayout = <TagBar />;
-  const WritePreviewPaneLayout = (
-    <WritePreviewPane markdown={markdown} setMarkdown={setMarkdown} />
-  );
+  const WritePreviewPaneLayout = <WritePreviewPane markdown={markdown} />;
   return (
     <>
       <S.WriteWrap>

@@ -21,17 +21,14 @@ export default function TagBar() {
   return (
     <>
       <S.TagBarWrap>
-        <FormControl error={false}>
-          <InputLabel htmlFor="component-error">Name</InputLabel>
-          <Input
-            id="component-error"
-            value={tag}
-            name="tag"
-            onChange={handleChange}
-            aria-describedby="component-error-text"
-          />
-          <FormHelperText id="component-error-text">Error</FormHelperText>
-        </FormControl>
+        <TextField
+          id="standard-basic"
+          fullWidth
+          label="Tag"
+          name="tag"
+          value={tag}
+          onChange={handleChange}
+        />
       </S.TagBarWrap>
     </>
   );
@@ -39,13 +36,12 @@ export default function TagBar() {
 
 const S: any = {};
 S.TagBarWrap = styled.div`
-  border-top: 1px solid ${palette.gray5};
   width: 100%;
+  border-top: 1px solid ${palette.gray5};
+  overflow: hidden;
   & > div {
-    width: 100%;
-  }
-  & > input {
-    height: 3.5rem;
-    margin: 0 1rem;
+    width: 90%;
+    display: flex;
+    margin: 0 auto;
   }
 `;

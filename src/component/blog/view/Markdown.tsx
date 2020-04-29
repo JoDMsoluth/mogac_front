@@ -10,7 +10,7 @@ const styles = (theme) => ({
   },
 });
 
-const options = {
+export const markdownOptions = {
   overrides: {
     h1: {
       component: Typography,
@@ -30,6 +30,11 @@ const options = {
     },
     p: { component: Typography, props: { paragraph: true } },
     a: { component: Link },
+    code: {
+      props: {
+        className: 'hljs',
+      },
+    },
     li: {
       component: withStyles(styles)(({ classes, ...props }: any) => (
         <li className={classes.listItem}>
@@ -41,5 +46,5 @@ const options = {
 };
 
 export default function Markdown(props) {
-  return <ReactMarkdown options={options} {...props} />;
+  return <ReactMarkdown options={markdownOptions} {...props} />;
 }
