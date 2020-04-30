@@ -3,6 +3,7 @@ import ReactMarkdown from 'markdown-to-jsx';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
+import { SubscriptionsRounded } from '@material-ui/icons';
 
 const styles = (theme) => ({
   listItem: {
@@ -30,17 +31,17 @@ export const markdownOptions = {
     },
     p: { component: Typography, props: { paragraph: true } },
     a: { component: Link },
-    code: {
-      props: {
-        className: 'hljs',
-      },
-    },
     li: {
       component: withStyles(styles)(({ classes, ...props }: any) => (
         <li className={classes.listItem}>
           <Typography component="span" {...props} />
         </li>
       )),
+    },
+    pre: {
+      props: {
+        className: 'lang-*',
+      },
     },
   },
 };

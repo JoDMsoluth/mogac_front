@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { AppProps, AppContext } from 'next/app';
 
 import { Helmet } from 'react-helmet';
-
+import './_app.css';
 import { withApollo } from '../lib/apollo';
 import WithAuth from '../utils/auth/WithAuth';
 import { useRouter } from 'next/router';
@@ -72,10 +72,6 @@ const App = ({ Component, pageProps }: AppProps) => {
             rel: 'stylesheet',
             href:
               'https://fonts.googleapis.com/css?family=Anton|Bangers|Bebas+Neue|IBM+Plex+Sans&display=swap',
-          },
-          {
-            rel: 'stylesheet',
-            href: 'http://localhost:3060/prism-okaidia.css',
           },
         ]}
       />

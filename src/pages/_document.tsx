@@ -60,30 +60,16 @@ class MyDocument extends Document<DocumentProps> {
             rel="stylesheet"
             href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
           />
-          <link
-            rel="stylesheet"
-            href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.0.1/build/styles/atom-one-dark.min.css"
-          />
-          <script src="../../codemirror/codemirror.js"></script>
-          <link rel="stylesheet" href="../../codemirror/codemirror.css" />
-          <script src="../../codemirror/javascript.js"></script>
-          <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.0.1/build/highlight.min.js"></script>
-          <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/languages/javascript.min.js"></script>
-
-          <script>hljs.initHighlightingOnLoad();</script>
-
+          <link rel="stylesheet" href="prismjs/prism.css" />
           {Object.values(helmet).map((el: any) => el.toComponent())}
         </Head>
         <body {...bodyAttrs}>
           <Main />
-
           {process.env.NODE_ENV === 'production' && (
             <script src="https://polyfill.io/v3/polyfill.min.js?features=es6,es7,es8,es9,NodeList.prototype.forEach&flags=gated" />
           )}
           <NextScript />
-          <pre>
-            <code className="plaintext">const name = a;</code>
-          </pre>
+          <script src="prismjs/prism.js"></script>
         </body>
       </html>
     );

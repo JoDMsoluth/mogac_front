@@ -1,23 +1,14 @@
 import react, { useState, useCallback } from 'react';
 import styled from 'styled-components';
 import palette from '../../lib/pallete';
-import {
-  TextField,
-  FormControl,
-  InputLabel,
-  Input,
-  FormHelperText,
-} from '@material-ui/core';
-import { Label } from '@material-ui/icons';
+import { TextField } from '@material-ui/core';
 
-export default function TagBar() {
-  const [tag, setTag] = useState('');
-  const handleChange = useCallback(
-    (e) => {
-      setTag(e.target.value);
-    },
-    [tag],
-  );
+interface TagBarProps {
+  tags: string;
+  changeTags: any;
+}
+
+export default function TagBar({ tags, changeTags }: TagBarProps) {
   return (
     <>
       <S.TagBarWrap>
@@ -25,9 +16,9 @@ export default function TagBar() {
           id="standard-basic"
           fullWidth
           label="Tag"
-          name="tag"
-          value={tag}
-          onChange={handleChange}
+          name="tags"
+          value={tags}
+          onChange={changeTags}
         />
       </S.TagBarWrap>
     </>

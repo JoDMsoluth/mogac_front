@@ -2,25 +2,37 @@ import react, { useCallback, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import palette from '../../lib/pallete';
 import { TextField } from '@material-ui/core';
+import dynamic from 'next/dynamic';
+
+const CodeWithCodemirror = dynamic(import('./CodeMirror'), {
+  ssr: false,
+});
 
 interface EditPaneProps {
   markdown: string;
   setMarkdown: any;
+  title: string;
+  changeTitle: any;
 }
 
-export default function EditPane({ markdown, setMarkdown }: EditPaneProps) {
-  useEffect(() => {});
-
-  const handleChange = useCallback(
-    (e) => {
-      setMarkdown(e.target.value);
-    },
-    [markdown],
-  );
+export default function EditPane({
+  markdown,
+  setMarkdown,
+  title,
+  changeTitle,
+}: EditPaneProps) {
   return (
     <>
       <S.WriteHeadBarWrap>
-        <TextField id="standard-basic" fullWidth label="  Title" />
+        <TextField
+          id="standard-basic"
+          fullWidth
+          label="  Title"
+          onChange={changeTitle}
+          name="title"
+          value={title}
+        />
+        <CodeWithCodemirror markdown={markdown} setMarkdown={setMarkdown} />
       </S.WriteHeadBarWrap>
     </>
   );
@@ -36,12 +48,21 @@ S.WriteHeadBarWrap = styled.div`
     display: flex;
     margin: 0 auto;
   }
-  & > textarea {
-    padding: 0.5rem 1rem;
+  & > div:nth-child(2) {
     width: 100%;
     height: 100%;
     line-height: 1.7rem;
-    background: ${palette.gray0};
-    border: none;
+  }
+  .CodeMirror {
+    height: 100%;
+    width: 100%;
+  }
+  .react-codemirror2 {
+    width: 100%;
+  }
+  .CodeMirror-sizer {
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 1rem 1.5rem;
   }
 `;
