@@ -1,34 +1,39 @@
-import react from 'react';
+import react, { useCallback } from 'react';
 import styled from 'styled-components';
-import useInput from '../../../lib/hooks/useInput';
+import { useWrite } from '../../../utils/write/WriteProvide';
 
-interface PostLeftPanelProps {
-  title: string;
-  changeTitle: string;
-  markdown: string;
-}
+export default function PostLeftPanel() {
+  const { state, dispatch } = useWrite();
 
-export default function PostLeftPanel({
-  title,
-  changeTitle,
-  markdown,
-}: PostLeftPanelProps) {
-  const [desc, changeDesc] = useInput<string>(markdown);
+  const onChangeTitle = useCallback(
+    (e) => {
+      dispatch({ type: 'ChangeTitle', data: e.target.value });
+    },
+    [state.title],
+  );
+
+  const onChangeDesc = useCallback(
+    (e) => {
+      dispatch({ type: 'ChangeDesc', data: e.target.value });
+    },
+    [state.desc],
+  );
+
   return (
     <>
       <S.LeftPanelWrap>
         <S.TitleInput
           type="text"
           name="title"
-          value={title}
+          value={state.title}
           placeholder="Title"
-          onChange={changeTitle}
+          onChange={onChangeTitle}
         />
         <S.DescTextArea
           name="desc"
-          value={desc}
+          value={state.desc}
           rows={5}
-          onChange={changeDesc}
+          onChange={onChangeDesc}
           maxLength={250}
         ></S.DescTextArea>
       </S.LeftPanelWrap>

@@ -1,17 +1,16 @@
-import React, { createContext, useContext, useEffect } from 'react';
+import React, { createContext, useContext, useEffect, useReducer } from 'react';
+import {
+  writeReducer,
+  initialWriteState,
+  IinitialWriteState,
+} from './WriteReducer';
 
-type WriteContextParams = { data: any; series: any; category: any };
+type ContextParamsType = { state: IinitialWriteState; dispatch: any };
 
-const WriteContext = createContext<WriteContextParams>({
-  data: null,
-  series: null,
-  category: null,
-});
+const WriteContext = createContext<ContextParamsType>(null);
 
 const WriteProvider: React.FC = ({ children }) => {
-  const series = null;
-  const category = null;
-  const data = null;
+  const [state, dispatch] = useReducer(writeReducer, initialWriteState);
   //const { loading, data, error } = useQuery(UserGql.GET_CURRENT_USER);
 
   // Usally you dont see this, because we have no "loading" state on SSR
@@ -26,13 +25,13 @@ const WriteProvider: React.FC = ({ children }) => {
   //}
 
   return (
-    <WriteContext.Provider value={{ data, series, category }}>
+    <WriteContext.Provider value={{ state, dispatch }}>
       {children}
     </WriteContext.Provider>
   );
 };
 
 // Returns authentication-related data and functions
-const useWrite = (): WriteContextParams => useContext(WriteContext);
+const useWrite = (): ContextParamsType => useContext(WriteContext);
 
 export { WriteProvider, useWrite };

@@ -13,19 +13,22 @@ import 'prismjs/components/prism-jsx.min.js';
 import 'prismjs/components/prism-css.min.js';
 
 interface WritePreviewPaneProps {
-  markdown: string;
+  contents: string;
   title: string;
 }
 
-export default function WritePreviewPane({ markdown, title }: WritePreviewPaneProps) {
+export default function WritePreviewPane({
+  contents,
+  title,
+}: WritePreviewPaneProps) {
   useEffect(() => {
     Prism.highlightAll();
-  }, [markdown]);
+  }, [contents]);
   return (
     <>
       <S.PreviewWrap>
         <div>{title}</div>
-        <Markdown>{markdown}</Markdown>
+        <Markdown>{contents}</Markdown>
       </S.PreviewWrap>
     </>
   );

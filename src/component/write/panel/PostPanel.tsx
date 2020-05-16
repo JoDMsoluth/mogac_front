@@ -9,21 +9,11 @@ import PostRightPanel from './PostRightPanel';
 interface PostPanelProps {
   openPanel: boolean;
   setOpenPanel: any;
-  markdown: string;
-  tags: string;
-  title: string;
-  changeTags: any;
-  changeTitle: any;
 }
 
 export default function PostPanel({
   openPanel,
-  setOpenPanel,
-  markdown,
-  tags,
-  title,
-  changeTags,
-  changeTitle,
+  setOpenPanel
 }: PostPanelProps) {
   setOpenPanel(true);
 
@@ -36,11 +26,7 @@ export default function PostPanel({
             <Button onClick={() => setOpenPanel(false)}>Post</Button>
           </S.BoxHead>
           <S.BoxBody>
-            <PostLeftPanel
-              markdown={markdown}
-              title={title}
-              changeTitle={changeTitle}
-            />
+            <PostLeftPanel />
             <PostRightPanel />
           </S.BoxBody>
         </S.PostBox>
@@ -52,6 +38,7 @@ export default function PostPanel({
 const S: any = {};
 
 S.PanelWrap = styled.div<{ open: boolean }>`
+  z-index: 100;
   position: absolute;
   display: flex;
   justify-content: center;

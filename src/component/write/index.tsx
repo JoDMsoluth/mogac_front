@@ -7,28 +7,20 @@ import WritePreviewPane from './WritePreviewPane';
 import TagBar from './TagBar';
 import PostPanel from './panel/PostPanel';
 import useInput from '../../lib/hooks/useInput';
+import { useAuth } from '../../utils/auth/AuthProvider';
+import { useWrite } from '../../utils/write/WriteProvide';
 
 export default function WriteComponent() {
-  const [title, changeTitle] = useInput<string>('');
-  const [tags, changeTags] = useInput<string>('');
-  const [desc, changeDesc] = useInput<string>('');
+  const [userDate, _] = useAuth();
+  const { state } = useWrite();
 
-  const [markdown, setMarkdown] = useState('');
   const [openPanel, setOpenPanel] = useState(false);
 
-  console.log(markdown);
   const WriteHeadBarLayout = <WriteHeadBar setOpenPanel={setOpenPanel} />;
-  const EditPanetLayout = (
-    <EditPane
-      markdown={markdown}
-      setMarkdown={setMarkdown}
-      title={title}
-      changeTitle={changeTitle}
-    />
-  );
-  const TagBarLayout = <TagBar tags={tags} changeTags={changeTags} />;
+  const EditPanetLayout = <EditPane />;
+  const TagBarLayout = <TagBar />;
   const WritePreviewPaneLayout = (
-    <WritePreviewPane markdown={markdown} title={title} />
+    <WritePreviewPane title={state.title} contents={state.contents} />
   );
   return (
     <>
@@ -39,15 +31,7 @@ export default function WriteComponent() {
           {TagBarLayout}
         </S.EditPaneWrap>
         <S.PreviewPaneWrap>{WritePreviewPaneLayout}</S.PreviewPaneWrap>
-        <PostPanel
-          openPanel={openPanel}
-          setOpenPanel={setOpenPanel}
-          title={title}
-          changeTitle={changeTitle}
-          markdown={markdown}
-          tags={tags}
-          changeTags={changeTags}
-        />
+        <PostPanel openPanel={openPanel} setOpenPanel={setOpenPanel} />
       </S.WriteWrap>
     </>
   );

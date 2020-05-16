@@ -3,24 +3,22 @@ import styled from 'styled-components';
 import palette from '../../lib/pallete';
 import { TextField } from '@material-ui/core';
 import dynamic from 'next/dynamic';
+import { useWrite } from '../../utils/write/WriteProvide';
 
 const CodeWithCodemirror = dynamic(import('./CodeMirror'), {
   ssr: false,
 });
 
-interface EditPaneProps {
-  markdown: string;
-  setMarkdown: any;
-  title: string;
-  changeTitle: any;
-}
+export default function EditPane() {
+  const { state, dispatch } = useWrite();
 
-export default function EditPane({
-  markdown,
-  setMarkdown,
-  title,
-  changeTitle,
-}: EditPaneProps) {
+  const onChangeTitle = useCallback(
+    (e) => {
+      dispatch({ type: 'ChangeTitle', data: e.target.value });
+    },
+    [state.title],
+  );
+
   return (
     <>
       <S.WriteHeadBarWrap>
@@ -28,11 +26,11 @@ export default function EditPane({
           id="standard-basic"
           fullWidth
           label="  Title"
-          onChange={changeTitle}
+          onChange={onChangeTitle}
           name="title"
-          value={title}
+          value={state.title}
         />
-        <CodeWithCodemirror markdown={markdown} setMarkdown={setMarkdown} />
+        <CodeWithCodemirror />
       </S.WriteHeadBarWrap>
     </>
   );

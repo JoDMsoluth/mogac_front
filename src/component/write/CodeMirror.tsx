@@ -11,18 +11,20 @@ import 'codemirror/mode/shell/shell';
 // CodeMirror를 위한 CSS 스타일
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/monokai.css';
+import { useWrite } from '../../utils/write/WriteProvide';
 
-export default function CodeWithCodemirror({ markdown, setMarkdown }) {
+export default function CodeWithCodemirror() {
+  const { state, dispatch } = useWrite();
   const handleChange = useCallback(
     (value) => {
-      setMarkdown(value);
+      dispatch({ type: 'ChangeContents', data: value });
     },
-    [markdown],
+    [state.contents],
   );
   return (
     <div>
       <CodeMirror
-        value={markdown}
+        value={state.contents}
         options={{ theme: 'base16-light', mode: 'markdown' }}
         onBeforeChange={(editor, data, value) => {
           console.log(value);

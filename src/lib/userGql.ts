@@ -38,6 +38,12 @@ const SIGNUP = gql`
   }
 `;
 
+// const UploadProfileImage = gql`
+//   mutation uploadProfileImage() {
+//     uploadProfileImage()
+//   }
+// `;
+
 // TODO: Set-up your real user query here
 const GET_CURRENT_USER = gql`
   query getCurrentUser {
