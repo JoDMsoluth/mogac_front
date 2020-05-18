@@ -1,7 +1,8 @@
 import { NextPageContext } from 'next';
 import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
-import { HttpLink } from 'apollo-link-http';
+import { createUploadLink } from 'apollo-upload-client';
+
 import { setContext } from 'apollo-link-context';
 import fetch from 'isomorphic-unfetch';
 import Cookies from 'js-cookie';
@@ -29,11 +30,9 @@ const createApolloClient = (initialState = {}, ctx: NextPageContext) => {
   }
 
   console.log('server url : ', process.env.GRAPHQL_URL);
-  const httpLink = new HttpLink({
+  // httpLink 대신 uploadLink 사용함(파일 업로드 해야되서 )
+  const uploadLink = new createUploadLink({
     uri: process.env.GRAPHQL_URL, // Server URL (must be absolute)
-    credentials: 'same-origin',
-    fetch,
-    fetchOptions,
   });
 
   const authLink = setContext((_request, { headers }) => {
@@ -49,7 +48,7 @@ const createApolloClient = (initialState = {}, ctx: NextPageContext) => {
   return new ApolloClient({
     connectToDevTools: Boolean(ctx),
     ssrMode: Boolean(ctx),
-    link: authLink.concat(httpLink),
+    link: authLink.concat(uploadLink),
     cache: new InMemoryCache().restore(initialState),
   });
 };

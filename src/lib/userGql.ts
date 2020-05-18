@@ -38,6 +38,17 @@ const SIGNUP = gql`
   }
 `;
 
+const UPLOAD_PROFILE_IMAGE = gql`
+  mutation uploadProfileImage($file: Upload!) {
+    uploadProfileImage(file: $file) {
+      filename
+      mimetype
+      encoding
+      url
+    }
+  }
+`;
+
 // const UploadProfileImage = gql`
 //   mutation uploadProfileImage() {
 //     uploadProfileImage()
@@ -71,6 +82,7 @@ const UserGql = {
   LOGIN,
   LOGOUT,
   SIGNUP,
+  UPLOAD_PROFILE_IMAGE,
   GET_CURRENT_USER,
   GET_USER_BY_ID,
   IS_AUTH,

@@ -146,7 +146,7 @@ const LoginForm = () => {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#">
+                <Link href="/signup">
                   <a>{"Don't have an account? Sign Up"}</a>
                 </Link>
               </Grid>
