@@ -1,9 +1,9 @@
 import React, { useRef, useCallback, useEffect, FC } from 'react';
 import styled, { css } from 'styled-components';
-import useInput from '../../lib/hooks/useInput';
-import palette from '../../lib/pallete';
+import useInput from '../../../lib/hooks/useInput';
+import palette from '../../../lib/pallete';
 import { useMutation } from '@apollo/react-hooks';
-import UserGql from '../../lib/userGql';
+import UserGql from '../../../lib/userGql';
 
 interface UploadAvatarProps {
   avatar: string;
@@ -15,6 +15,15 @@ export default function UploadAvatar({ avatar, setAvatar }) {
 
   const imageInput = useRef(null);
 
+  const readURL = (file: File) => {
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+      setAvatar(e.target.result);
+    };
+    return reader.readAsDataURL(file); // convert base64 to string
+  };
+
   const onChangeImage = useCallback(
     async (e: React.ChangeEvent<HTMLInputElement>) => {
       const {
@@ -23,20 +32,11 @@ export default function UploadAvatar({ avatar, setAvatar }) {
       } = e.target;
       if (validity.valid) {
         console.log('file data ', file, validity);
-        const result = await avatarUpload({ variables: { file } });
-        console.log('muation data ', result);
+        // s3 upload
+        // const result = (await avatarUpload({ variables: { file } })) as any;
+        readURL(file);
       }
-      setAvatar(file);
       console.log('avatar', avatar);
-
-      // const imageFormData = new FormData();
-      // [].forEach.call(e.target.files, (f) => {
-      //   imageFormData.append('image', f);
-      //   // 'image'는 서버에서도 같은 네이밍을 씀 / 키-벨류 / ajax에서 사용
-      // });
-      // console.log(imageFormData.getAll('image'));
-      // setAvatar(e.target.files);
-      // console.log('avatar', avatar);
     },
     [avatar, avatarUpload],
   );

@@ -15,4 +15,3 @@ module.exports = withCSS(
     },
   }),
 );
-y;

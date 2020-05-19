@@ -14,8 +14,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Copyright } from '@material-ui/icons';
 import { RadioGroup, FormLabel, Radio } from '@material-ui/core';
-import UploadAvatar from './UploadAvatar';
-import useInput from '../../lib/hooks/useInput';
+import UploadAvatar from '../../../component/common/utils/UploadAvatar';
+import useInput from '../../../lib/hooks/useInput';
+import SelectDialog from './SelectDialog';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -92,10 +93,10 @@ export default function SignUp() {
                 autoComplete="current-password"
               />
             </Grid>
-            <Grid item xs={12} sm={7}>
+            <Grid item xs={7} sm={7}>
               <UploadAvatar avatar={avatar} setAvatar={setAvatar} />
             </Grid>
-            <Grid item xs={12} sm={5}>
+            <Grid item xs={5} sm={5}>
               <FormLabel component="legend">Gender</FormLabel>
               <RadioGroup aria-label="gender" name="gender1">
                 <FormControlLabel
@@ -109,6 +110,9 @@ export default function SignUp() {
                   label="Male"
                 />
               </RadioGroup>
+            </Grid>
+            <Grid item xs={12}>
+              <SelectDialog />
             </Grid>
             <Grid item xs={12}>
               <FormControlLabel
@@ -128,7 +132,7 @@ export default function SignUp() {
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link href="/" variant="body2">
                 Already have an account? Sign in
               </Link>
             </Grid>
