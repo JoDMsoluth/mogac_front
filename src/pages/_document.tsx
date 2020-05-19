@@ -56,12 +56,21 @@ class MyDocument extends Document<DocumentProps> {
           />
           <meta name="description" content="My First Static Website" />
           <meta name="keywords" content="nextjs,static,website" />
+
           <link
             rel="stylesheet"
             href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
           />
           <link rel="stylesheet" href="prismjs/prism.css" />
           {Object.values(helmet).map((el: any) => el.toComponent())}
+          <script
+            type="text/javascript"
+            src={`https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.MAP_API_KEY}`}
+          ></script>
+          <script
+            type="text/javascript"
+            src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=YOUR_CLIENT_ID&callback=CALLBACK_FUNCTION"
+          ></script>
         </Head>
         <body {...bodyAttrs}>
           <Main />

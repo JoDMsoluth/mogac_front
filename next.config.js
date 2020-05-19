@@ -1,3 +1,4 @@
+const env = require('./env-config');
 const withCSS = require('@zeit/next-css');
 const withImage = require('next-images');
 module.exports = withCSS(
@@ -10,8 +11,6 @@ module.exports = withCSS(
 
       return config;
     },
-    env: {
-      GRAPHQL_URL: 'http://localhost:3061/graphql',
-    },
+    env,
   }),
 );
