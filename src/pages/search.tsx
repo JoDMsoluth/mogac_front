@@ -2,7 +2,7 @@ import React, { ReactNode, useEffect, useState } from 'react';
 import { NextPage, NextPageContext } from 'next';
 import NaverAPIMap from '../component/search/map/NaverAPIMap';
 import { RenderAfterNavermapsLoaded } from 'react-naver-maps';
-import SearchFilterSelect from '../component/search/SearchFilterSelect';
+import SearchFilterBox from '../component/search/filterbox/SelectFilterBox';
 
 const SearchPage: NextPage = () => {
   useEffect(() => {
@@ -19,7 +19,7 @@ const SearchPage: NextPage = () => {
   return (
     <>
       <main>
-        <SearchFilterSelect />
+        <SearchFilterBox />
         <NaverAPIMap />
       </main>
     </>
