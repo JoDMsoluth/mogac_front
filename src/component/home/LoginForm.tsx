@@ -14,9 +14,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import Copyright from '../common/layout/Copyright';
 import Link from 'next/link';
 import { useMutation } from '@apollo/react-hooks';
-import UserGql from '../../lib/userGql';
+import UserGql from '../../lib/gql/userGql';
 import Router from 'next/router';
-import { saveTokenInCookies } from '../../utils/auth/helpers';
+import {
+  saveTokenInCookies,
+  removeTokenFromCookies,
+} from '../../utils/auth/helpers';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -74,9 +77,11 @@ const LoginForm = () => {
     async (e) => {
       e.preventDefault();
       console.log('email, password', email, password);
+      removeTokenFromCookies();
       try {
         const result = await login({ variables: { email, password } });
         console.log('result', result);
+
         if (result!.data) {
           saveTokenInCookies(result!.data.login.jwt);
           Router.reload();

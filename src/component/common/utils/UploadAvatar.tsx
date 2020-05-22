@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 import useInput from '../../../lib/hooks/useInput';
 import palette from '../../../lib/pallete';
 import { useMutation } from '@apollo/react-hooks';
-import UserGql from '../../../lib/userGql';
+import UserGql from '../../../lib/gql/userGql';
 
 interface UploadAvatarProps {
   avatar: string;

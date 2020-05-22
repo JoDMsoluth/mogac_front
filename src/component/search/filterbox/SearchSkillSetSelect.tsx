@@ -9,9 +9,10 @@ import FormControl from '@material-ui/core/FormControl';
 import ListItemText from '@material-ui/core/ListItemText';
 import Select from '@material-ui/core/Select';
 import Checkbox from '@material-ui/core/Checkbox';
-import { locationsDataSet } from '../../../../data/location';
 import useInput from '../../../lib/hooks/useInput';
 import palette from '../../../lib/pallete';
+import CategoryGql from '../../../lib/gql/categoryGql';
+import { useQuery } from '@apollo/react-hooks';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -37,63 +38,78 @@ export default function SearchSkillSetSelect() {
   const theme = useTheme();
 
   const [ableLocation, changeAbleLocation] = useInput([]);
-  const [pubLocation, changePubLocation] = useInput<string>('');
-  const [subLocation, setSubLocation] = useState<Array<string>>([]);
+  const [category, changeCategory] = useInput<string>('');
+  const [skillset, setSkillSet] = useState<Array<string>>([]);
 
-  const changeSubLocation = useCallback(
+  const changeSkillSet = useCallback(
     (e) => {
       const { value }: { value: Array<string> } = e.target;
       console.log('value', value, value.length);
       if (value.length > 3) value.shift();
-      setSubLocation(value);
+      setSkillSet(value);
     },
-    [subLocation],
+    [skillset],
   );
 
-  console.log('pubLocation', pubLocation);
-  console.log('subLocation', subLocation);
+  const categoryArray = [];
+  const skillsetData = {};
 
-  const pubLocationArray = Object.keys(locationsDataSet);
+  const { data, error } = useQuery(CategoryGql.Get_All_Category);
+
+  if (error) {
+    console.log('get category error');
+  }
+
+  if (data) {
+    data.getAllCategory.map((category) => {
+      categoryArray.push(category['name']);
+      if (category.skillset.length > 0)
+        skillsetData[category['name']] = category.skillset;
+    });
+  }
+  console.log('data', data);
+  console.log('category', category);
+  console.log('skillsetData', skillsetData);
 
   return (
     <>
       <S.SearchFilterWrap>
         <FormControl className={classes.formControl}>
-          <InputLabel id="PubLocation-Select">PubLocation</InputLabel>
+          <InputLabel id="Category-Select">Category</InputLabel>
           <Select
-            labelId="PubLocation-Select"
-            id="pubLocation"
-            value={pubLocation}
-            onChange={changePubLocation as any}
+            labelId="Category-Select"
+            id="Category"
+            value={category}
+            onChange={changeCategory as any}
           >
-            <S.PubLocationOption aria-label="None" value="" />
-            {pubLocationArray.map((name, i) => (
-              <S.PubLocationOption key={`name$${i}`} value={name}>
+            <S.CategoryOption aria-label="None" value="" />
+            {categoryArray.map((name, i) => (
+              <S.CategoryOption key={`name$${i}`} value={name}>
                 {name}
-              </S.PubLocationOption>
+              </S.CategoryOption>
             ))}
           </Select>
         </FormControl>
-        {/* subLocation  Form*/}
+        {/* skillset  Form*/}
 
         <FormControl className={classes.formControl}>
-          <InputLabel id="subLocation-select">SubLocation</InputLabel>
+          <InputLabel id="skillset-select">SubLocation</InputLabel>
           <Select
-            labelId="subLocation-select"
-            id="subLocation"
+            labelId="skillset-select"
+            id="skillset"
             multiple
-            value={subLocation}
-            onChange={changeSubLocation as any}
+            value={skillset}
+            onChange={changeSkillSet as any}
             input={<Input />}
             renderValue={(selected: Array<string>) => selected.join(', ')}
             MenuProps={MenuProps}
-            disabled={pubLocation.length < 1}
+            disabled={category.length < 1}
           >
-            {pubLocation
-              ? locationsDataSet[pubLocation].map((name) => (
-                  <MenuItem key={name} value={name}>
-                    <Checkbox checked={subLocation.includes(name)} />
-                    <ListItemText primary={name} />
+            {category && skillsetData[category]
+              ? skillsetData[category].map((skill) => (
+                  <MenuItem key={skill.skill} value={skill.skill}>
+                    <Checkbox checked={skillset.includes(skill.skill)} />
+                    <ListItemText primary={skill.skill} />
                   </MenuItem>
                 ))
               : ''}
@@ -113,7 +129,7 @@ S.SearchFilterWrap = styled.div`
   height: 5rem;
 `;
 
-S.PubLocationOption = styled.option`
+S.CategoryOption = styled.option`
   text-align: center;
   max-height: 2rem;
   &:hover {

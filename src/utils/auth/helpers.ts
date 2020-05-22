@@ -13,7 +13,7 @@ const saveTokenInCookies = (token: string) => {
   console.log('document.cookie', Cookies.get('qid'));
 };
 
-const removeTokenFromCookies = () => {
+export const removeTokenFromCookies = () => {
   Cookies.remove('qid');
 };
 

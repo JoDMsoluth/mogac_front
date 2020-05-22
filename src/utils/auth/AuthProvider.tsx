@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 
 import { logout } from './helpers';
-import UserGql from '../../lib/userGql';
+import UserGql from '../../lib/gql/userGql';
 import LoginForm from '../../component/home/LoginForm';
 import AppLayout from '../../component/common/layout/AppLayout';
 type AuthContextParams = [{ data: any }, typeof logout];
