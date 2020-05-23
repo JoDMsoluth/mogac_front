@@ -4,13 +4,12 @@ import useInput from '../../../lib/hooks/useInput';
 import palette from '../../../lib/pallete';
 import { useMutation } from '@apollo/react-hooks';
 import UserGql from '../../../lib/gql/userGql';
+import { useUser } from '../../../utils/user/UserProvide';
 
-interface UploadAvatarProps {
-  avatar: string;
-  setAvatar: () => void;
-}
 
-export default function UploadAvatar({ avatar, setAvatar }) {
+export default function UploadAvatar() {
+  const {state, dispatch} = useUser();
+  const {image_url} = state;
   const [avatarUpload] = useMutation(UserGql.UPLOAD_PROFILE_IMAGE);
 
   const imageInput = useRef(null);
@@ -19,7 +18,7 @@ export default function UploadAvatar({ avatar, setAvatar }) {
     const reader = new FileReader();
 
     reader.onload = function(e) {
-      setAvatar(e.target.result);
+      dispatch({ type: 'ChangeImageUrl', data: e.target.result });
     };
     return reader.readAsDataURL(file); // convert base64 to string
   };
@@ -36,16 +35,16 @@ export default function UploadAvatar({ avatar, setAvatar }) {
         // const result = (await avatarUpload({ variables: { file } })) as any;
         readURL(file);
       }
-      console.log('avatar', avatar);
+      console.log('avatar', image_url);
     },
-    [avatar, avatarUpload],
+    [image_url, avatarUpload],
   );
 
   const onClickImageUpload = useCallback(
     (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
       imageInput.current!.click();
     },
-    [avatar],
+    [image_url],
   );
 
   return (
@@ -59,7 +58,7 @@ export default function UploadAvatar({ avatar, setAvatar }) {
           ref={imageInput}
           onChange={onChangeImage}
         />
-        {avatar && <Thumbnail avatar={avatar} />}
+        {image_url && <Thumbnail avatar={image_url} />}
         <span>Upload</span>
       </ImageWrap>
     </>

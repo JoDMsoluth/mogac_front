@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -15,8 +15,11 @@ import Container from '@material-ui/core/Container';
 import { Copyright } from '@material-ui/icons';
 import { RadioGroup, FormLabel, Radio } from '@material-ui/core';
 import UploadAvatar from '../../../component/common/utils/UploadAvatar';
-import useInput from '../../../lib/hooks/useInput';
-import SelectDialog from './SelectDialog';
+import SelectLocationDialog from './SelectLocationDialog';
+import SelectSkillSetDialog from './SelectSkillSetDialog';
+import { useQuery } from '@apollo/react-hooks';
+import CategoryGql from '../../../lib/gql/categoryGql';
+import { useUser } from '../../../utils/user/UserProvide';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -40,12 +43,94 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignUp() {
   const classes = useStyles();
-  const [name, changeName] = useInput('');
-  const [email, changeEmail] = useInput('');
-  const [password, changePassword] = useInput('');
-  const [gender, changeGender] = useInput('');
-  const [avatar, setAvatar] = useState();
+  const [allowCheck, setAllowCheck] = useState(false);
+  const { state, dispatch } = useUser();
+  const {
+    name,
+    email,
+    gender,
+    password,
+    image_url,
+    ableSkillSet,
+    ableLocation,
+  } = state;
+  const changeAllowCheck = useCallback(
+    (e, checked) => {
+      setAllowCheck(checked);
+      if (!gender) dispatch({ type: 'ChangeGender', data: 'female' });
+    },
+    [allowCheck],
+  );
+  const changeName = useCallback(
+    (e) => {
+      dispatch({ type: 'ChangeName', data: e.target.value });
+    },
+    [name],
+  );
+  const changeEmail = useCallback(
+    (e) => {
+      dispatch({ type: 'ChangeEmail', data: e.target.value });
+    },
+    [email],
+  );
+  const changePassword = useCallback(
+    (e) => {
+      dispatch({ type: 'ChangePassword', data: e.target.value });
+    },
+    [password],
+  );
+  const changeGender = useCallback(
+    (e) => {
+      dispatch({ type: 'ChangeGender', data: e.target.value });
+    },
+    [gender],
+  );
 
+  const categoryArray = [];
+  const skillsetData = {};
+  const onClickSignUp = useCallback(
+    (e) => {
+      e.preventDefault();
+      console.log(
+        'name email password gender image_url ableLocation ableSkillSet, allowCheck',
+        name,
+        email,
+        password,
+        gender,
+        image_url,
+        ableLocation,
+        ableSkillSet,
+        allowCheck,
+      );
+      if (name && email && password && gender && allowCheck) {
+        return;
+      } else alert('write required field');
+    },
+    [
+      name,
+      email,
+      password,
+      gender,
+      image_url,
+      ableLocation,
+      ableSkillSet,
+      allowCheck,
+    ],
+  );
+
+  const { data, error } = useQuery(CategoryGql.Get_All_Category);
+
+  if (error) {
+    console.log('get category error');
+  }
+
+  if (data) {
+    data.getAllCategory.map((category) => {
+      categoryArray.push(category['name']);
+      if (category.skillset.length > 0)
+        skillsetData[category['name']] = category.skillset;
+    });
+  }
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -68,6 +153,7 @@ export default function SignUp() {
                 id="name"
                 label="Name"
                 autoFocus
+                onChange={changeName}
               />
             </Grid>
             <Grid item xs={12}>
@@ -79,6 +165,7 @@ export default function SignUp() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                onChange={changeEmail}
               />
             </Grid>
             <Grid item xs={12}>
@@ -91,14 +178,20 @@ export default function SignUp() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                onChange={changePassword}
               />
             </Grid>
             <Grid item xs={7} sm={7}>
-              <UploadAvatar avatar={avatar} setAvatar={setAvatar} />
+              <UploadAvatar />
             </Grid>
             <Grid item xs={5} sm={5}>
               <FormLabel component="legend">Gender</FormLabel>
-              <RadioGroup aria-label="gender" name="gender1">
+              <RadioGroup
+                defaultValue="female"
+                aria-label="gender"
+                name="gender"
+                onChange={changeGender}
+              >
                 <FormControlLabel
                   value="female"
                   control={<Radio />}
@@ -111,12 +204,24 @@ export default function SignUp() {
                 />
               </RadioGroup>
             </Grid>
-            <Grid item xs={12}>
-              <SelectDialog />
+            <Grid item xs={6}>
+              <SelectLocationDialog />
+            </Grid>
+            <Grid item xs={6}>
+              <SelectSkillSetDialog
+                categoryArray={categoryArray}
+                skillsetData={skillsetData}
+              />
             </Grid>
             <Grid item xs={12}>
               <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
+                control={
+                  <Checkbox
+                    value={allowCheck}
+                    color="primary"
+                    onChange={changeAllowCheck}
+                  />
+                }
                 label="I want to receive inspiration, marketing promotions and updates via email."
               />
             </Grid>
@@ -127,6 +232,7 @@ export default function SignUp() {
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={onClickSignUp}
           >
             Sign Up
           </Button>
