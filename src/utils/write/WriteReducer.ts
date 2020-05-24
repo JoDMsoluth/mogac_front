@@ -5,8 +5,9 @@ export interface IinitialWriteState {
   desc: string;
   contents: string;
   tags: string;
-  cover_Img: string;
+  cover_img: string;
   category?: string;
+  skillset?: string;
   series?: string;
 }
 
@@ -15,7 +16,8 @@ export const initialWriteState: IinitialWriteState = {
   desc: '',
   contents: '',
   tags: '',
-  cover_Img: '',
+  cover_img: '',
+  skillset: '',
 };
 
 export const writeReducer = (state = initialWriteState, action) => {
@@ -40,7 +42,7 @@ export const writeReducer = (state = initialWriteState, action) => {
     }
     case 'ChangeCoverImg': {
       return produce(state, (draft) => {
-        draft.cover_Img = action.data;
+        draft.cover_img = action.data;
       });
     }
     case 'ChangeCategory': {
@@ -48,7 +50,17 @@ export const writeReducer = (state = initialWriteState, action) => {
         draft.category = action.data;
       });
     }
+    case 'ChangeSkillSet': {
+      return produce(state, (draft) => {
+        draft.skillset = action.data;
+      });
+    }
     case 'ChangeSeries': {
+      return produce(state, (draft) => {
+        draft.series = action.data;
+      });
+    }
+    case 'ChangeTags': {
       return produce(state, (draft) => {
         draft.series = action.data;
       });

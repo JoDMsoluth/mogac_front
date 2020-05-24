@@ -1,51 +1,78 @@
 import react, { useRef, useCallback } from 'react';
 import styled from 'styled-components';
 import palette from '../../../lib/pallete';
+import UploadCoverImage from '../../common/utils/UploadCoverImage';
+import CustomInput from '../../../lib/CustomInput';
+import { Title, LocalOffer } from '@material-ui/icons';
+import { useWrite } from '../../../utils/write/WriteProvide';
 
 interface PostRightPanelProps {}
 
 export default function PostRightPanel({}: PostRightPanelProps) {
-  const imageInput = useRef(null);
-  const coverImg = useRef(null);
+  const { state, dispatch } = useWrite();
+  const { series, category, skillset, tags } = state;
 
-  const onChangeImage = useCallback((e) => {
-    const imageFormData = new FormData();
-    [].forEach.call(e.target.files, (f) => {
-      imageFormData.append('image', f);
-      // 'image'는 서버에서도 같은 네이밍을 씀 / 키-벨류 / ajax에서 사용
-    });
-    console.log(imageFormData.getAll('image'));
-  }, []);
-  const onClickImageUpload = useCallback(
+  const changeSeries = useCallback(
     (e) => {
-      imageInput.current!.click();
+      dispatch({ type: 'ChangeSeries', data: e.target.value });
     },
-    [coverImg],
+    [series],
+  );
+  const changeCategory = useCallback(
+    (e) => {
+      dispatch({ type: 'ChangeCategory', data: e.target.value });
+    },
+    [category],
+  );
+  const changeSkillSet = useCallback(
+    (e) => {
+      dispatch({ type: 'ChangeSkillSet', data: e.target.value });
+    },
+    [skillset],
+  );
+  const changeTags = useCallback(
+    (e) => {
+      dispatch({ type: 'ChangeTags', data: e.target.value });
+    },
+    [tags],
   );
 
   return (
     <>
       <S.RightPanelWrap>
-        <S.ImageWrap onClick={onClickImageUpload}>
-          <input
-            id="image"
-            type="file"
-            multiple
-            hidden
-            ref={imageInput}
-            onChange={onChangeImage}
-          />
-          {coverImg && <Thumbnail />}
-          <span>Upload</span>
+        <S.ImageWrap>
+          <UploadCoverImage />
         </S.ImageWrap>
-        <input type="text" name="series" value="series" placeholder="Series" />
-        <input
+        <CustomInput
+          type="text"
+          name="series"
+          value={series}
+          placeholder="Series"
+          inputIcon={<Title />}
+          onChange={changeSeries}
+        />
+        <CustomInput
           type="text"
           name="category"
-          value="category"
+          value={category}
           placeholder="Category"
+          onChange={changeCategory}
         />
-        <input type="text" name="tags" value="tags" placeholder="Tags" />
+        <CustomInput
+          type="text"
+          name="skillset"
+          value={skillset}
+          placeholder="SkillSet"
+          onChange={changeSkillSet}
+        />
+        <CustomInput
+          type="text"
+          name="tags"
+          value={tags}
+          placeholder="Tags"
+          onChange={changeTags}
+          inputIcon={<LocalOffer />}
+        />
       </S.RightPanelWrap>
     </>
   );
@@ -61,35 +88,14 @@ S.RightPanelWrap = styled.div`
 `;
 
 S.ImageWrap = styled.div`
-  border: 1px dashed ${palette.gray6};
-  margin-right: 1rem;
+  box-sizing: border-box;
   width: 100%;
   height: 5rem;
   flex: 1;
   position: relative;
   overflow: hidden;
-  & > span {
-    position: absolute;
-    top: 150%;
-    right: 50%;
-    transform: translateX(50%);
-  }
   &:hover {
-    border: 2px dashed ${palette.gray7};
     color: ${palette.gray7};
     cursor: pointer;
   }
-  &:hover > span {
-    top: 50%;
-    right: 50%;
-    transform: translate(50%, -52%);
-    transition: all 0.3s ease-in;
-  }
-`;
-
-const Thumbnail = styled.div`
-  width: 100%;
-  height: 100%;
-  background-position: 50% 50%;
-  background-size: cover;
 `;
