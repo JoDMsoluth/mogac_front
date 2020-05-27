@@ -5,21 +5,40 @@ import { Button, TextField } from '@material-ui/core';
 import useInput from '../../../lib/hooks/useInput';
 import PostLeftPanel from './PostLeftPanel';
 import PostRightPanel from './PostRightPanel';
+import { useWrite } from '../../../utils/write/WriteProvide';
+import { useMutation } from '@apollo/react-hooks';
 
 interface PostPanelProps {
   openPanel: boolean;
   setOpenPanel: any;
 }
 
-export default function PostPanel({
-  openPanel,
-  setOpenPanel
-}: PostPanelProps) {
-  setOpenPanel(true);
-
+export default function PostPanel({ openPanel, setOpenPanel }: PostPanelProps) {
+  const { state, dispatch } = useWrite();
+  //const [addPost] = useMutation();
+  const {
+    title,
+    contents,
+    tags,
+    desc,
+    cover_img,
+    category,
+    skillset,
+    series,
+  } = state;
+  const post = useCallback(() => {}, [
+    title,
+    contents,
+    tags,
+    desc,
+    cover_img,
+    category,
+    skillset,
+    series,
+  ]);
   return (
     <>
-      <S.PanelWrap open={openPanel}>
+      <S.PanelWrap>
         <S.PostBox>
           <S.BoxHead>
             <Button onClick={() => setOpenPanel(false)}>Back</Button>
@@ -37,7 +56,7 @@ export default function PostPanel({
 
 const S: any = {};
 
-S.PanelWrap = styled.div<{ open: boolean }>`
+S.PanelWrap = styled.div`
   z-index: 100;
   position: absolute;
   display: flex;
@@ -47,14 +66,12 @@ S.PanelWrap = styled.div<{ open: boolean }>`
   bottom: 0;
   width: 100vw;
   overflow: hidden;
-  height: ${(props) => (props.open ? '100vh' : '0')};
+  height: 100%;
   background: ${palette.teal0};
-  transition: height 0.5s ease;
-` as FC<{ open: boolean }>;
+`;
 
 S.PostBox = styled.div`
   width: 35rem;
-  height: 30rem;
   border-radius: 1rem;
   background: ${palette.teal3};
 `;

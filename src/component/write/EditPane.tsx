@@ -5,6 +5,7 @@ import { TextField } from '@material-ui/core';
 import dynamic from 'next/dynamic';
 import { useWrite } from '../../utils/write/WriteProvide';
 
+// 동적임폴트하여 ssr과 별개로 불러온다.
 const CodeWithCodemirror = dynamic(import('./CodeMirror'), {
   ssr: false,
 });
@@ -44,7 +45,7 @@ S.WriteHeadBarWrap = styled.div`
   & > div {
     width: 90%;
     display: flex;
-    margin: 0 auto;
+    margin: 0.5rem auto;
   }
   & > div:nth-child(2) {
     width: 100%;
@@ -62,5 +63,9 @@ S.WriteHeadBarWrap = styled.div`
     font-size: 1rem;
     font-weight: 600;
     padding: 1rem 1.5rem;
+  }
+  .CodeMirror-scroll {
+    width: 100%;
+    padding-right: 1rem;
   }
 `;

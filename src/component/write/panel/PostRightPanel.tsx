@@ -1,16 +1,22 @@
-import react, { useRef, useCallback } from 'react';
+import react, { useRef, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import palette from '../../../lib/pallete';
 import UploadCoverImage from '../../common/utils/UploadCoverImage';
 import CustomInput from '../../../lib/CustomInput';
-import { Title, LocalOffer } from '@material-ui/icons';
+import { LocalOffer, ListAlt } from '@material-ui/icons';
 import { useWrite } from '../../../utils/write/WriteProvide';
+import CategoryGql from '../../../lib/gql/categoryGql';
+import SelectPostCategory from './SelectPostCategory';
+import SeriesPanel from './SeriesPanel';
 
-interface PostRightPanelProps {}
-
-export default function PostRightPanel({}: PostRightPanelProps) {
+export default function PostRightPanel() {
   const { state, dispatch } = useWrite();
   const { series, category, skillset, tags } = state;
+  const {
+    categoryArray,
+    skillsetData,
+    loading,
+  } = CategoryGql.loadAllCategory();
 
   const changeSeries = useCallback(
     (e) => {
@@ -18,24 +24,20 @@ export default function PostRightPanel({}: PostRightPanelProps) {
     },
     [series],
   );
-  const changeCategory = useCallback(
-    (e) => {
-      dispatch({ type: 'ChangeCategory', data: e.target.value });
-    },
-    [category],
-  );
-  const changeSkillSet = useCallback(
-    (e) => {
-      dispatch({ type: 'ChangeSkillSet', data: e.target.value });
-    },
-    [skillset],
-  );
-  const changeTags = useCallback(
-    (e) => {
-      dispatch({ type: 'ChangeTags', data: e.target.value });
-    },
-    [tags],
-  );
+
+  useEffect(() => {
+    console.log('category, skillset1', category, skillset);
+    if (!loading) {
+      if (categoryArray[0])
+        dispatch({ type: 'ChangeCategory', data: categoryArray[0] });
+      skillsetData[categoryArray[0]] &&
+        dispatch({
+          type: 'ChangeSkillSet',
+          data: skillsetData[categoryArray[0]][0].skill,
+        });
+      console.log('category, skillset2', category, skillset);
+    }
+  }, [loading]);
 
   return (
     <>
@@ -43,36 +45,16 @@ export default function PostRightPanel({}: PostRightPanelProps) {
         <S.ImageWrap>
           <UploadCoverImage />
         </S.ImageWrap>
-        <CustomInput
-          type="text"
-          name="series"
-          value={series}
-          placeholder="Series"
-          inputIcon={<Title />}
-          onChange={changeSeries}
-        />
-        <CustomInput
-          type="text"
-          name="category"
-          value={category}
-          placeholder="Category"
-          onChange={changeCategory}
-        />
-        <CustomInput
-          type="text"
-          name="skillset"
-          value={skillset}
-          placeholder="SkillSet"
-          onChange={changeSkillSet}
-        />
-        <CustomInput
-          type="text"
-          name="tags"
-          value={tags}
-          placeholder="Tags"
-          onChange={changeTags}
-          inputIcon={<LocalOffer />}
-        />
+
+        <SeriesPanel />
+        {loading ? (
+          ''
+        ) : (
+          <SelectPostCategory
+            categoryArray={categoryArray}
+            skillsetData={skillsetData}
+          />
+        )}
       </S.RightPanelWrap>
     </>
   );
@@ -88,9 +70,10 @@ S.RightPanelWrap = styled.div`
 `;
 
 S.ImageWrap = styled.div`
+  margin-bottom: 0.5rem;
   box-sizing: border-box;
   width: 100%;
-  height: 5rem;
+  height: 10rem;
   flex: 1;
   position: relative;
   overflow: hidden;

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Title } from '@material-ui/icons';
 import { OverridableComponent } from '@material-ui/core/OverridableComponent';
 import { SvgIconTypeMap } from '@material-ui/core';
+import palette from './pallete';
 
 interface CustomInputProps {
   type?: string;
@@ -25,7 +26,8 @@ export default function CustomInput(props: CustomInputProps) {
 const S: any = {};
 
 S.InputContainer = styled.div`
-  margin-bottom: 1.5rem;
+  color: ${palette.blue8};
+  margin-bottom: 0.5rem;
   position: relative;
   width: 100%;
   height: 2.5rem;

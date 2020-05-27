@@ -60,6 +60,7 @@ const GET_CURRENT_USER = gql`
   query getCurrentUser {
     getCurrentUser {
       name
+      image_url
     }
   }
 `;
@@ -68,6 +69,16 @@ const GET_USER_BY_ID = gql`
   query getUserById {
     getUserById(id: "5e9937bba6e38b2a900d4886") {
       phone
+    }
+  }
+`;
+
+const GET_ALL_SERIES_BY_USER = gql`
+  query getAllSeriesByUser {
+    getAllSeriesByUser {
+      series {
+        title
+      }
     }
   }
 `;
@@ -83,6 +94,7 @@ const UserGql = {
   LOGOUT,
   SIGNUP,
   UPLOAD_PROFILE_IMAGE,
+  GET_ALL_SERIES_BY_USER,
   GET_CURRENT_USER,
   GET_USER_BY_ID,
   IS_AUTH,

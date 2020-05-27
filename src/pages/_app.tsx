@@ -6,6 +6,7 @@ import './_app.css';
 import { withApollo } from '../lib/apollo';
 import WithAuth from '../utils/auth/WithAuth';
 import { useRouter } from 'next/router';
+import AppLayout from '../component/common/layout/AppLayout';
 
 const exceptLayout = ['write', 'signup'];
 
@@ -79,7 +80,9 @@ const App = ({ Component, pageProps }: AppProps) => {
         <Component {...pageProps} />
       ) : (
         <WithAuth>
-          <Component {...pageProps} />
+          <AppLayout>
+            <Component {...pageProps} />
+          </AppLayout>
         </WithAuth>
       )}
     </>

@@ -9,7 +9,6 @@ export default function UploadCoverImage() {
   const { state, dispatch } = useWrite();
   const { cover_img } = state;
   //const [avatarUpload] = useMutation(PostGql.Upload_Cover_Image);
-  console.log('coverimage', cover_img);
   const imageInput = useRef(null);
 
   const readURL = (file: File) => {

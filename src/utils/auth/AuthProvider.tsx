@@ -26,7 +26,7 @@ const AuthProvider: React.FC = ({ children }) => {
 
   return (
     <AuthContext.Provider value={[{ data }, logout]}>
-      <AppLayout>{children}</AppLayout>
+      {children}
     </AuthContext.Provider>
   );
 };

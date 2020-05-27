@@ -17,9 +17,8 @@ import { RadioGroup, FormLabel, Radio } from '@material-ui/core';
 import UploadAvatar from '../../../component/common/utils/UploadAvatar';
 import SelectLocationDialog from './SelectLocationDialog';
 import SelectSkillSetDialog from './SelectSkillSetDialog';
-import { useQuery } from '@apollo/react-hooks';
-import CategoryGql from '../../../lib/gql/categoryGql';
 import { useUser } from '../../../utils/user/UserProvide';
+import CategoryGql from '../../../lib/gql/categoryGql';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -45,6 +44,7 @@ export default function SignUp() {
   const classes = useStyles();
   const [allowCheck, setAllowCheck] = useState(false);
   const { state, dispatch } = useUser();
+  const { categoryArray, skillsetData } = CategoryGql.loadAllCategory();
   const {
     name,
     email,
@@ -86,8 +86,6 @@ export default function SignUp() {
     [gender],
   );
 
-  const categoryArray = [];
-  const skillsetData = {};
   const onClickSignUp = useCallback(
     (e) => {
       e.preventDefault();
@@ -118,19 +116,6 @@ export default function SignUp() {
     ],
   );
 
-  const { data, error } = useQuery(CategoryGql.Get_All_Category);
-
-  if (error) {
-    console.log('get category error');
-  }
-
-  if (data) {
-    data.getAllCategory.map((category) => {
-      categoryArray.push(category['name']);
-      if (category.skillset.length > 0)
-        skillsetData[category['name']] = category.skillset;
-    });
-  }
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />

@@ -62,7 +62,7 @@ export const writeReducer = (state = initialWriteState, action) => {
     }
     case 'ChangeTags': {
       return produce(state, (draft) => {
-        draft.series = action.data;
+        draft.tags = action.data;
       });
     }
     default:

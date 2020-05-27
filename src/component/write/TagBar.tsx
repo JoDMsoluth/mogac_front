@@ -36,6 +36,6 @@ S.TagBarWrap = styled.div`
   & > div {
     width: 90%;
     display: flex;
-    margin: 0 auto;
+    margin: 0.5rem auto;
   }
 `;

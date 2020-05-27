@@ -6,12 +6,9 @@ import EditPane from './EditPane';
 import WritePreviewPane from './WritePreviewPane';
 import TagBar from './TagBar';
 import PostPanel from './panel/PostPanel';
-import useInput from '../../lib/hooks/useInput';
-import { useAuth } from '../../utils/auth/AuthProvider';
 import { useWrite } from '../../utils/write/WriteProvide';
 
 export default function WriteComponent() {
-  const [userDate, _] = useAuth();
   const { state } = useWrite();
 
   const [openPanel, setOpenPanel] = useState(false);
@@ -31,8 +28,12 @@ export default function WriteComponent() {
           {TagBarLayout}
         </S.EditPaneWrap>
         <S.PreviewPaneWrap>{WritePreviewPaneLayout}</S.PreviewPaneWrap>
-        <PostPanel openPanel={openPanel} setOpenPanel={setOpenPanel} />
       </S.WriteWrap>
+      {openPanel ? (
+        <PostPanel openPanel={openPanel} setOpenPanel={setOpenPanel} />
+      ) : (
+        ''
+      )}
     </>
   );
 }
@@ -41,12 +42,14 @@ const S: any = {};
 
 S.WriteWrap = styled.div`
   height: 100vh;
+  max-width: 100vw;
   display: flex;
   overflow: hidden;
 `;
 S.EditPaneWrap = styled.div`
   display: flex;
   flex-direction: column;
+  max-width: 50%;
   height: 100%;
   flex: 1;
   background: ${palette.gray2};

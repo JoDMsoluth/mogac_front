@@ -25,7 +25,11 @@ export default function CodeWithCodemirror() {
     <div>
       <CodeMirror
         value={state.contents}
-        options={{ theme: 'base16-light', mode: 'markdown' }}
+        options={{
+          theme: 'base16-light',
+          mode: 'markdown',
+          lineWrapping: true,
+        }}
         onBeforeChange={(editor, data, value) => {
           console.log(value);
           handleChange(value);

@@ -36,6 +36,7 @@ const MenuProps = {
 export default function SearchSkillSetSelect() {
   const classes = useStyles();
   const theme = useTheme();
+  const { categoryArray, skillsetData } = CategoryGql.loadAllCategory();
 
   const [ableLocation, changeAbleLocation] = useInput([]);
   const [category, changeCategory] = useInput<string>('');
@@ -51,23 +52,6 @@ export default function SearchSkillSetSelect() {
     [skillset],
   );
 
-  const categoryArray = [];
-  const skillsetData = {};
-
-  const { data, error } = useQuery(CategoryGql.Get_All_Category);
-
-  if (error) {
-    console.log('get category error');
-  }
-
-  if (data) {
-    data.getAllCategory.map((category) => {
-      categoryArray.push(category['name']);
-      if (category.skillset.length > 0)
-        skillsetData[category['name']] = category.skillset;
-    });
-  }
-  console.log('data', data);
   console.log('category', category);
   console.log('skillsetData', skillsetData);
 
