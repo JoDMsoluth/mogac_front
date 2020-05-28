@@ -66,7 +66,7 @@ export default function UploadCoverImage() {
 }
 
 const ImageWrap = styled.div`
-  border: 1px dashed ${palette.gray6};
+  border: 1px dashed white;
   box-sizing: border-box;
   border-radius: 5px;
   margin-right: 1rem;
@@ -82,8 +82,8 @@ const ImageWrap = styled.div`
     transform: translateX(50%);
   }
   &:hover {
-    border: 2px dashed ${palette.gray7};
-    color: ${palette.gray7};
+    border: 2px dashed white;
+    color: white;
     cursor: pointer;
   }
   &:hover > span {

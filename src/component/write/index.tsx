@@ -55,6 +55,7 @@ S.EditPaneWrap = styled.div`
   background: ${palette.gray2};
 `;
 S.PreviewPaneWrap = styled.div`
+  width: 50%;
   height: 100%;
   flex: 1;
   @media (max-width: 768px) {

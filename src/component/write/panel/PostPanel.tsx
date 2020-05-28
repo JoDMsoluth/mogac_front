@@ -73,13 +73,16 @@ S.PanelWrap = styled.div`
 S.PostBox = styled.div`
   width: 35rem;
   border-radius: 1rem;
-  background: ${palette.teal3};
+  background: ${palette.blue4};
 `;
 
 S.BoxHead = styled.div`
   padding: 1rem;
   display: flex;
   justify-content: space-between;
+  & > button {
+    color: white;
+  }
 `;
 
 S.BoxBody = styled.div`

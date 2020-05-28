@@ -30,12 +30,13 @@ export default function WriteHeadBar({ setOpenPanel }: WriteHeadBarProps) {
 
 const S: any = {};
 S.WriteHeadBarWrap = styled.div`
-  background: ${palette.gray6};
+  background: ${palette.blue9};
   padding: 0 0.8rem;
   display: flex;
   justify-content: space-between;
   & button {
     height: 4rem;
+    color: white;
   }
   & button:hover {
     color: ${palette.blue8};
