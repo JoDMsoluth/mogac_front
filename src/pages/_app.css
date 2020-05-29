@@ -4,15 +4,13 @@ html {
   -ms-text-size-adjust: 100%; /* 2 */
   -webkit-text-size-adjust: 100%; /* 2 */
 } /** * 기본 마진값을 제거. */
+* {
+  box-sizing: border-box;
+}
 body {
   margin: 0;
 } /* HTML5 display definitions ========================================================================== */ /** * IE8/9에서 정의되지 않은 HTML5 요소를 'block'으로 지정. * IE10/11, Firefox에서 정의되지 않은 `detail` 혹은 `summary` 를 `block`으로 지정. * IE11에서 정의되지 않은 `main`을 `block`으로 지정 */
 
-@media screen and (max-width: 450px) {
-  body {
-    width: 100vh;
-  }
-}
 article,
 aside,
 details,

@@ -19,7 +19,7 @@ interface PostPanelProps {
 export default function PostPanel({ openPanel, setOpenPanel }: PostPanelProps) {
   const { state, dispatch } = useWrite();
   const router = useRouter();
-  const [addPost] = useMutation(postGql.Add_Post);
+  const [addPost] = useMutation(postGql.ADD_POST);
   const {
     title,
     contents,
@@ -105,12 +105,18 @@ S.PanelWrap = styled.div`
   overflow: hidden;
   height: 100%;
   background: ${palette.teal0};
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 S.PostBox = styled.div`
   width: 35rem;
   border-radius: 1rem;
   background: ${palette.blue4};
+  @media (max-width: 768px) {
+    width: 19rem;
+  }
 `;
 
 S.BoxHead = styled.div`
@@ -124,4 +130,8 @@ S.BoxHead = styled.div`
 
 S.BoxBody = styled.div`
   display: flex;
+  @media (max-width: 768px) {
+    width: 19rem;
+    flex-direction: column;
+  }
 `;

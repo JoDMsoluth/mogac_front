@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
 
-const Get_All_Category = gql`
+const GET_ALL_CATEGORY = gql`
   query getAllCategory {
     getAllCategory {
       name
@@ -13,7 +13,7 @@ const Get_All_Category = gql`
 `;
 
 const loadAllCategory = () => {
-  const { data, error, loading } = useQuery(Get_All_Category);
+  const { data, error, loading } = useQuery(GET_ALL_CATEGORY);
   const categoryArray = [];
   const skillsetData = {};
 

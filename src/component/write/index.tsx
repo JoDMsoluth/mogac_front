@@ -50,6 +50,9 @@ S.EditPaneWrap = styled.div`
   display: flex;
   flex-direction: column;
   max-width: 50%;
+  @media (max-width: 768px) {
+    max-width: 100%;
+  }
   height: 100%;
   flex: 1;
   background: ${palette.gray2};
@@ -58,6 +61,7 @@ S.PreviewPaneWrap = styled.div`
   width: 50%;
   height: 100%;
   flex: 1;
+  word-break: break-all;
   @media (max-width: 768px) {
     display: none;
   }

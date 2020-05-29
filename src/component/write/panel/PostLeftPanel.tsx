@@ -42,7 +42,7 @@ export default function PostLeftPanel() {
         <S.DescTextArea
           name="desc"
           value={state.desc}
-          rows={10}
+          rows={6}
           cols={35}
           onChange={onChangeDesc}
           maxLength={350}
@@ -67,6 +67,9 @@ S.LeftPanelWrap = styled.div`
   width: 100%;
   height: 100%;
   padding: 0 0.5rem 1rem 1rem;
+  @media (max-width: 768px) {
+    padding: 0 1rem 1rem 1rem;
+  }
 `;
 
 S.TitleInput = styled.input`
@@ -80,6 +83,9 @@ S.TitleInput = styled.input`
 
 S.DescTextArea = styled.textarea`
   flex: 1;
-  margin-bottom: 0.5rem;
   color: ${palette.blue8};
+  margin: 0.2rem 0 0.5rem 0;
+  @media (max-width: 768px) {
+    margin: 0 0 0.5rem 0;
+  }
 `;

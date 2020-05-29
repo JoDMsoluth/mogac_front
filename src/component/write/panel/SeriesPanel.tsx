@@ -30,40 +30,39 @@ export default function SeriesPanel() {
   );
 
   return (
-    <>
-      <S.SelectWrap>
-        <S.SelectSpan onClick={changeOpenPanel}>
-          {series ? series : 'Series'}
-        </S.SelectSpan>
-        <S.SelectIconWrap>
-          <ListAlt />
-        </S.SelectIconWrap>
-        <S.SelectOptionWrap open={openPanel}>
-          {!loading &&
-            data.getAllSeriesByUser.series &&
-            data.getAllSeriesByUser.series.map((v) => (
-              <S.SelectOption
-                key={v.title}
-                value={v.title}
-                onClick={changeSeries(v.title, v._id)}
-              >
-                {v.title}
-              </S.SelectOption>
-            ))}
-        </S.SelectOptionWrap>
-      </S.SelectWrap>
-    </>
+    <S.SelectWrap>
+      <S.SelectSpan onClick={changeOpenPanel}>
+        {series ? series : 'Series'}
+      </S.SelectSpan>
+      <S.SelectIconWrap>
+        <ListAlt />
+      </S.SelectIconWrap>
+      <S.SelectOptionWrap open={openPanel}>
+        {!loading &&
+          data.getAllSeriesByUser.series &&
+          data.getAllSeriesByUser.series.map((v) => (
+            <S.SelectOption
+              key={v.title}
+              value={v.title}
+              onClick={changeSeries(v.title, v._id)}
+            >
+              {v.title}
+            </S.SelectOption>
+          ))}
+      </S.SelectOptionWrap>
+    </S.SelectWrap>
   );
 }
 
 const S: any = {};
 
 S.SelectWrap = styled.div`
-  margin: 2rem 0;
+  margin: 0.75rem 0;
   position: relative;
   width: 100%;
   height: 2.5rem;
   color: rgba(0, 0, 255, 0.25);
+  z-index: 1;
 `;
 
 S.SelectSpan = styled.div`

@@ -31,14 +31,7 @@ const AppLayout = ({ children }: LayoutProps) => {
         <AppHeader open={open} handleDrawerOpen={handleDrawerOpen} />
 
         <Container>
-          <article
-            style={{
-              width: `calc(100% - ${open ? drawerWidth : 0}px)`,
-              marginLeft: open ? drawerWidth : 0,
-              transition: 'all 0.2s',
-              margin: '16px 0',
-            }}
-          >
+          <article>
             {children}
             <AppFooter />
           </article>

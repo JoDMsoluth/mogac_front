@@ -67,13 +67,15 @@ S.RightPanelWrap = styled.div`
   width: 100%;
   height: 100%;
   padding: 0 1rem 1rem 0.5rem;
+  @media (max-width: 768px) {
+    padding: 0 1rem 1rem 1rem;
+  }
 `;
 
 S.ImageWrap = styled.div`
-  margin-bottom: 0.5rem;
   box-sizing: border-box;
   width: 100%;
-  height: 10rem;
+  height: 8rem;
   flex: 1;
   position: relative;
   overflow: hidden;
