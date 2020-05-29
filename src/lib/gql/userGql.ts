@@ -78,6 +78,7 @@ const GET_ALL_SERIES_BY_USER = gql`
     getAllSeriesByUser {
       series {
         title
+        _id
       }
     }
   }

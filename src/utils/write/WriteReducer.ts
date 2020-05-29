@@ -9,6 +9,7 @@ export interface IinitialWriteState {
   category?: string;
   skillset?: string;
   series?: string;
+  seriesId?: string;
 }
 
 export const initialWriteState: IinitialWriteState = {
@@ -18,6 +19,8 @@ export const initialWriteState: IinitialWriteState = {
   tags: '',
   cover_img: '',
   skillset: '',
+  seriesId: '',
+  series: '',
 };
 
 export const writeReducer = (state = initialWriteState, action) => {
@@ -58,6 +61,11 @@ export const writeReducer = (state = initialWriteState, action) => {
     case 'ChangeSeries': {
       return produce(state, (draft) => {
         draft.series = action.data;
+      });
+    }
+    case 'ChangeSeriesId': {
+      return produce(state, (draft) => {
+        draft.seriesId = action.data;
       });
     }
     case 'ChangeTags': {

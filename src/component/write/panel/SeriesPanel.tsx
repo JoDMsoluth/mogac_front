@@ -13,7 +13,7 @@ import { useWrite } from '../../../utils/write/WriteProvide';
 export default function SeriesPanel() {
   const { data, error, loading } = useQuery(UserGql.GET_ALL_SERIES_BY_USER);
   const { state, dispatch } = useWrite();
-  const { series } = state;
+  const { series, seriesId } = state;
   const [openPanel, setOpenPanel] = useState<boolean>(false);
 
   const changeOpenPanel = useCallback(() => {
@@ -21,11 +21,12 @@ export default function SeriesPanel() {
   }, [openPanel]);
 
   const changeSeries = useCallback(
-    (series: string) => () => {
+    (series: string, seriesId: string) => () => {
       dispatch({ type: 'ChangeSeries', data: series });
+      dispatch({ type: 'ChangeSeriesId', data: seriesId });
       setOpenPanel(!openPanel);
     },
-    [series, openPanel],
+    [series, openPanel, seriesId],
   );
 
   return (
@@ -44,7 +45,7 @@ export default function SeriesPanel() {
               <S.SelectOption
                 key={v.title}
                 value={v.title}
-                onClick={changeSeries(v.title)}
+                onClick={changeSeries(v.title, v._id)}
               >
                 {v.title}
               </S.SelectOption>

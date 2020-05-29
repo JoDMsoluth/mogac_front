@@ -1,13 +1,9 @@
 import gql from 'graphql-tag';
-import { useQuery } from '@apollo/react-hooks';
 
 const Add_Post = gql`
-  query createPost {
-    createPost {
-      name
-      skillset {
-        skill
-      }
+  mutation createPost($data: AddPostRequestType!) {
+    createPost(data: $data) {
+      title
     }
   }
 `;
