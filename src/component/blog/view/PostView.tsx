@@ -14,6 +14,7 @@ import post1 from './blog-post1';
 import post2 from './blog-post2';
 import post3 from './blog-post3';
 import CommentComponent from '../../comment';
+import postGql from '../../../lib/gql/postGql';
 
 const useStyles = makeStyles((theme) => ({
   mainGrid: {
@@ -74,9 +75,14 @@ const sidebar = {
     { name: 'Facebook', icon: FacebookIcon },
   ],
 };
-
-export default function PostView() {
+interface PostViewProps {
+  postId: string;
+}
+export default function PostView({ postId }) {
+  console.log('postId', postId);
   const classes = useStyles();
+  const post = postGql.getPostForView(postId);
+  console.log('post', post);
 
   return (
     <>
@@ -96,8 +102,8 @@ export default function PostView() {
           </Grid>
 
           <Grid container spacing={4}>
-            {featuredPosts.map((post) => (
-              <FeaturedPost key={post.title} post={post} />
+            {featuredPosts.map((post, i) => (
+              <FeaturedPost key={`${post.title}${i}`} post={post} />
             ))}
           </Grid>
         </main>

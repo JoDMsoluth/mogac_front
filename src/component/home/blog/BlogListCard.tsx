@@ -47,8 +47,8 @@ const BlogListCard = ({ page }) => {
         {/* End hero unit */}
         <Grid container spacing={4}>
           {posts?.length > 0 &&
-            posts.map((post) => (
-              <Grid item key={post} xs={12} sm={6} md={4}>
+            posts.map((post, i) => (
+              <Grid item key={`${i}${post.title}`} xs={12} sm={6} md={4}>
                 <Card className={classes.card}>
                   <CardMedia
                     className={classes.cardMedia}

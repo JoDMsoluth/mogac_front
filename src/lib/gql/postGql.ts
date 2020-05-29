@@ -22,6 +22,29 @@ const GET_ALL_POSTS = gql`
   }
 `;
 
+const GET_POST_FOR_VIEW = gql`
+  query getPostForView($postId: String!) {
+    getPost(postId: $postId) {
+      title
+      desc
+      contents
+      createdAt
+      followUser {
+        _id
+      }
+      postedBy {
+        _id
+        name
+        image_url
+      }
+      series {
+        _id
+      }
+      tags
+    }
+  }
+`;
+
 const ADD_POST = gql`
   mutation createPost($data: AddPostRequestType!) {
     createPost(data: $data) {
@@ -46,9 +69,26 @@ const getAllPosts = (page: number) => {
   }
 };
 
+const getPostForView = (postId: string) => {
+  console.log('gql postId', typeof postId);
+  const { data, error } = useQuery(GET_POST_FOR_VIEW, {
+    variables: { postId },
+  });
+
+  if (error) {
+    console.log('get posts error', error);
+  }
+
+  if (data) {
+    console.log('data', data);
+    return data.getPost;
+  }
+};
+
 const postGql = {
   ADD_POST,
   getAllPosts,
+  getPostForView,
 };
 
 export default postGql;
