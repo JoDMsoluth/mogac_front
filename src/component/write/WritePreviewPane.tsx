@@ -11,6 +11,8 @@ import 'prismjs/components/prism-bash.min.js';
 import 'prismjs/components/prism-javascript.min.js';
 import 'prismjs/components/prism-jsx.min.js';
 import 'prismjs/components/prism-css.min.js';
+import Main from '../blog/view/PostViewMain';
+import { Typography, Divider } from '@material-ui/core';
 
 interface WritePreviewPaneProps {
   contents: string;
@@ -27,7 +29,10 @@ export default function WritePreviewPane({
   return (
     <>
       <S.PreviewWrap>
-        <div>{title}</div>
+        <Typography variant="h6" gutterBottom>
+          {title}
+        </Typography>
+        {title && <Divider />}
         <Markdown>{contents}</Markdown>
       </S.PreviewWrap>
     </>

@@ -53,6 +53,19 @@ const ADD_POST = gql`
   }
 `;
 
+const GET_ALL_POSTS_BY_USER_FOR_POST_VIEW = gql`
+  query getAllPostsForPostView($name: String!) {
+    getAllPostsForPostView(name: $name) {
+      posts {
+        _id
+        title
+        desc
+        createdAt
+      }
+    }
+  }
+`;
+
 const getAllPosts = (page: number) => {
   console.log('gql page', typeof page);
   const { data, error } = useQuery(GET_ALL_POSTS, {
@@ -66,6 +79,20 @@ const getAllPosts = (page: number) => {
   if (data) {
     console.log('data', data);
     return data.getAllPosts.posts;
+  }
+};
+
+const getAllPostsByUserForPostView = (name: string) => {
+  console.log('name', name);
+  const { data, error } = useQuery(GET_ALL_POSTS_BY_USER_FOR_POST_VIEW, {
+    variables: { name },
+  });
+  if (error) {
+    console.log('get posts error', error);
+  }
+  if (data) {
+    console.log('data', data);
+    return data.getAllPostsForPostView.posts;
   }
 };
 
@@ -89,6 +116,7 @@ const postGql = {
   ADD_POST,
   getAllPosts,
   getPostForView,
+  getAllPostsByUserForPostView,
 };
 
 export default postGql;

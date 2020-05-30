@@ -5,14 +5,26 @@ import palette from '../../../lib/pallete';
 
 const userAvatar = require('../../../static/images/avatar/1.jpg');
 
-export default function UserAvatar() {
+interface UserAvatarProps {
+  name?: string;
+  skill?: string;
+  level?: string;
+  image_url?: string;
+}
+
+export default function UserAvatar({
+  name,
+  skill,
+  level,
+  image_url,
+}: UserAvatarProps) {
   return (
     <>
       <S.AvatarWrap>
         <Avatar alt="JoHyehyeong" src={userAvatar} />
         <S.AvatarTextWrap>
-          <S.AvatarName>&nbsp;Jo Hyehyeong</S.AvatarName>
-          <S.AvatarDesc>&nbsp;Front-End</S.AvatarDesc>
+          <S.AvatarName>&nbsp;{name || `Jo Hyehyeong`}</S.AvatarName>
+          <S.AvatarDesc>&nbsp;{skill || `Newbie`}</S.AvatarDesc>
         </S.AvatarTextWrap>
       </S.AvatarWrap>
     </>
@@ -21,7 +33,7 @@ export default function UserAvatar() {
 
 const S: any = {};
 S.AvatarWrap = styled.div`
-  display: flex;
+  display: inline-flex;
 `;
 S.AvatarTextWrap = styled.div`
   margin-left: 0.5rem;

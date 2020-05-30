@@ -61,6 +61,7 @@ const GET_CURRENT_USER = gql`
     getCurrentUser {
       name
       image_url
+      _id
     }
   }
 `;

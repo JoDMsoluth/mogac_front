@@ -8,7 +8,7 @@ import WithAuth from '../utils/auth/WithAuth';
 import { useRouter } from 'next/router';
 import AppLayout from '../component/common/layout/AppLayout';
 
-const exceptLayout = ['write', 'signup'];
+const exceptLayout = ['write', 'signup', 'view'];
 
 const App = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();

@@ -8,11 +8,8 @@ import FacebookIcon from '@material-ui/icons/Facebook';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import MainFeaturedPost from './MainFeaturedPost';
 import FeaturedPost from './FeaturedPost';
-import Main from './Main';
+import PostViewMain from './PostViewMain';
 import SideBar from './SideBar';
-import post1 from './blog-post1';
-import post2 from './blog-post2';
-import post3 from './blog-post3';
 import CommentComponent from '../../comment';
 import postGql from '../../../lib/gql/postGql';
 
@@ -50,8 +47,6 @@ const featuredPosts = [
   },
 ];
 
-const posts = [post1, post2, post3];
-
 const sidebar = {
   title: 'About',
   description:
@@ -77,28 +72,30 @@ const sidebar = {
 };
 interface PostViewProps {
   postId: string;
+  name: string;
 }
-export default function PostView({ postId }) {
+export default function PostView({ postId, name }: PostViewProps) {
   console.log('postId', postId);
   const classes = useStyles();
   const post = postGql.getPostForView(postId);
   console.log('post', post);
+  const posts = postGql.getAllPostsByUserForPostView(name);
+  console.log('posts', posts);
 
   return (
     <>
       <CssBaseline />
       <Container maxWidth="lg">
-        <main>
+        <main style={{ paddingTop: '1rem' }}>
           <MainFeaturedPost post={mainFeaturedPost} />
 
           <Grid container spacing={5} className={classes.mainGrid}>
-            <Main title="From the firehose" posts={posts} />
-            <SideBar
-              title={sidebar.title}
-              description={sidebar.description}
-              archives={sidebar.archives}
-              social={sidebar.social}
-            />
+            {post && (
+              <>
+                <PostViewMain post={post} />
+                {posts && <SideBar desc={post.desc} posts={posts} />}
+              </>
+            )}
           </Grid>
 
           <Grid container spacing={4}>

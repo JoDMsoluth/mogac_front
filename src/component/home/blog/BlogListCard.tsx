@@ -68,7 +68,9 @@ const BlogListCard = ({ page }) => {
                     </Typography>
                   </CardContent>
                   <CardActions>
-                    <Link href="/view/post">
+                    <Link
+                      href={`/view/post?post=${post._id}&name=${post.postedBy.name}`}
+                    >
                       <a>
                         <Button size="small" color="primary">
                           View
