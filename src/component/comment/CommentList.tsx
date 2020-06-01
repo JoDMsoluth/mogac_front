@@ -3,14 +3,16 @@ import styled from 'styled-components';
 import palette from '../../lib/pallete';
 import CommentCard from './CommentCard';
 
-const comments = [1, 2, 3];
+interface CommentListProps {
+  comments: any;
+}
 
-export default function CommentList() {
+export default function CommentList({ comments }: CommentListProps) {
   return (
     <>
       <S.CommentListWrap>
         {comments.map((comment) => (
-          <CommentCard />
+          <CommentCard comment={comment} />
         ))}
       </S.CommentListWrap>
     </>

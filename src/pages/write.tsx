@@ -5,11 +5,9 @@ import WithWrite from '../utils/write/WithWrite';
 export default function WritePage() {
   return (
     <>
-      <WithAuth>
-        <WithWrite>
-          <WriteComponent />
-        </WithWrite>
-      </WithAuth>
+      <WithWrite>
+        <WriteComponent />
+      </WithWrite>
     </>
   );
 }

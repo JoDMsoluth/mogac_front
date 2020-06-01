@@ -105,7 +105,7 @@ export default function PostView({ postId, name }: PostViewProps) {
           </Grid>
         </main>
       </Container>
-      <CommentComponent />
+      <CommentComponent postId={postId} />
     </>
   );
 }

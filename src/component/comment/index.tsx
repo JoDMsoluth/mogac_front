@@ -1,12 +1,18 @@
 import React from 'react';
 import CommentHeadInput from './CommentHeadInput';
 import CommentList from './CommentList';
+import CommentGql from '../../lib/gql/commentGql';
 
-export default function CommentComponent() {
+interface CommentComponentProps {
+  postId: string;
+}
+export default function CommentComponent({ postId }: CommentComponentProps) {
+  const comments = CommentGql.getAllCommentInPost(postId);
+  console.log(comments);
   return (
     <>
       <CommentHeadInput />
-      <CommentList />
+      {comments && comments.length > 0 && <CommentList comments={comments} />}
     </>
   );
 }

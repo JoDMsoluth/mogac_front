@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect } from 'react';
+import React, { createContext, useContext, useEffect, ReactNode } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 
 import { logout } from './helpers';
@@ -9,7 +9,11 @@ type AuthContextParams = [{ data: any }, typeof logout];
 
 const AuthContext = createContext<AuthContextParams>([{ data: null }, logout]);
 
-const AuthProvider: React.FC = ({ children }) => {
+interface AuthProviderProps {
+  children: ReactNode;
+  loginRequired: boolean;
+}
+const AuthProvider = ({ children, loginRequired }: AuthProviderProps) => {
   useEffect(() => {});
   const { loading, data, error } = useQuery(UserGql.GET_CURRENT_USER);
 
@@ -21,7 +25,7 @@ const AuthProvider: React.FC = ({ children }) => {
   // JWT token expired or any API-level errors, you can use redirects here
   if (error) {
     console.log('session error');
-    return <LoginForm />;
+    if (loginRequired) return <LoginForm />;
   }
 
   return (

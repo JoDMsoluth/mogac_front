@@ -6,6 +6,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 import moment from 'moment';
+import styled from 'styled-components';
 
 const useStyles = makeStyles((theme) => ({
   sidebarAboutBox: {
@@ -46,8 +47,20 @@ export default function Sidebar({ posts, desc }: SidebarProps) {
         Archives
       </Typography>
       {archive.map((date) => (
-        <div>{date}</div>
+        <Link href={`/?date=${date}`}>
+          <a>
+            <S.DateLink>{date}</S.DateLink>
+          </a>
+        </Link>
       ))}
     </Grid>
   );
 }
+
+const S: any = {};
+
+S.DateLink = styled.div`
+  &:hover {
+    text-decoration: none;
+  }
+`;

@@ -29,11 +29,9 @@ const LOGOUT = gql`
     }
     */
 const SIGNUP = gql`
-  mutation signup($req: signupReq!) {
-    signup(req: $req) {
-      user {
-        email
-      }
+  mutation createUser($data: SignupRequestType!) {
+    createUser(data: $data) {
+      name
     }
   }
 `;
@@ -62,6 +60,7 @@ const GET_CURRENT_USER = gql`
       name
       image_url
       _id
+      ableSkillSet
     }
   }
 `;

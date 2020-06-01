@@ -37,13 +37,18 @@ const GET_POST_FOR_VIEW = gql`
         name
         image_url
       }
-      series {
-        _id
-      }
       tags
     }
   }
 `;
+
+// 따로 시리즈만 불러오는 gql 추가하자
+/*const GET_POST_FOR_VIEW_NOT_SERIES = gql`
+  query getPostForView($postId: String!) {
+    getPost(postId: $postId) {
+    
+  }
+`;*/
 
 const ADD_POST = gql`
   mutation createPost($data: AddPostRequestType!) {

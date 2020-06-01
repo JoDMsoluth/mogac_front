@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -76,8 +76,8 @@ const LoginForm = () => {
   const onSubmitLogin = useCallback(
     async (e) => {
       e.preventDefault();
+      await removeTokenFromCookies();
       console.log('email, password', email, password);
-      removeTokenFromCookies();
       try {
         const result = await login({ variables: { email, password } });
         console.log('result', result);

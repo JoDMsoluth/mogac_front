@@ -52,21 +52,38 @@ export default function PostPanel({ openPanel, setOpenPanel }: PostPanelProps) {
       console.log('postCategory', postCategory);
 
       try {
-        const result = await addPost({
-          variables: {
-            data: {
-              title,
-              contents,
-              desc,
-              tags: arrayTags,
-              cover_img,
-              category: postCategory,
-              series: seriesId,
+        if (seriesId) {
+          const result = await addPost({
+            variables: {
+              data: {
+                title,
+                contents,
+                desc,
+                tags: arrayTags,
+                cover_img,
+                category: postCategory,
+                series: seriesId,
+              },
             },
-          },
-        });
-        console.log('result', result);
-        router.push('/');
+          });
+          console.log('result', result);
+          router.push('/');
+        } else {
+          const result = await addPost({
+            variables: {
+              data: {
+                title,
+                contents,
+                desc,
+                tags: arrayTags,
+                cover_img,
+                category: postCategory,
+              },
+            },
+          });
+          console.log('result', result);
+          router.push('/');
+        }
       } catch (err) {
         console.log(err);
       }

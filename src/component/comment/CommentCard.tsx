@@ -1,17 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Typography, Button } from '@material-ui/core';
 import styled from 'styled-components';
 import UserAvatar from '../../component/common/utils/UserAvatar';
 import palette from '../../lib/pallete';
+import { useAuth } from '../../utils/auth/AuthProvider';
+import { useMutation } from '@apollo/react-hooks';
+import CommentGql from '../../lib/gql/commentGql';
+import useInput from '../../lib/hooks/useInput';
 
-export default function CommentCard() {
+interface CommentCardProps {
+  comment: any;
+}
+
+export default function CommentCard({ comment }: CommentCardProps) {
+  const { _id, image_url, name } = comment.commentBy;
+  const [{ data }, _] = useAuth();
+  const [contents, changeContents] = useInput<string>('');
+  const [secret, setSecret] = useState(false);
+  const [updateComment] = useMutation(CommentGql.UPDATE_COMMENT_IN_POST);
+  const [deleteComment] = useMutation(CommentGql.DELETE_COMMENT_IN_POST);
   return (
     <>
       <S.CommentWrap>
         <S.CommentHead>
-          <UserAvatar />
+          <UserAvatar name={name} image_url={image_url} />
           {//유저 이메일과 작성자가 동일할 시
-          true ? (
+          data && _id === data.getCurrentUser._id ? (
             <S.CommentToolWrap>
               <Button>Edit</Button>
               <Button>Delete</Button>
@@ -25,10 +39,7 @@ export default function CommentCard() {
           gutterBottom
           style={{ paddingLeft: '0.6rem' }}
         >
-          body1. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos
-          blanditiis tenetur unde suscipit, quam beatae rerum inventore
-          consectetur, neque doloribus, cupiditate numquam dignissimos laborum
-          fugiat deleniti? Eum quasi quidem quibusdam.
+          {comment.contents}
         </Typography>
       </S.CommentWrap>
     </>

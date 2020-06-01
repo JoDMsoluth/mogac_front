@@ -19,6 +19,9 @@ import SelectLocationDialog from './SelectLocationDialog';
 import SelectSkillSetDialog from './SelectSkillSetDialog';
 import { useUser } from '../../../utils/user/UserProvide';
 import CategoryGql from '../../../lib/gql/categoryGql';
+import UserGql from '../../../lib/gql/userGql';
+import { useMutation } from '@apollo/react-hooks';
+import { useRouter } from 'next/router';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -42,6 +45,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignUp() {
   const classes = useStyles();
+  const router = useRouter();
+  const [signup] = useMutation(UserGql.SIGNUP);
   const [allowCheck, setAllowCheck] = useState(false);
   const { state, dispatch } = useUser();
   const { categoryArray, skillsetData } = CategoryGql.loadAllCategory();
@@ -87,7 +92,7 @@ export default function SignUp() {
   );
 
   const onClickSignUp = useCallback(
-    (e) => {
+    async (e) => {
       e.preventDefault();
       console.log(
         'name email password gender image_url ableLocation ableSkillSet, allowCheck',
@@ -100,9 +105,36 @@ export default function SignUp() {
         ableSkillSet,
         allowCheck,
       );
-      if (name && email && password && gender && allowCheck) {
-        return;
-      } else alert('write required field');
+
+      try {
+        if (
+          name &&
+          email &&
+          password &&
+          gender &&
+          allowCheck &&
+          ableLocation &&
+          ableSkillSet
+        ) {
+          const result = await signup({
+            variables: {
+              data: {
+                name,
+                email,
+                password,
+                gender,
+                image_url,
+                ableLocation,
+                ableSkillSet,
+              },
+            },
+          });
+          console.log('result', result);
+          router.push('/');
+        } else alert('write required field');
+      } catch (err) {
+        console.log(err);
+      }
     },
     [
       name,

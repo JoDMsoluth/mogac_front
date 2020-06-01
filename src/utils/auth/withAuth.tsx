@@ -3,10 +3,11 @@ import { AuthProvider } from './AuthProvider';
 
 interface withAuthProps {
   children: ReactNode;
+  loginRequired: boolean;
 }
 
-const WithAuth = ({ children }: withAuthProps) => {
-  return <AuthProvider>{children}</AuthProvider>;
+const WithAuth = ({ children, loginRequired }: withAuthProps) => {
+  return <AuthProvider loginRequired={loginRequired}>{children}</AuthProvider>;
 };
 
 export default WithAuth;
