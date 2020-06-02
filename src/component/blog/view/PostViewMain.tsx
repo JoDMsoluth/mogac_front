@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -25,20 +25,27 @@ export default function PostViewMain({ post }) {
   const classes = useStyles();
 
   return (
-    <Grid item xs={12} md={8}>
-      <Typography variant="h6" gutterBottom>
-        {post.title}
-      </Typography>
-      <Divider />
-      <S.PostDetailWrap>
-        <UserAvatar name={post.postedBy.name}></UserAvatar>
-        <S.PostDateSpan>
-          {moment(post.createdAt).format('YYYY-MM-DD')}
-        </S.PostDateSpan>
-        <LikeButton></LikeButton>
-      </S.PostDetailWrap>
-      <Markdown className={classes.markdown}>{post.contents}</Markdown>
-    </Grid>
+    <>
+      {useMemo(
+        () => (
+          <Grid item xs={12} md={8}>
+            <Typography variant="h6" gutterBottom>
+              {post.title}
+            </Typography>
+            <Divider />
+            <S.PostDetailWrap>
+              <UserAvatar name={post.postedBy.name}></UserAvatar>
+              <S.PostDateSpan>
+                {moment(post.createdAt).format('YYYY-MM-DD')}
+              </S.PostDateSpan>
+              <LikeButton></LikeButton>
+            </S.PostDetailWrap>
+            <Markdown className={classes.markdown}>{post.contents}</Markdown>
+          </Grid>
+        ),
+        [],
+      )}
+    </>
   );
 }
 

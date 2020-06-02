@@ -1,19 +1,17 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import palette from '../../lib/pallete';
 import CommentCard from './CommentCard';
+import { useWrite } from '../../utils/write/WriteProvide';
 
-interface CommentListProps {
-  comments: any;
-}
-
-export default function CommentList({ comments }: CommentListProps) {
+export default function CommentList() {
+  const { state } = useWrite();
+  const { comments } = state;
   return (
     <>
       <S.CommentListWrap>
-        {comments.map((comment) => (
-          <CommentCard comment={comment} />
-        ))}
+        {comments.length > 0 &&
+          comments.map((comment) => <CommentCard comment={comment} />)}
       </S.CommentListWrap>
     </>
   );

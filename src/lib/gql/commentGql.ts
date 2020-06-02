@@ -1,9 +1,11 @@
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
+import { useWrite } from '../../utils/write/WriteProvide';
 
 const GET_ALL_COMMENT_IN_POST = gql`
   query getAllCommentInPost($postId: String!) {
     getAllCommentInPost(postId: $postId) {
+      _id
       contents
       commentBy {
         image_url
@@ -30,7 +32,12 @@ const GET_ALL_RECOMMENT_IN_POSTS = gql`
 const CREATE_COMMET_IN_POST = gql`
   mutation createComment($data: AddCommentRequestType!) {
     createComment(data: $data) {
-      _id
+      contents
+      commentBy {
+        _id
+        name
+        image_url
+      }
     }
   }
 `;
@@ -47,7 +54,12 @@ const DELETE_COMMENT_IN_POST = gql`
 const CREATE_RECOMMENT_IN_POST = gql`
   mutation createReComment($data: AddReCommentRequestType!) {
     createReComment(data: $data) {
-      _id
+      contents
+      commentBy {
+        _id
+        name
+        image_url
+      }
     }
   }
 `;
@@ -69,7 +81,7 @@ const UPDATE_COMMENT_IN_POST = gql`
 `;
 
 const getAllCommentInPost = (postId: string) => {
-  const { data, error } = useQuery(GET_ALL_COMMENT_IN_POST, {
+  const { data, error, loading } = useQuery(GET_ALL_COMMENT_IN_POST, {
     variables: { postId },
   });
 

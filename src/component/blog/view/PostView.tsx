@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
@@ -12,6 +12,7 @@ import PostViewMain from './PostViewMain';
 import SideBar from './SideBar';
 import CommentComponent from '../../comment';
 import postGql from '../../../lib/gql/postGql';
+import { useWrite } from '../../../utils/write/WriteProvide';
 
 const useStyles = makeStyles((theme) => ({
   mainGrid: {
@@ -75,12 +76,16 @@ interface PostViewProps {
   name: string;
 }
 export default function PostView({ postId, name }: PostViewProps) {
-  console.log('postId', postId);
   const classes = useStyles();
   const post = postGql.getPostForView(postId);
-  console.log('post', post);
   const posts = postGql.getAllPostsByUserForPostView(name);
-  console.log('posts', posts);
+  const { state, dispatch } = useWrite();
+
+  useEffect(() => {
+    return () => {
+      dispatch({ type: 'Reset' });
+    };
+  }, []);
 
   return (
     <>

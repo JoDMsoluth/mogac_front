@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, Component, useCallback, useMemo } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { Avatar, Button } from '@material-ui/core';
@@ -10,6 +10,8 @@ import Link from 'next/link';
 import CommentGql from '../../lib/gql/commentGql';
 import useInput from '../../lib/hooks/useInput';
 import { useMutation } from '@apollo/react-hooks';
+import CommentList from './CommentList';
+import { useWrite } from '../../utils/write/WriteProvide';
 
 const userAvatar = require('../../static/images/avatar/1.jpg');
 
@@ -39,14 +41,44 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const comments = [1, 2, 3];
-
-export default function CommentHeadInput() {
+interface CommentHeadInputProps {
+  postId: string;
+}
+export default function CommentHeadInput({ postId }: CommentHeadInputProps) {
   const [{ data }, _] = useAuth();
-  console.log('auth', data);
   const classes = useStyles();
-  const [contents, changeContents] = useInput<string>('');
-  const [secret, setSecret] = useState(false);
+  const [contents, setContents] = useState<string>('');
   const [createComment] = useMutation(CommentGql.CREATE_COMMET_IN_POST);
+  const { state, dispatch } = useWrite();
+  const { comments } = state;
+
+  const addComment = useCallback(async () => {
+    if (contents.length > 0) {
+      const result = await createComment({
+        variables: {
+          data: {
+            parentPost: postId,
+            contents,
+            secret: false,
+          },
+        },
+      });
+      console.log('comment result', result);
+      if (result) {
+        dispatch({ type: 'AddComments', data: result.data.createComment });
+      }
+    } else {
+      alert('댓글을 입력해주세요.');
+    }
+    setContents('');
+  }, [contents]);
+
+  const changeContents = useCallback(
+    (e) => {
+      setContents(e.target.value);
+    },
+    [contents],
+  );
   return (
     <>
       {data ? (
@@ -62,27 +94,32 @@ export default function CommentHeadInput() {
                   </S.AvatarDesc>
                 </div>
               </S.AvatarWrap>
-              <Button variant="contained" color="primary">
+              <Button variant="contained" color="primary" onClick={addComment}>
                 Post
               </Button>
             </div>
 
-            <TextField
-              id="outlined-full-width"
-              label="Comment Input"
-              style={{ margin: 8 }}
-              placeholder="Placeholder"
-              fullWidth
-              name="contents"
-              value={contents}
-              margin="normal"
-              multiline
-              InputLabelProps={{
-                shrink: true,
-              }}
-              variant="outlined"
-              onChange={changeContents}
-            />
+            {useMemo(
+              () => (
+                <TextField
+                  id="outlined-full-width"
+                  label="Comment Input"
+                  style={{ margin: 8 }}
+                  placeholder="Placeholder"
+                  fullWidth
+                  name="contents"
+                  value={contents}
+                  margin="normal"
+                  multiline
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  variant="outlined"
+                  onChange={changeContents}
+                />
+              ),
+              [contents],
+            )}
           </div>
         </>
       ) : (
@@ -94,6 +131,7 @@ export default function CommentHeadInput() {
           Now
         </div>
       )}
+      <CommentList />
     </>
   );
 }

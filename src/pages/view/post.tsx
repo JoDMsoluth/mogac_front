@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PostView from '../../component/blog/view/PostView';
 import { NextPage, NextPageContext } from 'next';
 import WithAuth from '../../utils/auth/WithAuth';
 import AppLayout from '../../component/common/layout/AppLayout';
+import WithWrite from '../../utils/write/WithWrite';
 
 interface ViewPostPageProps {
   postId: string;
@@ -12,11 +13,13 @@ interface ViewPostPageProps {
 const ViewPostPage: NextPage<ViewPostPageProps> = ({ postId, name }) => {
   return (
     <>
-      <AppLayout>
-        <main>
-          <PostView postId={postId} name={name} />
-        </main>
-      </AppLayout>
+      <WithWrite>
+        <AppLayout>
+          <main>
+            <PostView postId={postId} name={name} />
+          </main>
+        </AppLayout>
+      </WithWrite>
     </>
   );
 };

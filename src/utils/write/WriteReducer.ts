@@ -10,6 +10,7 @@ export interface IinitialWriteState {
   skillset?: string;
   series?: string;
   seriesId?: string;
+  comments?: any;
 }
 
 export const initialWriteState: IinitialWriteState = {
@@ -21,6 +22,7 @@ export const initialWriteState: IinitialWriteState = {
   skillset: '',
   seriesId: '',
   series: '',
+  comments: null,
 };
 
 export const writeReducer = (state = initialWriteState, action) => {
@@ -71,6 +73,22 @@ export const writeReducer = (state = initialWriteState, action) => {
     case 'ChangeTags': {
       return produce(state, (draft) => {
         draft.tags = action.data;
+      });
+    }
+    case 'ChangeComments': {
+      return produce(state, (draft) => {
+        draft.comments = action.data;
+      });
+    }
+    case 'AddComments': {
+      return produce(state, (draft) => {
+        draft.comments.unshift(action.data);
+      });
+    }
+    case 'DeleteComments': {
+      return produce(state, (draft) => {
+        draft.comments = draft.comments.filter((v) => v._id !== action.data);
+        console.log('filter', draft.comments);
       });
     }
     default:
