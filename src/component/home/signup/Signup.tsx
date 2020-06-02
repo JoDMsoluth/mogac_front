@@ -113,9 +113,11 @@ export default function SignUp() {
           password &&
           gender &&
           allowCheck &&
-          ableLocation &&
-          ableSkillSet
+          ableLocation.length > 0 &&
+          ableSkillSet.length > 0
         ) {
+          if (password.length < 6) return alert('password is more than 6');
+          console.log('length', ableLocation.length, ableSkillSet.length);
           const result = await signup({
             variables: {
               data: {
