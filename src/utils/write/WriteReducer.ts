@@ -91,6 +91,17 @@ export const writeReducer = (state = initialWriteState, action) => {
         console.log('filter', draft.comments);
       });
     }
+    case 'UpdateComments': {
+      return produce(state, (draft) => {
+        const index = draft.comments.findIndex((v) => v._id == action.data._id);
+        console.log(index);
+        if (index > -1) {
+          console.log(index);
+          draft.comments[index].contents = action.data.contents;
+        }
+        console.log('filter', draft.comments);
+      });
+    }
     default:
       return state;
   }

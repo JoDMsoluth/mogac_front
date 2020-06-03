@@ -7,6 +7,7 @@ const GET_ALL_COMMENT_IN_POST = gql`
     getAllCommentInPost(postId: $postId) {
       _id
       contents
+      reComments
       commentBy {
         image_url
         name
@@ -33,6 +34,7 @@ const CREATE_COMMET_IN_POST = gql`
   mutation createComment($data: AddCommentRequestType!) {
     createComment(data: $data) {
       contents
+      reComments
       commentBy {
         _id
         name
@@ -76,6 +78,7 @@ const UPDATE_COMMENT_IN_POST = gql`
   mutation updateComment($data: UpdateCommentRequestType!) {
     updateComment(data: $data) {
       _id
+      contents
     }
   }
 `;

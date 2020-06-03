@@ -9,6 +9,8 @@ import CommentGql from '../../lib/gql/commentGql';
 import useInput from '../../lib/hooks/useInput';
 import { useWrite } from '../../utils/write/WriteProvide';
 import EditComment from './EditComment';
+import ReCommentList from './recomment/ReCommentList';
+import ReCommentsToggleButton from './recomment/ReCommentsToggleButton';
 
 interface CommentCardProps {
   comment: any;
@@ -17,10 +19,9 @@ interface CommentCardProps {
 export default function CommentCard({ comment }: CommentCardProps) {
   const { _id, image_url, name } = comment.commentBy;
   const [{ data }, _] = useAuth();
-  const [contents, changeContents] = useInput<string>('');
   const [toggleEdit, setToggleEdit] = useState(false);
-  const [updateComment] = useMutation(CommentGql.UPDATE_COMMENT_IN_POST);
   const [deleteComment] = useMutation(CommentGql.DELETE_COMMENT_IN_POST);
+  const [toggleReComment, setToggleReComment] = useState(false);
   const { state, dispatch } = useWrite();
 
   const filterComment = useCallback(
@@ -63,7 +64,12 @@ export default function CommentCard({ comment }: CommentCardProps) {
         {useMemo(
           () =>
             toggleEdit ? (
-              <EditComment />
+              <EditComment
+                toggleEdit={toggleEdit}
+                commentId={comment._id}
+                onClickToggle={onClickToggle}
+                setToggleEdit={setToggleEdit}
+              />
             ) : (
               <Typography
                 variant="body1"
@@ -74,6 +80,16 @@ export default function CommentCard({ comment }: CommentCardProps) {
               </Typography>
             ),
           [comment.contents, toggleEdit],
+        )}
+        {/*대댓글 토글 버튼*/}
+        <ReCommentsToggleButton
+          toggleReComment={toggleReComment}
+          setToggleReComment={setToggleReComment}
+          reComments={comment.reComments}
+        />
+        {/*대댓글 리스트*/}
+        {toggleReComment && comment.reComments > 0 && (
+          <ReCommentList commentId={comment._id} />
         )}
       </S.CommentWrap>
     </>
