@@ -11,6 +11,7 @@ import { useWrite } from '../../utils/write/WriteProvide';
 import EditComment from './EditComment';
 import ReCommentList from './recomment/ReCommentList';
 import ReCommentsToggleButton from './recomment/ReCommentsToggleButton';
+import AddReCommentForm from './recomment/AddReCommentForm';
 
 interface CommentCardProps {
   comment: any;
@@ -18,8 +19,9 @@ interface CommentCardProps {
 
 export default function CommentCard({ comment }: CommentCardProps) {
   const { _id, image_url, name } = comment.commentBy;
-  const [{ data }, _] = useAuth();
+  const [toggleAddReComment, setToggleAddReComment] = useState<boolean>(false);
   const [toggleEdit, setToggleEdit] = useState(false);
+  const [{ data }, _] = useAuth();
   const [deleteComment] = useMutation(CommentGql.DELETE_COMMENT_IN_POST);
   const [toggleReComment, setToggleReComment] = useState(false);
   const { state, dispatch } = useWrite();
@@ -83,13 +85,16 @@ export default function CommentCard({ comment }: CommentCardProps) {
         )}
         {/*대댓글 토글 버튼*/}
         <ReCommentsToggleButton
+          toggleAddReComment={toggleAddReComment}
+          setToggleAddReComment={setToggleAddReComment}
           toggleReComment={toggleReComment}
           setToggleReComment={setToggleReComment}
           reComments={comment.reComments}
         />
         {/*대댓글 리스트*/}
-        {toggleReComment && comment.reComments > 0 && (
-          <ReCommentList commentId={comment._id} />
+        {useMemo(
+          () => toggleAddReComment && <ReCommentList commentId={comment._id} />,
+          [comment.id, toggleAddReComment],
         )}
       </S.CommentWrap>
     </>
@@ -105,6 +110,9 @@ S.CommentHead = styled.div`
 `;
 S.CommentToolWrap = styled.div`
   margin-right: 2rem;
+  @media (max-width: 768px) {
+    margin-right: 0rem;
+  }
   & button:hover {
     color: ${palette.blue7};
   }

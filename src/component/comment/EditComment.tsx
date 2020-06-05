@@ -11,6 +11,8 @@ interface EditCommentProps {
   onClickToggle: any;
   commentId: string;
   setToggleEdit: any;
+  reComments?: any[];
+  setReComments?: any;
 }
 
 export default function EditComment({
@@ -18,11 +20,14 @@ export default function EditComment({
   onClickToggle,
   commentId,
   setToggleEdit,
-}) {
+  reComments,
+  setReComments,
+}: EditCommentProps) {
   const { control, handleSubmit, errors } = useForm();
   const [contents, setContents] = useState<string>('');
   const { state, dispatch } = useWrite();
   const [updateComment] = useMutation(CommentGql.UPDATE_COMMENT_IN_POST);
+
   const changeContents = useCallback(
     ([e]) => {
       setContents(e);
@@ -32,6 +37,7 @@ export default function EditComment({
   );
   const onSubmit = async (data) => {
     console.log('submit', data);
+
     const result = await updateComment({
       variables: {
         data: {
@@ -43,7 +49,17 @@ export default function EditComment({
     });
     if (result) {
       console.log(result);
-      dispatch({ type: 'UpdateComments', data: result.data.updateComment });
+      if (reComments) {
+        console.log(reComments, commentId, '비교');
+        const index = reComments.findIndex((v) => v._id == commentId);
+        console.log('index', index);
+        if (index > -1) {
+          reComments[index] = result.data.updateComment;
+          setReComments(reComments);
+        }
+      } else {
+        dispatch({ type: 'UpdateComments', data: result.data.updateComment });
+      }
       setToggleEdit(false);
     }
   };

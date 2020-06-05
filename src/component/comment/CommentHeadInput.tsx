@@ -123,7 +123,7 @@ export default function CommentHeadInput({ postId }: CommentHeadInputProps) {
           </div>
         </>
       ) : (
-        <div>
+        <div style={{ textAlign: 'center', marginTop: '1rem' }}>
           If you want to comment, Please{' '}
           <Link href="/">
             <a>Log In</a>

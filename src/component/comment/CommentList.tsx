@@ -21,4 +21,7 @@ const S: any = {};
 
 S.CommentListWrap = styled.div`
   margin: 1rem 2rem;
+  @media (max-width: 768px) {
+    margin: 1rem 0.5rem;
+  }
 `;

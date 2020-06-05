@@ -11,6 +11,7 @@ const GET_ALL_COMMENT_IN_POST = gql`
       commentBy {
         image_url
         name
+        ableSkillSet
         _id
       }
     }
@@ -20,11 +21,13 @@ const GET_ALL_COMMENT_IN_POST = gql`
 const GET_ALL_RECOMMENT_IN_POSTS = gql`
   query getAllReCommentInComment($commentId: String!) {
     getAllReCommentInComment(commentId: $commentId) {
+      _id
       contents
       commentBy {
         image_url
         name
         _id
+        ableSkillSet
       }
     }
   }
@@ -33,12 +36,14 @@ const GET_ALL_RECOMMENT_IN_POSTS = gql`
 const CREATE_COMMET_IN_POST = gql`
   mutation createComment($data: AddCommentRequestType!) {
     createComment(data: $data) {
+      _id
       contents
       reComments
       commentBy {
         _id
         name
         image_url
+        ableSkillSet
       }
     }
   }
@@ -56,19 +61,21 @@ const DELETE_COMMENT_IN_POST = gql`
 const CREATE_RECOMMENT_IN_POST = gql`
   mutation createReComment($data: AddReCommentRequestType!) {
     createReComment(data: $data) {
+      _id
       contents
       commentBy {
         _id
         name
         image_url
+        ableSkillSet
       }
     }
   }
 `;
 
 const DELETE_RECOMMENT_IN_POST = gql`
-  mutation deleteComment($reCommentId: String!) {
-    deleteComment(reCommentId: $reCommentId) {
+  mutation deleteReComment($reCommentId: String!) {
+    deleteReComment(reCommentId: $reCommentId) {
       _id
     }
   }
@@ -79,6 +86,12 @@ const UPDATE_COMMENT_IN_POST = gql`
     updateComment(data: $data) {
       _id
       contents
+      commentBy {
+        _id
+        ableSkillSet
+        name
+        image_url
+      }
     }
   }
 `;

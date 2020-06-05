@@ -8,7 +8,8 @@ import WithAuth from '../utils/auth/WithAuth';
 import { useRouter } from 'next/router';
 import AppLayout from '../component/common/layout/AppLayout';
 
-const exceptLayout = ['write', 'view'];
+const exceptLogin = ['view'];
+const exceptLayout = ['write'];
 const exceptpLoginAndLayout = ['signup'];
 
 const App = ({ Component, pageProps }: AppProps) => {
@@ -78,6 +79,10 @@ const App = ({ Component, pageProps }: AppProps) => {
         ]}
       />
       {exceptpLoginAndLayout.includes(pathname[1]) ? (
+        <WithAuth loginRequired={false}>
+          <Component {...pageProps} />
+        </WithAuth>
+      ) : exceptLogin.includes(pathname[1]) ? (
         <WithAuth loginRequired={false}>
           <Component {...pageProps} />
         </WithAuth>
