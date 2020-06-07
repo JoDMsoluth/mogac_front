@@ -35,21 +35,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function MainFeaturedPost(props) {
+interface MainFeaturedPostProps {
+  series: any;
+}
+
+export default function MainFeaturedPost({ series }: MainFeaturedPostProps) {
   const classes = useStyles();
-  const { post } = props;
 
   return (
     <Paper
       className={classes.mainFeaturedPost}
-      style={{ backgroundImage: `url(${post.image})` }}
+      style={{ backgroundImage: `url(https://source.unsplash.com/random)` }}
     >
       {/* Increase the priority of the hero background image */}
       {
         <img
           style={{ display: 'none' }}
-          src={post.image}
-          alt={post.imageText}
+          src="https://source.unsplash.com/random"
+          alt="main image description"
         />
       }
       <div className={classes.overlay} />
@@ -62,13 +65,13 @@ export default function MainFeaturedPost(props) {
               color="inherit"
               gutterBottom
             >
-              {post.title}
+              {series.title}
             </Typography>
             <Typography variant="h5" color="inherit" paragraph>
-              {post.description}
+              {series.description}
             </Typography>
             <Link variant="subtitle1" href="#">
-              {post.linkText}
+              {'Continue reading…'}
             </Link>
           </div>
         </Grid>
@@ -76,7 +79,3 @@ export default function MainFeaturedPost(props) {
     </Paper>
   );
 }
-
-MainFeaturedPost.propTypes = {
-  post: PropTypes.object,
-};

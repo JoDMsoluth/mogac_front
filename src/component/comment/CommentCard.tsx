@@ -9,9 +9,6 @@ import CommentGql from '../../lib/gql/commentGql';
 import useInput from '../../lib/hooks/useInput';
 import { useWrite } from '../../utils/write/WriteProvide';
 import EditComment from './EditComment';
-import ReCommentList from './recomment/ReCommentList';
-import ReCommentsToggleButton from './recomment/ReCommentsToggleButton';
-import AddReCommentForm from './recomment/AddReCommentForm';
 
 interface CommentCardProps {
   comment: any;
@@ -19,11 +16,9 @@ interface CommentCardProps {
 
 export default function CommentCard({ comment }: CommentCardProps) {
   const { _id, image_url, name } = comment.commentBy;
-  const [toggleAddReComment, setToggleAddReComment] = useState<boolean>(false);
   const [toggleEdit, setToggleEdit] = useState(false);
   const [{ data }, _] = useAuth();
   const [deleteComment] = useMutation(CommentGql.DELETE_COMMENT_IN_POST);
-  const [toggleReComment, setToggleReComment] = useState(false);
   const { state, dispatch } = useWrite();
 
   const filterComment = useCallback(
@@ -82,19 +77,6 @@ export default function CommentCard({ comment }: CommentCardProps) {
               </Typography>
             ),
           [comment.contents, toggleEdit],
-        )}
-        {/*대댓글 토글 버튼*/}
-        <ReCommentsToggleButton
-          toggleAddReComment={toggleAddReComment}
-          setToggleAddReComment={setToggleAddReComment}
-          toggleReComment={toggleReComment}
-          setToggleReComment={setToggleReComment}
-          reComments={comment.reComments}
-        />
-        {/*대댓글 리스트*/}
-        {useMemo(
-          () => toggleAddReComment && <ReCommentList commentId={comment._id} />,
-          [comment.id, toggleAddReComment],
         )}
       </S.CommentWrap>
     </>

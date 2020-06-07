@@ -3,6 +3,7 @@ import { NextPage, NextPageContext } from 'next';
 import NaverAPIMap from '../component/search/map/NaverAPIMap';
 import { RenderAfterNavermapsLoaded } from 'react-naver-maps';
 import SearchFilterBox from '../component/search/filterbox/SelectFilterBox';
+import SearchingUserList from '../component/search/users/SearchingUserList';
 
 const SearchPage: NextPage = () => {
   useEffect(() => {
@@ -21,6 +22,7 @@ const SearchPage: NextPage = () => {
       <main>
         <SearchFilterBox />
         <NaverAPIMap />
+        <SearchingUserList />
       </main>
     </>
   );

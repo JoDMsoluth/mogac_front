@@ -37,6 +37,11 @@ const GET_POST_FOR_VIEW = gql`
         name
         image_url
       }
+      series {
+        _id
+        title
+        description
+      }
       tags
     }
   }
