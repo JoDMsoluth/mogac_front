@@ -32,20 +32,24 @@ const MenuProps = {
   },
 };
 
-export default function SearchLocationSelect() {
+interface SearchLocationSelectProps {
+  setLocationData: any;
+}
+export default function SearchLocationSelect({
+  setLocationData,
+}: SearchLocationSelectProps) {
   const classes = useStyles();
   const theme = useTheme();
 
-  const [ableLocation, changeAbleLocation] = useInput([]);
   const [pubLocation, changePubLocation] = useInput<string>('');
   const [subLocation, setSubLocation] = useState<Array<string>>([]);
 
   const changeSubLocation = useCallback(
     (e) => {
       const { value }: { value: Array<string> } = e.target;
-      console.log('value', value, value.length);
       if (value.length > 3) value.shift();
       setSubLocation(value);
+      setLocationData(value);
     },
     [subLocation],
   );
@@ -91,8 +95,13 @@ export default function SearchLocationSelect() {
           >
             {pubLocation
               ? locationsDataSet[pubLocation].map((name) => (
-                  <MenuItem key={name} value={name}>
-                    <Checkbox checked={subLocation.includes(name)} />
+                  <MenuItem
+                    key={`${pubLocation} ${name}`}
+                    value={`${pubLocation} ${name}`}
+                  >
+                    <Checkbox
+                      checked={subLocation.includes(`${pubLocation} ${name}`)}
+                    />
                     <ListItemText primary={name} />
                   </MenuItem>
                 ))

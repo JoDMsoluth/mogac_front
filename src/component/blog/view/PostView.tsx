@@ -55,8 +55,11 @@ export default function PostView({ postId, name }: PostViewProps) {
       <CssBaseline />
       <Container maxWidth="lg">
         <main style={{ paddingTop: '1rem' }}>
-          {post.series ? <MainFeaturedPost series={post.series} />:
-          <MainFeaturedPost series={mainFeaturedPost} />}
+          {post?.series ? (
+            <MainFeaturedPost series={post.series} />
+          ) : (
+            <MainFeaturedPost series={mainFeaturedPost} />
+          )}
 
           <Grid container spacing={5} className={classes.mainGrid}>
             {post && (

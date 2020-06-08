@@ -11,7 +11,9 @@ export default function CommentList() {
     <>
       <S.CommentListWrap>
         {comments.length > 0 &&
-          comments.map((comment) => <CommentCard comment={comment} />)}
+          comments.map((comment) => (
+            <CommentCard comment={comment} key={comment._id} />
+          ))}
       </S.CommentListWrap>
     </>
   );

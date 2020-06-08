@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import { useQuery } from '@apollo/react-hooks';
 
 // email, password
 const LOGIN = gql`
@@ -84,6 +85,24 @@ const GET_USER_BY_ID = gql`
   }
 `;
 
+const GET_ALL_USER_BY_SEARCH = gql`
+  query getAllUserBySearch(
+    $ableSkillSet: [String!]!
+    $ableLocation: [String!]!
+  ) {
+    getAllUserBySearch(
+      ableSkillSet: $ableSkillSet
+      ableLocation: $ableLocation
+    ) {
+      _id
+      name
+      image_url
+      ableSkillSet
+      ableLocation
+    }
+  }
+`;
+
 const GET_ALL_SERIES_BY_USER = gql`
   query getAllSeriesByUser {
     getAllSeriesByUser {
@@ -101,6 +120,22 @@ const IS_AUTH = gql`
   }
 `;
 
+const getAllUserBySearch = (ableLocation, ableSkillSet) => {
+  if (ableSkillSet.length > 0 && ableLocation.length > 0) {
+    const { data, error } = useQuery(GET_ALL_USER_BY_SEARCH, {
+      variables: { ableSkillSet, ableLocation },
+    });
+    if (error) {
+      console.log('get posts error', error);
+    }
+    if (data) {
+      console.log('data', data);
+      return data.getAllUserBySearch;
+    }
+  }
+  return;
+};
+
 const UserGql = {
   LOGIN,
   LOGOUT,
@@ -111,6 +146,7 @@ const UserGql = {
   GET_USER_BY_ID,
   IS_AUTH,
   UPDATE_USER_POSITION,
+  getAllUserBySearch,
 };
 
 export default UserGql;

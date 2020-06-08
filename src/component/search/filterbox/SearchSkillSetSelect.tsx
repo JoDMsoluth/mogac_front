@@ -33,21 +33,26 @@ const MenuProps = {
   },
 };
 
-export default function SearchSkillSetSelect() {
+interface SearchSkillSetSelectPros {
+  skillSetData: any;
+  setSkillSetData: any;
+}
+export default function SearchSkillSetSelect({
+  setSkillSetData,
+}: SearchSkillSetSelectPros) {
   const classes = useStyles();
   const theme = useTheme();
   const { categoryArray, skillsetData } = CategoryGql.loadAllCategory();
 
-  const [ableLocation, changeAbleLocation] = useInput([]);
   const [category, changeCategory] = useInput<string>('');
   const [skillset, setSkillSet] = useState<Array<string>>([]);
 
   const changeSkillSet = useCallback(
     (e) => {
       const { value }: { value: Array<string> } = e.target;
-      console.log('value', value, value.length);
       if (value.length > 3) value.shift();
       setSkillSet(value);
+      setSkillSetData(value);
     },
     [skillset],
   );
@@ -91,8 +96,13 @@ export default function SearchSkillSetSelect() {
           >
             {category && skillsetData[category]
               ? skillsetData[category].map((skill) => (
-                  <MenuItem key={skill.skill} value={skill.skill}>
-                    <Checkbox checked={skillset.includes(skill.skill)} />
+                  <MenuItem
+                    key={`${category} ${skill.skill}`}
+                    value={`${category} ${skill.skill}`}
+                  >
+                    <Checkbox
+                      checked={skillset.includes(`${category} ${skill.skill}`)}
+                    />
                     <ListItemText primary={skill.skill} />
                   </MenuItem>
                 ))

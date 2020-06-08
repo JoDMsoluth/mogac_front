@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { useMutation } from '@apollo/react-hooks';
 import UserGql from '../../../lib/gql/userGql';
 
+// global 객체, naver, MarkerClustering, N 객체를 따로 ts에서 사용할 수 있도록 정의
 declare global {
   interface Window {
     naver: any;
@@ -35,7 +36,6 @@ export default function NaverAPIMap() {
 
   useEffect(() => {
     getCurrentLocation();
-    console.log('currentLocation', currentLat, currentLng);
     // 지도 옵션 설정
     const mapOptions = {
       mapTypeId: naver.maps.MapTypeId.NORMAL,
