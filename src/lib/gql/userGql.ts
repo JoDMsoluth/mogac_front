@@ -47,6 +47,17 @@ const UPLOAD_PROFILE_IMAGE = gql`
   }
 `;
 
+const UPDATE_USER_POSITION = gql`
+  mutation updateUserPosition($position: [Float!]!) {
+    updateUserPosition(position: $position) {
+      _id
+      name
+      image_url
+      position
+    }
+  }
+`;
+
 // const UploadProfileImage = gql`
 //   mutation uploadProfileImage() {
 //     uploadProfileImage()
@@ -99,6 +110,7 @@ const UserGql = {
   GET_CURRENT_USER,
   GET_USER_BY_ID,
   IS_AUTH,
+  UPDATE_USER_POSITION,
 };
 
 export default UserGql;

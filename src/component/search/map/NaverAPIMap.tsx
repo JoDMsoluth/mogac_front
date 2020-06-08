@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 // react-naver-map : next js에서 사용하기 힘들어서 동적 스크립트와 쌩 js로 DOM을 이용해서 사용
 import styled from 'styled-components';
+import { useMutation } from '@apollo/react-hooks';
+import UserGql from '../../../lib/gql/userGql';
 
 declare global {
   interface Window {
@@ -14,12 +16,19 @@ declare global {
 export default function NaverAPIMap() {
   const [currentLat, setCurrentLat] = useState<number>(37.42829747263545);
   const [currentLng, setCurrentLng] = useState<number>(126.76620435615891);
+  const [updatePosition] = useMutation(UserGql.UPDATE_USER_POSITION);
   // 현재 위치 받기
   const getCurrentLocation = () => {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
+      navigator.geolocation.getCurrentPosition(async (position) => {
         setCurrentLat(position.coords.latitude);
         setCurrentLng(position.coords.longitude);
+        const result = await updatePosition({
+          variables: { position: [currentLat, currentLng] },
+        });
+        if (result) {
+          console.log('updated position', result);
+        }
       });
     }
   };
