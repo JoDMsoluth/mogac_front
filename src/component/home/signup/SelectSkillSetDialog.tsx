@@ -70,7 +70,6 @@ export default function SelectSkillSetDialog({ categoryArray, skillsetData }) {
   );
   const removeAbleSkillSet = useCallback(
     (SkillSet: string) => () => {
-      console.log(ableSkillSet.filter((v) => v !== SkillSet));
       setAbleSkillSet(ableSkillSet.filter((v) => v !== SkillSet));
     },
     [ableSkillSet],

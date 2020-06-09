@@ -6,10 +6,9 @@ import { useMutation } from '@apollo/react-hooks';
 import UserGql from '../../../lib/gql/userGql';
 import { useUser } from '../../../utils/user/UserProvide';
 
-
 export default function UploadAvatar() {
-  const {state, dispatch} = useUser();
-  const {image_url} = state;
+  const { state, dispatch } = useUser();
+  const { image_url } = state;
   const [avatarUpload] = useMutation(UserGql.UPLOAD_PROFILE_IMAGE);
 
   const imageInput = useRef(null);
@@ -18,6 +17,10 @@ export default function UploadAvatar() {
     const reader = new FileReader();
 
     reader.onload = function(e) {
+      if (file.size > 1024 * 400)
+        return alert('400KB 이하의 파일만 업로드 가능합니다.');
+      if (!file.type.includes('image'))
+        return alert('이미지 파일만 업로드 가능합니다.');
       dispatch({ type: 'ChangeImageUrl', data: e.target.result });
     };
     return reader.readAsDataURL(file); // convert base64 to string

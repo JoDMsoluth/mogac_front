@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 // react-naver-map : next js에서 사용하기 힘들어서 동적 스크립트와 쌩 js로 DOM을 이용해서 사용
 import styled from 'styled-components';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import UserGql from '../../../lib/gql/userGql';
+import RenderNearUserList from './RenderNearUserList';
 
 // global 객체, naver, MarkerClustering, N 객체를 따로 ts에서 사용할 수 있도록 정의
 declare global {
@@ -14,10 +15,19 @@ declare global {
   const N: any;
 }
 
-export default function NaverAPIMap() {
+interface SearchingUserListProps {
+  ableLocation: any;
+  ableSkillSet: any;
+}
+
+export default function NaverAPIMap({
+  ableLocation,
+  ableSkillSet,
+}: SearchingUserListProps) {
   const [currentLat, setCurrentLat] = useState<number>(37.42829747263545);
   const [currentLng, setCurrentLng] = useState<number>(126.76620435615891);
   const [updatePosition] = useMutation(UserGql.UPDATE_USER_POSITION);
+  let mapInstance = useRef(null);
   // 현재 위치 받기
   const getCurrentLocation = () => {
     if (navigator.geolocation) {
@@ -25,11 +35,11 @@ export default function NaverAPIMap() {
         setCurrentLat(position.coords.latitude);
         setCurrentLng(position.coords.longitude);
         const result = await updatePosition({
-          variables: { position: [currentLat, currentLng] },
+          variables: { position: [currentLng, currentLat] },
         });
-        if (result) {
-          console.log('updated position', result);
-        }
+        //if (result) {
+        // console.log('updated position', result);
+        //}
       });
     }
   };
@@ -43,6 +53,7 @@ export default function NaverAPIMap() {
     };
     // 지도 초기화
     const map = new naver.maps.Map('map', mapOptions);
+    mapInstance.current = map;
     // 드로우 모듈 사용
     //const drawingManager = new naver.maps.drawing.DrawingManager({ map: map });
     // 지도 이동하기
@@ -61,6 +72,15 @@ export default function NaverAPIMap() {
   return (
     <>
       <S.MapWrap id="map"></S.MapWrap>
+      {ableLocation?.length > 0 && ableSkillSet?.length > 0 ? (
+        <RenderNearUserList
+          map={mapInstance.current}
+          ableLocation={ableLocation}
+          ableSkillSet={ableSkillSet}
+        />
+      ) : (
+        ''
+      )}
     </>
   );
 }

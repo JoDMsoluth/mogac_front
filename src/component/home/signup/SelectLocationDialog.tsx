@@ -55,7 +55,6 @@ export default function SelectLocationDialog() {
   );
   const removeAbleLocation = useCallback(
     (location: string) => () => {
-      console.log(ableLocation.filter((v) => v !== location));
       setAbleLocation(ableLocation.filter((v) => v !== location));
     },
     [ableLocation],

@@ -13,6 +13,18 @@ const LOGIN = gql`
   }
 `;
 
+const CHECK_UNIQUE_EMAIL = gql`
+  query checkUniqueEmail($email: String!) {
+    checkUniqueEmail(email: $email)
+  }
+`;
+
+const CHECK_UNIQUE_NAME = gql`
+  query checkUniqueName($name: String!) {
+    checkUniqueName(name: $name)
+  }
+`;
+
 const LOGOUT = gql`
   mutation logout {
     logout
@@ -54,7 +66,8 @@ const UPDATE_USER_POSITION = gql`
       _id
       name
       image_url
-      position
+      x_pos
+      y_pos
     }
   }
 `;
@@ -113,7 +126,25 @@ const GET_ALL_SERIES_BY_USER = gql`
     }
   }
 `;
-
+const GET_NEAR_USERS_BY_MATCHING = gql`
+  query getNearUsersByMatching(
+    $ableSkillSet: [String!]!
+    $ableLocation: [String!]!
+  ) {
+    getNearUsersByMatching(
+      ableSkillSet: $ableSkillSet
+      ableLocation: $ableLocation
+    ) {
+      _id
+      name
+      image_url
+      ableSkillSet
+      ableLocation
+      x_pos
+      y_pos
+    }
+  }
+`;
 const IS_AUTH = gql`
   query isAuth {
     isAuth
@@ -136,6 +167,34 @@ const getAllUserBySearch = (ableLocation, ableSkillSet) => {
   return;
 };
 
+const checkUniqueEmail = (email: string) => {
+  const { data, error } = useQuery(CHECK_UNIQUE_EMAIL, {
+    variables: { email },
+  });
+  if (error) {
+    console.log('check email error', error);
+  }
+  if (data) {
+    console.log('data', data);
+    return data;
+  }
+  return false;
+};
+
+const checkUniqueName = (name: string) => {
+  const { data, error } = useQuery(CHECK_UNIQUE_NAME, {
+    variables: { name },
+  });
+  if (error) {
+    console.log('check email error', error);
+  }
+  if (data) {
+    console.log('data', data);
+    return data.checkUniqueName;
+  }
+  return false;
+};
+
 const UserGql = {
   LOGIN,
   LOGOUT,
@@ -147,6 +206,9 @@ const UserGql = {
   IS_AUTH,
   UPDATE_USER_POSITION,
   getAllUserBySearch,
+  GET_NEAR_USERS_BY_MATCHING,
+  CHECK_UNIQUE_EMAIL,
+  CHECK_UNIQUE_NAME,
 };
 
 export default UserGql;

@@ -14,9 +14,7 @@ export default function SearchingUserList({
   ableLocation,
   ableSkillSet,
 }: SearchingUserListProps) {
-  console.log(ableLocation, ableSkillSet, 'submit');
   const result = UserGql.getAllUserBySearch(ableLocation, ableSkillSet);
-  console.log('result', result);
   return (
     <>
       <div>{result && result.map((v, i) => <SearchingUserCard key={i} />)}</div>

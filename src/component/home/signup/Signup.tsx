@@ -1,4 +1,5 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useMemo } from 'react';
+import { useForm } from 'react-hook-form';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -22,6 +23,8 @@ import CategoryGql from '../../../lib/gql/categoryGql';
 import UserGql from '../../../lib/gql/userGql';
 import { useMutation } from '@apollo/react-hooks';
 import { useRouter } from 'next/router';
+import CheckName from './CheckName';
+import CheckEmail from './CheckEmail';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -38,6 +41,9 @@ const useStyles = makeStyles((theme) => ({
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(3),
   },
+  checkButtonWrap: {
+    alignSelf: 'center',
+  },
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
@@ -47,6 +53,12 @@ export default function SignUp() {
   const classes = useStyles();
   const router = useRouter();
   const [signup] = useMutation(UserGql.SIGNUP);
+
+  const [checkEmail, setCheckEmail] = useState(false);
+  const [checkName, setCheckName] = useState(false);
+  const [toggleCheckName, setToggleCheckName] = useState(false);
+  const [toggleCheckEmail, setToggleCheckEmail] = useState(false);
+
   const [allowCheck, setAllowCheck] = useState(false);
   const { state, dispatch } = useUser();
   const { categoryArray, skillsetData } = CategoryGql.loadAllCategory();
@@ -94,6 +106,12 @@ export default function SignUp() {
   const onClickSignUp = useCallback(
     async (e) => {
       e.preventDefault();
+      if (!checkEmail) {
+        return alert('이메일 중복체크 해주세요');
+      }
+      if (!checkName) {
+        return alert('이름 중복체크 해주세요');
+      }
       console.log(
         'name email password gender image_url ableLocation ableSkillSet, allowCheck',
         name,
@@ -105,7 +123,6 @@ export default function SignUp() {
         ableSkillSet,
         allowCheck,
       );
-
       try {
         if (
           name &&
@@ -116,7 +133,8 @@ export default function SignUp() {
           ableLocation.length > 0 &&
           ableSkillSet.length > 0
         ) {
-          if (password.length < 6) return alert('password is more than 6');
+          if (password.length < 6 || password.length > 30)
+            return alert('password is more than 6, less then 30');
           console.log('length', ableLocation.length, ableSkillSet.length);
           const result = await signup({
             variables: {
@@ -132,7 +150,13 @@ export default function SignUp() {
             },
           });
           console.log('result', result);
-          router.push('/');
+          if (result.data) {
+            alert('회원가입 성공!');
+            router.push('/');
+          } else {
+            alert('회원가입 실패!');
+            window.location.href = '/';
+          }
         } else alert('write required field');
       } catch (err) {
         console.log(err);
@@ -147,6 +171,8 @@ export default function SignUp() {
       ableLocation,
       ableSkillSet,
       allowCheck,
+      checkEmail,
+      checkName,
     ],
   );
 
@@ -162,7 +188,7 @@ export default function SignUp() {
         </Typography>
         <form encType="multipart/form-data" className={classes.form} noValidate>
           <Grid container spacing={2}>
-            <Grid item xs={12}>
+            <Grid item xs={8}>
               <TextField
                 autoComplete="name"
                 name="name"
@@ -172,10 +198,27 @@ export default function SignUp() {
                 id="name"
                 label="Name"
                 autoFocus
+                disabled={checkName}
                 onChange={changeName}
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={4} className={classes.checkButtonWrap}>
+              <Button
+                color="primary"
+                fullWidth
+                variant="contained"
+                onClick={() => {
+                  setToggleCheckName(!toggleCheckName);
+                  if (checkName) setCheckName(false);
+                }}
+              >
+                Check
+              </Button>
+              {toggleCheckName && (
+                <CheckName setCheckName={setCheckName} checkName={checkName} />
+              )}
+            </Grid>
+            <Grid item xs={8}>
               <TextField
                 variant="outlined"
                 required
@@ -184,8 +227,28 @@ export default function SignUp() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                disabled={checkEmail}
                 onChange={changeEmail}
               />
+            </Grid>
+            <Grid item xs={4} className={classes.checkButtonWrap}>
+              <Button
+                color="primary"
+                fullWidth
+                variant="contained"
+                onClick={() => {
+                  setToggleCheckEmail(!toggleCheckEmail);
+                  if (checkEmail) setCheckEmail(false);
+                }}
+              >
+                Check
+              </Button>
+              {toggleCheckEmail && (
+                <CheckEmail
+                  setCheckEmail={setCheckEmail}
+                  checkEmail={checkEmail}
+                />
+              )}
             </Grid>
             <Grid item xs={12}>
               <TextField

@@ -2,6 +2,9 @@ import react, { useEffect, useState } from 'react';
 import SearchFilterBox from './filterbox/SelectFilterBox';
 import NaverAPIMap from './map/NaverAPIMap';
 import SearchingUserList from './users/SearchingUserList';
+import { useQuery } from '@apollo/react-hooks';
+import UserGql from '../../lib/gql/userGql';
+import RenderNearUserList from './map/RenderNearUserList';
 
 export default function Search() {
   useEffect(() => {
@@ -17,6 +20,7 @@ export default function Search() {
   });
   const [ableLocation, changeAbleLocation] = useState([]);
   const [ableSkillSet, changeAbleSkillSet] = useState([]);
+
   return (
     <>
       <section>
@@ -24,7 +28,7 @@ export default function Search() {
           changeAbleLocation={changeAbleLocation}
           changeAbleSkillSet={changeAbleSkillSet}
         />
-        <NaverAPIMap />
+        <NaverAPIMap ableLocation={ableLocation} ableSkillSet={ableSkillSet} />
         <SearchingUserList
           ableLocation={ableLocation}
           ableSkillSet={ableSkillSet}
