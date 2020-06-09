@@ -2,6 +2,7 @@ import React from 'react';
 import { Menu, MenuItem, Badge, IconButton } from '@material-ui/core';
 import { menuId } from './menuId';
 import { useAuth } from '../../../../utils/auth/AuthProvider';
+import Link from 'next/link';
 
 interface RenderMenuProps {
   anchorEl: any;
@@ -26,7 +27,9 @@ export default function RenderMenu({
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Post</MenuItem>
+      <Link href="/write">
+        <MenuItem onClick={handleMenuClose}>Post</MenuItem>
+      </Link>
       <MenuItem onClick={logout}>Logout</MenuItem>
     </Menu>
   );

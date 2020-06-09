@@ -33,6 +33,26 @@ export default function PostPanel({ openPanel, setOpenPanel }: PostPanelProps) {
   const clickPostButton = useCallback(
     async (e) => {
       e.preventDefault();
+      if (title.length < 1 && title.length > 50) {
+        alert('제목은 필수이고 50글자 이내');
+        return;
+      }
+      if (desc.length < 1 && desc.length > 50) {
+        alert('설명은 50글자 이내');
+        return;
+      }
+      if (contents.length < 1 && contents.length > 20000) {
+        alert('내용은 필수');
+        return;
+      }
+      if (tags.length > 30) {
+        alert('태그는 30글자 이내');
+        return;
+      }
+      if (!seriesId) {
+        alert('시리즈를 골라주세요');
+        return;
+      }
       console.log(
         'title, contents, tags, desc, cover_img, category, skillset, series',
         title,
@@ -50,7 +70,13 @@ export default function PostPanel({ openPanel, setOpenPanel }: PostPanelProps) {
       // category skillset을 합쳐서 post category로 저장
       const postCategory = `${category} ${skillset}`;
       console.log('postCategory', postCategory);
-
+      const descFormat =
+        desc.length > 0
+          ? desc
+          : contents.length > 500
+          ? contents.substr(0, 499)
+          : contents;
+      console.log('descFormat', descFormat);
       try {
         if (seriesId) {
           const result = await addPost({
@@ -58,33 +84,40 @@ export default function PostPanel({ openPanel, setOpenPanel }: PostPanelProps) {
               data: {
                 title,
                 contents,
-                desc,
-                tags: arrayTags,
+                desc: descFormat,
+                tags: arrayTags || [],
                 cover_img,
                 category: postCategory,
                 series: seriesId,
               },
             },
           });
-          console.log('result', result);
-          router.push('/');
+          if (result) {
+            console.log('result', result);
+            alert('업로드 되었습니다.');
+            router.push('/');
+          }
         } else {
+          console.log('descFormat', descFormat);
           const result = await addPost({
             variables: {
               data: {
                 title,
                 contents,
-                desc,
-                tags: arrayTags,
-                cover_img,
+                desc: descFormat,
+                tags: arrayTags || [],
                 category: postCategory,
               },
             },
           });
-          console.log('result', result);
-          router.push('/');
+          if (result) {
+            console.log('result', result);
+            alert('업로드 되었습니다.');
+            router.push('/');
+          }
         }
       } catch (err) {
+        alert('업로드 실패!');
         console.log(err);
       }
     },

@@ -25,6 +25,7 @@ import { useMutation } from '@apollo/react-hooks';
 import { useRouter } from 'next/router';
 import CheckName from './CheckName';
 import CheckEmail from './CheckEmail';
+import { makeSkillLevel } from '../../../lib/skillLevelFormat/level';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -146,6 +147,7 @@ export default function SignUp() {
                 image_url,
                 ableLocation,
                 ableSkillSet,
+                level: makeSkillLevel(ableSkillSet),
               },
             },
           });
