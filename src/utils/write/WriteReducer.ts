@@ -8,7 +8,8 @@ export interface IinitialWriteState {
   cover_img: string;
   category?: string;
   skillset?: string;
-  series?: string;
+  seriesTitle?: string;
+  series?: any;
   seriesId?: string;
   comments?: any;
 }
@@ -21,7 +22,8 @@ export const initialWriteState: IinitialWriteState = {
   cover_img: '',
   skillset: '',
   seriesId: '',
-  series: '',
+  seriesTitle: '',
+  series: null,
   comments: null,
 };
 
@@ -62,12 +64,18 @@ export const writeReducer = (state = initialWriteState, action) => {
     }
     case 'ChangeSeries': {
       return produce(state, (draft) => {
+        console.log(action.data, 'series reducer');
         draft.series = action.data;
       });
     }
     case 'ChangeSeriesId': {
       return produce(state, (draft) => {
         draft.seriesId = action.data;
+      });
+    }
+    case 'ChangeSeriesTitle': {
+      return produce(state, (draft) => {
+        draft.seriesTitle = action.data;
       });
     }
     case 'ChangeTags': {
@@ -100,6 +108,11 @@ export const writeReducer = (state = initialWriteState, action) => {
           draft.comments[index].contents = action.data.contents;
         }
         console.log('filter', draft.comments);
+      });
+    }
+    case 'AddSeries': {
+      return produce(state, (draft) => {
+        draft.series.push(action.data);
       });
     }
     default:

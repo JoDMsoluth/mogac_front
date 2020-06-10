@@ -112,6 +112,7 @@ const GET_ALL_USER_BY_SEARCH = gql`
       image_url
       ableSkillSet
       ableLocation
+      level
     }
   }
 `;

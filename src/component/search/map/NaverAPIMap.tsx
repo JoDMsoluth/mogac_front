@@ -89,4 +89,7 @@ const S: any = {};
 S.MapWrap = styled.div`
   width: 100%;
   height: 40rem;
+  @media (max-width: 450px) {
+    height: 20rem;
+  }
 `;

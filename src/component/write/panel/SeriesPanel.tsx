@@ -6,51 +6,68 @@ import { useAuth } from '../../../utils/auth/AuthProvider';
 import { useQuery } from '@apollo/react-hooks';
 import UserGql from '../../../lib/gql/userGql';
 import styled from 'styled-components';
-import { ListAlt } from '@material-ui/icons';
+import { ListAlt, Add } from '@material-ui/icons';
 import palette from '../../../lib/pallete';
 import { useWrite } from '../../../utils/write/WriteProvide';
+import AddSeriesPanel from './AddSeriesPanel';
 
 export default function SeriesPanel() {
   const { data, error, loading } = useQuery(UserGql.GET_ALL_SERIES_BY_USER);
   const { state, dispatch } = useWrite();
-  const { series, seriesId } = state;
+  const { series, seriesTitle, seriesId } = state;
   const [openPanel, setOpenPanel] = useState<boolean>(false);
+  const [toggleAddPanel, setToggleAddPanel] = useState<boolean>(false);
 
   const changeOpenPanel = useCallback(() => {
     setOpenPanel(!openPanel);
   }, [openPanel]);
 
   const changeSeries = useCallback(
-    (series: string, seriesId: string) => () => {
-      dispatch({ type: 'ChangeSeries', data: series });
+    (seriesId: string, seriesTitle: string) => () => {
       dispatch({ type: 'ChangeSeriesId', data: seriesId });
+      dispatch({ type: 'ChangeSeriesTitle', data: seriesTitle });
       setOpenPanel(!openPanel);
     },
-    [series, openPanel, seriesId],
+    [openPanel, seriesId],
   );
-
+  if (loading) {
+    return <div></div>;
+  }
+  if (error) {
+    console.error(error);
+  }
+  if (data && !series) {
+    console.log(data);
+    dispatch({ type: 'ChangeSeries', data: data.getAllSeriesByUser.series });
+  }
   return (
-    <S.SelectWrap>
-      <S.SelectSpan onClick={changeOpenPanel}>
-        {series ? series : 'Series'}
-      </S.SelectSpan>
-      <S.SelectIconWrap>
-        <ListAlt />
-      </S.SelectIconWrap>
-      <S.SelectOptionWrap open={openPanel}>
-        {!loading &&
-          data.getAllSeriesByUser.series &&
-          data.getAllSeriesByUser.series.map((v) => (
-            <S.SelectOption
-              key={v.title}
-              value={v.title}
-              onClick={changeSeries(v.title, v._id)}
-            >
-              {v.title}
-            </S.SelectOption>
-          ))}
-      </S.SelectOptionWrap>
-    </S.SelectWrap>
+    <>
+      <S.SelectWrap>
+        <S.SelectSpan onClick={changeOpenPanel}>
+          {seriesTitle ? seriesTitle : 'Series'}
+        </S.SelectSpan>
+        <S.SelectIconWrap>
+          <ListAlt />
+        </S.SelectIconWrap>
+        <S.SelectOptionWrap open={openPanel}>
+          <S.SelectOption onClick={() => setToggleAddPanel(true)}>
+            <Add />
+          </S.SelectOption>
+          {series?.length > 0 &&
+            series.map((v) => (
+              <S.SelectOption
+                key={v.title}
+                onClick={changeSeries(v._id, v.title)}
+              >
+                {v.title}
+              </S.SelectOption>
+            ))}
+        </S.SelectOptionWrap>
+      </S.SelectWrap>
+      {toggleAddPanel && (
+        <AddSeriesPanel setToggleAddPanel={setToggleAddPanel} />
+      )}
+    </>
   );
 }
 
@@ -81,6 +98,7 @@ S.SelectOption = styled.div`
   height: 2rem;
   font-size: 1rem;
   line-height: 2rem;
+  overflow: hidden;
   &:hover {
     background: ${palette.gray3};
   }
@@ -95,6 +113,9 @@ S.SelectOptionWrap = styled.div<{ open: boolean }>`
   background: ${palette.gray2};
   border-radius: 3px;
   transition: max-height 0.5s ease;
+  @media (max-width: 763px) {
+    max-height: ${(prop) => (prop.open ? '6rem' : '0')};
+  }
 ` as FC<{ open: boolean }>;
 
 S.SelectIconWrap = styled.div`

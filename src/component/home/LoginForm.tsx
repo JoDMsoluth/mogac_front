@@ -16,9 +16,12 @@ import Link from 'next/link';
 import { useMutation } from '@apollo/react-hooks';
 import UserGql from '../../lib/gql/userGql';
 import Router from 'next/router';
+import Cookies from 'js-cookie';
+
 import {
   saveTokenInCookies,
   removeTokenFromCookies,
+  logout,
 } from '../../utils/auth/helpers';
 
 const useStyles = makeStyles((theme) => ({
@@ -76,7 +79,6 @@ const LoginForm = () => {
   const onSubmitLogin = useCallback(
     async (e) => {
       e.preventDefault();
-      await removeTokenFromCookies();
       console.log('email, password', email, password);
       try {
         const result = await login({ variables: { email, password } });

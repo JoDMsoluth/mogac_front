@@ -24,7 +24,6 @@ export default function EditPane() {
     <>
       <S.WriteHeadBarWrap>
         <TextField
-          id="standard-basic"
           fullWidth
           label="  Title"
           onChange={onChangeTitle}

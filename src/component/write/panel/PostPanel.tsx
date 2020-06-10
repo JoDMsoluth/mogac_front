@@ -33,15 +33,15 @@ export default function PostPanel({ openPanel, setOpenPanel }: PostPanelProps) {
   const clickPostButton = useCallback(
     async (e) => {
       e.preventDefault();
-      if (title.length < 1 && title.length > 50) {
+      if (title.length < 1 || title.length > 50) {
         alert('제목은 필수이고 50글자 이내');
         return;
       }
-      if (desc.length < 1 && desc.length > 50) {
+      if (desc.length < 1 || desc.length > 50) {
         alert('설명은 50글자 이내');
         return;
       }
-      if (contents.length < 1 && contents.length > 20000) {
+      if (contents.length < 1 || contents.length > 20000) {
         alert('내용은 필수');
         return;
       }
@@ -55,10 +55,10 @@ export default function PostPanel({ openPanel, setOpenPanel }: PostPanelProps) {
       }
       console.log(
         'title, contents, tags, desc, cover_img, category, skillset, series',
-        title,
-        contents,
+        title.length,
+        contents.length,
         tags,
-        desc,
+        desc.length,
         cover_img,
         category,
         skillset,

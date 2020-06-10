@@ -25,7 +25,7 @@ import { useMutation } from '@apollo/react-hooks';
 import { useRouter } from 'next/router';
 import CheckName from './CheckName';
 import CheckEmail from './CheckEmail';
-import { makeSkillLevel } from '../../../lib/skillLevelFormat/level';
+import { makeSkillLevel } from '../../../lib/utils/skillLevelFormat';
 
 const useStyles = makeStyles((theme) => ({
   paper: {

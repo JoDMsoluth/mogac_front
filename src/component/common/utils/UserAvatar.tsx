@@ -3,13 +3,14 @@ import styled from 'styled-components';
 import { Avatar } from '@material-ui/core';
 import palette from '../../../lib/pallete';
 import UserToolbar from './UserToolbar';
+import { FlashOn } from '@material-ui/icons';
 
 const userAvatar = require('../../../static/images/avatar/1.jpg');
 
 interface UserAvatarProps {
   name?: string;
   skill?: string;
-  level?: string;
+  level?: number;
   image_url?: string;
 }
 
@@ -32,13 +33,23 @@ export default function UserAvatar({
   return (
     <>
       <S.AvatarWrap>
-        <Avatar
-          alt="JoHyehyeong"
-          src={userAvatar}
-          onClick={handleProfileMenuOpen}
-        />
+        <S.AvatarImageWrap>
+          <Avatar
+            alt="JoHyehyeong"
+            src={userAvatar}
+            onClick={handleProfileMenuOpen}
+          />
+        </S.AvatarImageWrap>
         <S.AvatarTextWrap>
-          <S.AvatarName>&nbsp;{name || `Jo Hyehyeong`}</S.AvatarName>
+          <S.AvatarHead>
+            <S.AvatarName>&nbsp;{name || `Jo Hyehyeong`}</S.AvatarName>
+            {level && (
+              <S.LevelWrap>
+                <FlashOn />
+                <span>{level}</span>
+              </S.LevelWrap>
+            )}
+          </S.AvatarHead>
           <S.AvatarDesc>&nbsp;{skill || `Newbie`}</S.AvatarDesc>
         </S.AvatarTextWrap>
 
@@ -51,6 +62,26 @@ export default function UserAvatar({
 
 const S: any = {};
 S.AvatarWrap = styled.div`
+  display: inline-flex;
+`;
+S.AvatarImageWrap = styled.div`
+  align-self: center;
+`;
+
+S.AvatarHead = styled.div`
+  display: inline-flex;
+`;
+S.LevelWrap = styled.div`
+  & > svg {
+    font-size: 1rem;
+    margin-top: 0.3rem;
+  }
+  & > span {
+    font-size: 0.8rem;
+    line-height: 1.5rem;
+  }
+  margin-left: 0.2rem;
+  color: ${palette.gray4};
   display: inline-flex;
 `;
 S.AvatarTextWrap = styled.div`
