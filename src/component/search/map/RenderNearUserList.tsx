@@ -1,24 +1,28 @@
 import react, { useEffect, useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import UserGql from '../../../lib/gql/userGql';
+import { makeAbleSkillSetLevel } from '../../../lib/utils/skillLevelFormat';
 const userAvatar = require('../../../static/images/avatar/1.jpg');
 
 interface RenderNearUserListProps {
   map: any;
   ableLocation: any;
   ableSkillSet: any;
+  level: number;
 }
 export default function RenderNearUserList({
   map,
   ableLocation,
   ableSkillSet,
+  level,
 }) {
+  console.log('make', makeAbleSkillSetLevel(ableSkillSet, level));
   const { error, loading, data } = useQuery(
     UserGql.GET_NEAR_USERS_BY_MATCHING,
     {
       variables: {
         ableLocation,
-        ableSkillSet,
+        ableSkillSet: makeAbleSkillSetLevel(ableSkillSet, level),
       },
     },
   );

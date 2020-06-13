@@ -22,11 +22,15 @@ const useStyles = makeStyles((theme) => ({
 interface SearchFilterBoxProps {
   changeAbleLocation: any;
   changeAbleSkillSet: any;
+  level: any;
+  setLevel: any;
 }
 export default function SearchFilterBox({
   changeAbleLocation,
   changeAbleSkillSet,
-}) {
+  level,
+  setLevel,
+}: SearchFilterBoxProps) {
   const classes = useStyles();
   const [locationData, setLocationData] = useState([]);
   const [skillSetData, setSkillSetData] = useState([]);
@@ -43,6 +47,8 @@ export default function SearchFilterBox({
       </Grid>
       <Grid className={classes.filterbox} md={5} xs={12}>
         <SearchSkillSetSelect
+          level={level}
+          setLevel={setLevel}
           skillSetData={skillSetData}
           setSkillSetData={setSkillSetData}
         />

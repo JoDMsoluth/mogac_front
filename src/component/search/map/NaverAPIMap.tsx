@@ -18,11 +18,13 @@ declare global {
 interface SearchingUserListProps {
   ableLocation: any;
   ableSkillSet: any;
+  level: number;
 }
 
 export default function NaverAPIMap({
   ableLocation,
   ableSkillSet,
+  level,
 }: SearchingUserListProps) {
   const [currentLat, setCurrentLat] = useState<number>(37.42829747263545);
   const [currentLng, setCurrentLng] = useState<number>(126.76620435615891);
@@ -72,11 +74,12 @@ export default function NaverAPIMap({
   return (
     <>
       <S.MapWrap id="map"></S.MapWrap>
-      {ableLocation?.length > 0 && ableSkillSet?.length > 0 ? (
+      {ableLocation?.length > 0 && ableSkillSet?.length > 0 && level ? (
         <RenderNearUserList
           map={mapInstance.current}
           ableLocation={ableLocation}
           ableSkillSet={ableSkillSet}
+          level={level}
         />
       ) : (
         ''

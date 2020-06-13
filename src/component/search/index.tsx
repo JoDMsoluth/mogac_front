@@ -20,6 +20,7 @@ export default function Search() {
   });
   const [ableLocation, changeAbleLocation] = useState([]);
   const [ableSkillSet, changeAbleSkillSet] = useState([]);
+  const [level, setLevel] = useState<number>(0);
 
   return (
     <>
@@ -27,11 +28,18 @@ export default function Search() {
         <SearchFilterBox
           changeAbleLocation={changeAbleLocation}
           changeAbleSkillSet={changeAbleSkillSet}
+          level={level}
+          setLevel={setLevel}
         />
-        <NaverAPIMap ableLocation={ableLocation} ableSkillSet={ableSkillSet} />
+        <NaverAPIMap
+          ableLocation={ableLocation}
+          ableSkillSet={ableSkillSet}
+          level={level}
+        />
         <SearchingUserList
           ableLocation={ableLocation}
           ableSkillSet={ableSkillSet}
+          level={level}
         />
       </section>
     </>

@@ -26,12 +26,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const levels = ['상', '중상', '중', '중하', '하'];
+
 export default function SelectSkillSetDialog({ categoryArray, skillsetData }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [category, setCategory] = useState<string>('');
   const [skillset, setSkillSet] = useState<string>('');
+  const [level, setLevel] = useState<number>(0);
   const [ableSkillSet, setAbleSkillSet] = useState<Array<string>>([]);
+  const [ableSkillSetLevel, setAbleSkillSetLevel] = useState<Array<string>>([]);
 
   const { state, dispatch } = useUser();
 
@@ -47,11 +51,18 @@ export default function SelectSkillSetDialog({ categoryArray, skillsetData }) {
     },
     [skillset],
   );
+  const changeLevel = useCallback(
+    (e) => {
+      setLevel(e.target.value);
+    },
+    [level],
+  );
 
   const changeAbleSkillSet = useCallback(() => {
     dispatch({ type: 'ChangeAbleSkillSet', data: ableSkillSet });
+    dispatch({ type: 'ChangeAbleSkillSetLevel', data: ableSkillSetLevel });
     setOpen(false);
-  }, [state.ableSkillSet, ableSkillSet]);
+  }, [state.ableSkillSet, ableSkillSet, state.ableSkillSetLevel]);
 
   useEffect(() => {
     if (categoryArray[0]) setCategory(categoryArray[0]);
@@ -60,19 +71,24 @@ export default function SelectSkillSetDialog({ categoryArray, skillsetData }) {
   const addAbleSkillSet = useCallback(
     (e) => {
       e.preventDefault();
-      if (category && skillset && ableSkillSet.length < 3) {
+      if (category && skillset && ableSkillSet.length < 3 && level) {
         const setSkillSet = `${category} ${skillset}`;
-        !ableSkillSet.includes(setSkillSet) &&
+        const setSkillSetLevel = `${category} ${skillset}/${level}`;
+        if (!ableSkillSet.includes(setSkillSet)) {
           setAbleSkillSet(ableSkillSet.concat(setSkillSet));
+          setAbleSkillSetLevel(ableSkillSetLevel.concat(setSkillSetLevel));
+        }
       }
     },
-    [category, skillset, ableSkillSet],
+    [category, skillset, ableSkillSet, ableSkillSetLevel, level],
   );
   const removeAbleSkillSet = useCallback(
     (SkillSet: string) => () => {
-      setAbleSkillSet(ableSkillSet.filter((v) => v !== SkillSet));
+      const skill = SkillSet.split('/')[0];
+      setAbleSkillSet(ableSkillSet.filter((v) => v !== skill));
+      setAbleSkillSetLevel(ableSkillSetLevel.filter((v) => !v.includes(skill)));
     },
-    [ableSkillSet],
+    [ableSkillSet, ableSkillSetLevel],
   );
 
   const handleClickOpen = () => {
@@ -94,7 +110,7 @@ export default function SelectSkillSetDialog({ categoryArray, skillsetData }) {
       >
         <DialogTitle>Select Able SkillSet</DialogTitle>
         <DialogContent>
-          <form className={classes.container}>
+          <S.DialogForm className={classes.container}>
             <FormControl className={classes.formControl}>
               <InputLabel htmlFor="category">Category</InputLabel>
               <Select
@@ -127,13 +143,32 @@ export default function SelectSkillSetDialog({ categoryArray, skillsetData }) {
                   : ''}
               </Select>
             </FormControl>
-            <Button onClick={addAbleSkillSet} color="primary">
+            <FormControl className={classes.formControl}>
+              <InputLabel id="level">level</InputLabel>
+              <Select
+                labelId="level"
+                value={level}
+                onChange={changeLevel as any}
+                input={<Input />}
+              >
+                {levels.map((lev, i) => (
+                  <option key={lev} value={5 - i}>
+                    {lev}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
+            <Button
+              onClick={addAbleSkillSet}
+              color="primary"
+              variant="contained"
+            >
               Add
             </Button>
-          </form>
+          </S.DialogForm>
         </DialogContent>
-        <DialogContent style={{ display: 'flex' }}>
-          {ableSkillSet.map((able) => (
+        <S.ContentListWrap>
+          {ableSkillSetLevel.map((able) => (
             <S.ContentWrap key={able}>
               <S.ContentItem>{able}</S.ContentItem>
               <Button color="primary" onClick={removeAbleSkillSet(able)}>
@@ -141,7 +176,7 @@ export default function SelectSkillSetDialog({ categoryArray, skillsetData }) {
               </Button>
             </S.ContentWrap>
           ))}
-        </DialogContent>
+        </S.ContentListWrap>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
             Cancel
@@ -157,9 +192,26 @@ export default function SelectSkillSetDialog({ categoryArray, skillsetData }) {
 
 const S: any = {};
 
+S.DialogForm = styled.form`
+  display: flex;
+  justify-content: space-between;
+  @media (max-width: 763px) {
+    flex-direction: column;
+  }
+`;
+S.ContentListWrap = styled(DialogContent)`
+  display: flex;
+  @media (max-width: 763px) {
+    flex-direction: column;
+  }
+`;
+
 S.ContentWrap = styled.div`
   display: flex;
 `;
 S.ContentItem = styled.div`
   padding: 0.55rem 0;
+  @media (max-width: 763px) {
+    display: inline-block;
+  }
 `;

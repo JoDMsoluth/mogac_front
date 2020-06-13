@@ -43,12 +43,12 @@ export default function UserAvatar({
         <S.AvatarTextWrap>
           <S.AvatarHead>
             <S.AvatarName>&nbsp;{name || `Jo Hyehyeong`}</S.AvatarName>
-            {level && (
-              <S.LevelWrap>
+            <S.LevelWrap>
+              <div>
                 <FlashOn />
-                <span>{level}</span>
-              </S.LevelWrap>
-            )}
+              </div>
+              <span>{level ? level : 0}</span>
+            </S.LevelWrap>
           </S.AvatarHead>
           <S.AvatarDesc>&nbsp;{skill || `Newbie`}</S.AvatarDesc>
         </S.AvatarTextWrap>

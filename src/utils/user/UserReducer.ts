@@ -8,6 +8,7 @@ export interface IinitialUserState {
   gender: string;
   ableLocation?: Array<string>;
   ableSkillSet?: Array<string>;
+  ableSkillSetLevel?: Array<string>;
 }
 
 export const initialUserState: IinitialUserState = {
@@ -18,6 +19,7 @@ export const initialUserState: IinitialUserState = {
   gender: '',
   ableLocation: [],
   ableSkillSet: [],
+  ableSkillSetLevel: [],
 };
 
 export const userReducer = (state = initialUserState, action) => {
@@ -58,6 +60,11 @@ export const userReducer = (state = initialUserState, action) => {
     case 'ChangeAbleSkillSet': {
       return produce(state, (draft) => {
         draft.ableSkillSet = action.data;
+      });
+    }
+    case 'ChangeAbleSkillSetLevel': {
+      return produce(state, (draft) => {
+        draft.ableSkillSetLevel = action.data;
       });
     }
     default:

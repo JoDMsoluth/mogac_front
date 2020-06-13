@@ -71,6 +71,7 @@ export default function SignUp() {
     image_url,
     ableSkillSet,
     ableLocation,
+    ableSkillSetLevel,
   } = state;
   const changeAllowCheck = useCallback(
     (e, checked) => {
@@ -122,6 +123,7 @@ export default function SignUp() {
         image_url,
         ableLocation,
         ableSkillSet,
+        ableSkillSetLevel,
         allowCheck,
       );
       try {
@@ -132,7 +134,8 @@ export default function SignUp() {
           gender &&
           allowCheck &&
           ableLocation.length > 0 &&
-          ableSkillSet.length > 0
+          ableSkillSet.length > 0 &&
+          ableSkillSetLevel.length > 0
         ) {
           if (password.length < 6 || password.length > 30)
             return alert('password is more than 6, less then 30');
@@ -147,7 +150,7 @@ export default function SignUp() {
                 image_url,
                 ableLocation,
                 ableSkillSet,
-                level: makeSkillLevel(ableSkillSet),
+                level: ableSkillSetLevel,
               },
             },
           });
@@ -172,6 +175,7 @@ export default function SignUp() {
       image_url,
       ableLocation,
       ableSkillSet,
+      ableSkillSetLevel,
       allowCheck,
       checkEmail,
       checkName,

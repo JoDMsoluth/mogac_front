@@ -50,3 +50,11 @@ export const skillLevelSum = (SkillLevelArray: number[]) => {
     return prev + next;
   }, 0);
 };
+
+export const makeAbleSkillSetLevel = (ableSkillSet, level) => {
+  const ableSkillSetLevel = [];
+  for (const skill of ableSkillSet) {
+    ableSkillSetLevel.push(`${skill}/${level}`);
+  }
+  return ableSkillSetLevel;
+};

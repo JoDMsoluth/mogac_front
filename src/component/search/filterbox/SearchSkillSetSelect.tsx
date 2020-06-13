@@ -36,9 +36,15 @@ const MenuProps = {
 interface SearchSkillSetSelectPros {
   skillSetData: any;
   setSkillSetData: any;
+  level: any;
+  setLevel: any;
 }
+const levels = ['상', '중상', '중', '중하', '하'];
+
 export default function SearchSkillSetSelect({
   setSkillSetData,
+  level,
+  setLevel,
 }: SearchSkillSetSelectPros) {
   const classes = useStyles();
   const theme = useTheme();
@@ -55,6 +61,12 @@ export default function SearchSkillSetSelect({
       setSkillSetData(value);
     },
     [skillset],
+  );
+  const changeLevel = useCallback(
+    (e) => {
+      setLevel(e.target.value);
+    },
+    [level],
   );
 
   console.log('category', category);
@@ -109,6 +121,21 @@ export default function SearchSkillSetSelect({
               : ''}
           </Select>
         </FormControl>
+        <FormControl className={classes.formControl}>
+          <InputLabel id="level">level</InputLabel>
+          <Select
+            labelId="level"
+            value={level}
+            onChange={changeLevel as any}
+            input={<Input />}
+          >
+            {levels.map((lev, i) => (
+              <option key={lev} value={5 - i}>
+                {lev}
+              </option>
+            ))}
+          </Select>
+        </FormControl>
       </S.SearchFilterWrap>
     </>
   );
@@ -121,6 +148,10 @@ S.SearchFilterWrap = styled.div`
   justify-content: space-evenly;
   width: 100%;
   height: 5rem;
+  @media (max-width: 450px) {
+    flex-direction: column;
+    height: 10rem;
+  }
 `;
 
 S.CategoryOption = styled.option`

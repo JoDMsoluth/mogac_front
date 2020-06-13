@@ -13,9 +13,9 @@ export default function UserToolbar({ anchorEl, handleMenuClose }) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Post</MenuItem>
+      <MenuItem onClick={handleMenuClose}>블로그</MenuItem>
+      <MenuItem onClick={handleMenuClose}>쪽지</MenuItem>
+      <MenuItem onClick={handleMenuClose}>팀초대</MenuItem>
     </Menu>
   );
 }
