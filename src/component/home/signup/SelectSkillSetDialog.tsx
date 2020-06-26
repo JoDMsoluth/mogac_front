@@ -14,6 +14,7 @@ import styled from 'styled-components';
 import { useQuery } from '@apollo/react-hooks';
 import CategoryGql from '../../../lib/gql/categoryGql';
 import { useUser } from '../../../utils/user/UserProvide';
+import palette from '../../../lib/pallete';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -27,6 +28,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const levels = ['상', '중상', '중', '중하', '하'];
+const guides = [
+  '1년 미만',
+  '2~3년 경력',
+  '4~6년 경력',
+  '7~9년 경력',
+  '10년 이상 경력',
+];
 
 export default function SelectSkillSetDialog({ categoryArray, skillsetData }) {
   const classes = useStyles();
@@ -36,7 +44,7 @@ export default function SelectSkillSetDialog({ categoryArray, skillsetData }) {
   const [level, setLevel] = useState<number>(0);
   const [ableSkillSet, setAbleSkillSet] = useState<Array<string>>([]);
   const [ableSkillSetLevel, setAbleSkillSetLevel] = useState<Array<string>>([]);
-
+  console.log(level);
   const { state, dispatch } = useUser();
 
   const changeCategory = useCallback(
@@ -152,12 +160,14 @@ export default function SelectSkillSetDialog({ categoryArray, skillsetData }) {
                 input={<Input />}
               >
                 {levels.map((lev, i) => (
-                  <option key={lev} value={5 - i}>
-                    {lev}
-                  </option>
+                  <S.LevelOps key={lev} value={5 - i}>
+                    {lev} : {guides[i]}
+                  </S.LevelOps>
                 ))}
               </Select>
             </FormControl>
+            {level ? <S.LevelGuide>{guides[level - 1]}</S.LevelGuide> : null}
+
             <Button
               onClick={addAbleSkillSet}
               color="primary"
@@ -194,6 +204,7 @@ const S: any = {};
 
 S.DialogForm = styled.form`
   display: flex;
+  position: relative;
   justify-content: space-between;
   @media (max-width: 763px) {
     flex-direction: column;
@@ -214,4 +225,14 @@ S.ContentItem = styled.div`
   @media (max-width: 763px) {
     display: inline-block;
   }
+`;
+S.LevelOps = styled.option``;
+S.LevelGuide = styled.div`
+  position: absolute;
+  top: -5rem;
+  right: 0;
+  background: black;
+  color: ${palette.gray6};
+  font-size: 0.5rem;
+  width: 4rem;
 `;

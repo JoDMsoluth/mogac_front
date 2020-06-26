@@ -1,25 +1,26 @@
 import React, { useEffect } from 'react';
 import { NextPage, NextPageContext } from 'next';
 import AppLayout from '../../component/common/layout/AppLayout';
-import TeamView from '../../component/team/view/TeamView';
+import Chat from '../../component/team/view/chat/Chat';
 
 interface ViewTeamPageProps {
-  teamId: string;
+  room: string;
+  name: string;
 }
 
-const ViewTeamPage: NextPage<ViewTeamPageProps> = ({ teamId }) => {
+const ViewTeamPage: NextPage<ViewTeamPageProps> = ({ room, name }) => {
   return (
     <>
       <AppLayout>
-        <TeamView />
+        <Chat initRoom={room} initName={name} />
       </AppLayout>
     </>
   );
 };
 
 ViewTeamPage.getInitialProps = async (ctx: NextPageContext) => {
-  const { team } = ctx.query;
-  return { teamId: team as string };
+  const { room, name } = ctx.query;
+  return { room: room as string, name: name as string };
 };
 
 export default ViewTeamPage;
