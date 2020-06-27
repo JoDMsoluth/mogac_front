@@ -10,7 +10,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from 'next/link';
 
-interface TeamListCardProps {}
+interface TeamListCardProps {
+  location: string;
+  skillset: string;
+}
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -35,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
 
 const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-const TeamListCard = () => {
+const TeamListCard = ({ location, skillset }: TeamListCardProps) => {
   const classes = useStyles();
   return (
     <>

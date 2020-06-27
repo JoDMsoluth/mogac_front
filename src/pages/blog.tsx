@@ -9,10 +9,7 @@ export default function BlogPage() {
   return (
     <>
       <CssBaseline />
-      <main>
-        <TeamHeader />
-        <TeamListCard />
-      </main>
+      <main></main>
     </>
   );
 }

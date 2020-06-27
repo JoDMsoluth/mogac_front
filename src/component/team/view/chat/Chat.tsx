@@ -33,14 +33,16 @@ const Chat = ({ initName, initRoom }) => {
   }, [ENDPOINT, initRoom, initName]);
 
   useEffect(() => {
-    socket.on('message', (message) => {
-      setMessages((messages) => [...messages, message]);
-    });
+    if (initName && initRoom) {
+      socket.on('message', (message) => {
+        setMessages((messages) => [...messages, message]);
+      });
 
-    socket.on('roomData', ({ users }) => {
-      setUsers(users);
-    });
-  }, []);
+      socket.on('roomData', ({ users }) => {
+        setUsers(users);
+      });
+    }
+  }, [initName, initRoom]);
 
   const sendMessage = (event) => {
     event.preventDefault();

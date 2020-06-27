@@ -12,6 +12,7 @@ interface UserAvatarProps {
   skill?: string;
   level?: number;
   image_url?: string;
+  isTeam?: boolean;
 }
 
 export default function UserAvatar({
@@ -19,6 +20,7 @@ export default function UserAvatar({
   skill,
   level,
   image_url,
+  isTeam = false,
 }: UserAvatarProps) {
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -54,7 +56,11 @@ export default function UserAvatar({
         </S.AvatarTextWrap>
 
         {/* 툴바 */}
-        <UserToolbar anchorEl={anchorEl} handleMenuClose={handleMenuClose} />
+        <UserToolbar
+          anchorEl={anchorEl}
+          handleMenuClose={handleMenuClose}
+          isTeam={isTeam}
+        />
       </S.AvatarWrap>
     </>
   );

@@ -3,6 +3,7 @@ import { NextPage, NextPageContext } from 'next';
 import TeamHeader from '../component/team/TeamHeader';
 import TeamListCard from '../component/team/TeamListCard';
 import BlogListCard from '../component/home/blog/BlogListCard';
+import BlogHeader from '../component/blog/BlogHeader';
 
 interface IndexPageProps {
   page: number;
@@ -12,7 +13,7 @@ const IndexPage: NextPage<IndexPageProps> = ({ page }) => {
   return (
     <>
       <main>
-        <TeamHeader />
+        <BlogHeader />
         <article>
           <BlogListCard page={page} />
         </article>

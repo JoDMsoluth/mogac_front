@@ -1,15 +1,11 @@
-import React from 'react';
+import react from 'react';
 import { Container, Button } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import CategoryGql from '../../lib/gql/categoryGql';
-import TeamListFilterDialog from './TeamListFiterDialog';
 
-interface TeamHeaderProps {
-  location: string;
-  skillset: string;
-}
+interface BlogHeaderProps {}
 
 const useStyles = makeStyles((theme) => ({
   heroContent: {
@@ -21,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const TeamHeader = ({ location, skillset }: TeamHeaderProps) => {
+const BlogHeader = () => {
   const classes = useStyles();
   const { categoryArray, skillsetData } = CategoryGql.loadAllCategory();
   return (
@@ -35,7 +31,7 @@ const TeamHeader = ({ location, skillset }: TeamHeaderProps) => {
             color="textPrimary"
             gutterBottom
           >
-            Team List
+            Blog Post List
           </Typography>
           <Typography
             variant="h5"
@@ -43,34 +39,19 @@ const TeamHeader = ({ location, skillset }: TeamHeaderProps) => {
             color="textSecondary"
             paragraph
           >
-            팀 리스트 페이지입니다;
+            블로그 포스트 페이지 입니다.
           </Typography>
 
-          {location || skillset ? (
-            <Typography
-              variant="h5"
-              align="center"
-              color="textSecondary"
-              paragraph
-            >
-              필터결과
-              <br></br>
-              {location && `스터디 지역 : ${location}\n`}
-              <br></br>
-              {skillset && `공부 주제 : ${skillset}\n`}
-            </Typography>
-          ) : null}
           <div className={classes.heroButtons}>
             <Grid container spacing={2} justify="center">
               <Grid item>
-                <TeamListFilterDialog
-                  categoryArray={categoryArray}
-                  skillsetData={skillsetData}
-                />
+                <Button variant="contained" color="primary">
+                  블로그 필터링
+                </Button>
               </Grid>
               <Grid item>
                 <Button variant="outlined" color="primary">
-                  Create New Team
+                  새로운 글 게시
                 </Button>
               </Grid>
             </Grid>
@@ -81,4 +62,4 @@ const TeamHeader = ({ location, skillset }: TeamHeaderProps) => {
   );
 };
 
-export default TeamHeader;
+export default BlogHeader;

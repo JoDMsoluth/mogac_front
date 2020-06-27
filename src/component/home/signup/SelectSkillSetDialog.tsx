@@ -28,13 +28,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const levels = ['상', '중상', '중', '중하', '하'];
-const guides = [
-  '1년 미만',
-  '2~3년 경력',
-  '4~6년 경력',
-  '7~9년 경력',
-  '10년 이상 경력',
-];
 
 export default function SelectSkillSetDialog({ categoryArray, skillsetData }) {
   const classes = useStyles();
@@ -100,6 +93,15 @@ export default function SelectSkillSetDialog({ categoryArray, skillsetData }) {
   );
 
   const handleClickOpen = () => {
+    const guides = `
+% 스킬셋 숙련도 가이드 라인 %
+
+상 : 리드 프로그래머로서 한 프로젝트를 이끌 수 있는 수준
+중상 : 중소규모의 서비스를 직접 제작 운영해본 경험이 있는 수준
+중 : 요구사항에 맞춰 문서를 참고하여 개발을 진행할 수 있는 수준
+중하 : 2~3개의 토이 프로젝트로 CRUD를 해본 경험이 있는 수준
+하 : 막 시작한 입문자`;
+    alert(guides);
     setOpen(true);
   };
 
@@ -161,13 +163,11 @@ export default function SelectSkillSetDialog({ categoryArray, skillsetData }) {
               >
                 {levels.map((lev, i) => (
                   <S.LevelOps key={lev} value={5 - i}>
-                    {lev} : {guides[i]}
+                    {lev}
                   </S.LevelOps>
                 ))}
               </Select>
             </FormControl>
-            {level ? <S.LevelGuide>{guides[level - 1]}</S.LevelGuide> : null}
-
             <Button
               onClick={addAbleSkillSet}
               color="primary"

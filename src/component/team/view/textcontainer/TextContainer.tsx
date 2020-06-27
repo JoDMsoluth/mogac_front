@@ -15,12 +15,15 @@ const TextContainer = ({ users }) => (
           <h2>
             {users.map(({ name }) => (
               <div key={name} className="activeItem">
-                <UserAvatar name={name} />
+                <UserAvatar name={name} isTeam={true} />
                 <img alt="Online Icon" src={onlineIcon} />
               </div>
             ))}
           </h2>
         </div>
+        <Button color="primary" variant="contained">
+          Blog Post
+        </Button>
         <Button color="primary" variant="contained">
           Add Member
         </Button>
