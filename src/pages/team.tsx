@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TeamHeader from '../component/team/TeamHeader';
 import TeamListCard from '../component/team/TeamListCard';
@@ -10,12 +10,23 @@ interface TeamPageProps {
 }
 
 const TeamPage: NextPage<TeamPageProps> = ({ location, skillset }) => {
+  const [teams, setTeams] = useState([]);
   return (
     <>
       <CssBaseline />
       <main>
-        <TeamHeader location={location} skillset={skillset} />
-        <TeamListCard skillset={skillset} location={skillset} />
+        <TeamHeader
+          teams={teams}
+          location={location}
+          skillset={skillset}
+          setTeams={setTeams}
+        />
+        <TeamListCard
+          skillset={skillset}
+          location={skillset}
+          teams={teams}
+          setTeams={setTeams}
+        />
       </main>
     </>
   );

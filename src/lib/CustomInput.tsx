@@ -11,6 +11,8 @@ interface CustomInputProps {
   value?: any;
   placeholder?: string;
   inputIcon?: ReactNode;
+  multiline?: boolean;
+  rowsMax?: any;
   onChange?: (e: Event) => void;
 }
 

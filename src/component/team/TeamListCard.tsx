@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -9,10 +9,16 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from 'next/link';
+import teamGql from '../../lib/gql/teamGql';
+import { useQuery } from '@apollo/react-hooks';
+import { userReducer } from '../../utils/user/UserReducer';
+import { useAuth } from '../../utils/auth/AuthProvider';
 
 interface TeamListCardProps {
   location: string;
   skillset: string;
+  teams: any;
+  setTeams: any;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -36,47 +42,65 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+const cards = [];
 
-const TeamListCard = ({ location, skillset }: TeamListCardProps) => {
+const TeamListCard = ({
+  location,
+  skillset,
+  teams,
+  setTeams,
+}: TeamListCardProps) => {
   const classes = useStyles();
+  const [user, _] = useAuth();
+  const { data, error } = useQuery(teamGql.GET_ALL_TEAM, {
+    variables: { data: { page: 1, limit: 9 } },
+  });
+
+  if (error) {
+    console.log('get teams error', error);
+  }
+
+  if (data && teams.length < 1) {
+    console.log('data', data);
+    setTeams(data.getAllTeam.teams);
+  }
   return (
     <>
       <Container className={classes.cardGrid} maxWidth="md">
         {/* End hero unit */}
         <Grid container spacing={4}>
-          {cards.map((card) => (
-            <Grid item key={card} xs={12} sm={6} md={4}>
-              <Card className={classes.card}>
-                <CardMedia
-                  className={classes.cardMedia}
-                  image="https://source.unsplash.com/random"
-                  title="Image title"
-                />
-                <CardContent className={classes.cardContent}>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    Heading
-                  </Typography>
-                  <Typography>
-                    This is a media card. You can use this section to describe
-                    the content.
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <Link href="/view/post">
-                    <a>
-                      <Button size="small" color="primary">
-                        View
-                      </Button>
-                    </a>
-                  </Link>
-                  <Button size="small" color="primary">
-                    Edit
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
-          ))}
+          {teams.length > 0 &&
+            teams.map((team) => (
+              <Grid item key={team._id} xs={12} sm={6} md={4}>
+                <Card className={classes.card}>
+                  <CardMedia
+                    className={classes.cardMedia}
+                    image="https://source.unsplash.com/random"
+                    title="Image title"
+                  />
+                  <CardContent className={classes.cardContent}>
+                    <Typography gutterBottom variant="h5" component="h2">
+                      {team.title}
+                    </Typography>
+                    <Typography>{team.desc}</Typography>
+                  </CardContent>
+                  <CardActions>
+                    <Link
+                      href={`/view/team?room=${team.title}&name=${user.data.getCurrentUser.name}`}
+                    >
+                      <a>
+                        <Button size="small" color="primary">
+                          View
+                        </Button>
+                      </a>
+                    </Link>
+                    <Button size="small" color="primary">
+                      Edit
+                    </Button>
+                  </CardActions>
+                </Card>
+              </Grid>
+            ))}
         </Grid>
       </Container>
     </>

@@ -5,10 +5,14 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import CategoryGql from '../../lib/gql/categoryGql';
 import TeamListFilterDialog from './TeamListFiterDialog';
+import CreateTeamDialog from './CreateTeamDialog';
+import teamGql from '../../lib/gql/teamGql';
 
 interface TeamHeaderProps {
   location: string;
   skillset: string;
+  setTeams: any;
+  teams: any;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -21,7 +25,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const TeamHeader = ({ location, skillset }: TeamHeaderProps) => {
+const TeamHeader = ({
+  location,
+  skillset,
+  setTeams,
+  teams,
+}: TeamHeaderProps) => {
   const classes = useStyles();
   const { categoryArray, skillsetData } = CategoryGql.loadAllCategory();
   return (
@@ -69,9 +78,12 @@ const TeamHeader = ({ location, skillset }: TeamHeaderProps) => {
                 />
               </Grid>
               <Grid item>
-                <Button variant="outlined" color="primary">
-                  Create New Team
-                </Button>
+                <CreateTeamDialog
+                  categoryArray={categoryArray}
+                  skillsetData={skillsetData}
+                  teams={teams}
+                  setTeams={setTeams}
+                />
               </Grid>
             </Grid>
           </div>
