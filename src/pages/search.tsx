@@ -1,19 +1,27 @@
 import React, { ReactNode, useEffect, useState } from 'react';
 import { NextPage, NextPageContext } from 'next';
-import NaverAPIMap from '../component/search/map/NaverAPIMap';
-import { RenderAfterNavermapsLoaded } from 'react-naver-maps';
-import SearchFilterBox from '../component/search/filterbox/SelectFilterBox';
-import SearchingUserList from '../component/search/users/SearchingUserList';
-import Search from '../component/search';
+import TotalSearchHeader from '../component/common/layout/search/TotalSearchHeader';
+import TotalSearchBody from '../component/common/layout/search/TotalSearchBody';
 
-const SearchPage: NextPage = () => {
+interface TotalSearchProps {
+  searchWord: string;
+  filter: string;
+}
+
+const TotalSerach: NextPage<TotalSearchProps> = ({ searchWord, filter }) => {
   return (
     <>
       <main>
-        <Search/>
+        <TotalSearchHeader searchWord={searchWord} filter={filter} />
+        <TotalSearchBody searchWord={searchWord} filter={filter} />
       </main>
     </>
   );
 };
 
-export default SearchPage;
+TotalSerach.getInitialProps = async (ctx: NextPageContext) => {
+  const { q, filter } = ctx.query;
+  return { searchWord: q as string, filter: filter as string };
+};
+
+export default TotalSerach;

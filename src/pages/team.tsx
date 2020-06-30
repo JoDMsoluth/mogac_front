@@ -11,6 +11,7 @@ interface TeamPageProps {
 
 const TeamPage: NextPage<TeamPageProps> = ({ location, skillset }) => {
   const [teams, setTeams] = useState([]);
+  console.log('remnder');
   return (
     <>
       <CssBaseline />
@@ -23,7 +24,7 @@ const TeamPage: NextPage<TeamPageProps> = ({ location, skillset }) => {
         />
         <TeamListCard
           skillset={skillset}
-          location={skillset}
+          location={location}
           teams={teams}
           setTeams={setTeams}
         />

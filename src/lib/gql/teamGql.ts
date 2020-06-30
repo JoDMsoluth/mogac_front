@@ -25,9 +25,25 @@ const GET_ALL_TEAM = gql`
   }
 `;
 
+const GET_FILTER_TEAM = gql`
+  query getFilterTeam($data: FilterPaginateArgType!) {
+    getFilterTeam(data: $data) {
+      teams {
+        _id
+        title
+        desc
+        location
+        category
+      }
+      lastPage
+    }
+  }
+`;
+
 const teamGql = {
   ADD_TEAM,
   GET_ALL_TEAM,
+  GET_FILTER_TEAM,
 };
 
 export default teamGql;

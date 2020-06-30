@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -52,18 +52,29 @@ const TeamListCard = ({
 }: TeamListCardProps) => {
   const classes = useStyles();
   const [user, _] = useAuth();
-  const { data, error } = useQuery(teamGql.GET_ALL_TEAM, {
-    variables: { data: { page: 1, limit: 9 } },
-  });
-
+  console.log(teams);
+  const { data, error } =
+    location || skillset
+      ? useQuery(teamGql.GET_FILTER_TEAM, {
+          variables: {
+            data: { page: 1, limit: 9, location: location, category: skillset },
+          },
+        })
+      : useQuery(teamGql.GET_ALL_TEAM, {
+          variables: { data: { page: 1, limit: 9 } },
+        });
   if (error) {
     console.log('get teams error', error);
   }
+  useEffect(() => {
+    if (data) {
+      console.log('data', data);
+      location || skillset
+        ? setTeams(data.getFilterTeam.teams)
+        : setTeams(data.getAllTeam.teams);
+    }
+  }, [data, location, skillset, teams]);
 
-  if (data && teams.length < 1) {
-    console.log('data', data);
-    setTeams(data.getAllTeam.teams);
-  }
   return (
     <>
       <Container className={classes.cardGrid} maxWidth="md">

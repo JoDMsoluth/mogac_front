@@ -57,7 +57,7 @@ const AppBurgerBar = ({ open, handleDrawerClose }: AppHeaderProps) => {
                 </ListItem>
               </a>
             </Link>
-            <Link href="/search">
+            <Link href="/user/search">
               <a>
                 <ListItem button>
                   <ListItemIcon>

@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { makeStyles, fade } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
+import { useRouter } from 'next/router';
+import useInput from '../../../../lib/hooks/useInput';
 
 const useStyles = makeStyles((theme) => ({
   search: {
@@ -45,9 +47,37 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SearchBar() {
   const classes = useStyles();
+  const router = useRouter();
+  const [searchWord, setSearchWord] = useState('');
+
+  const changeSearchWord = useCallback(
+    (e) => {
+      setSearchWord(e.target.value);
+    },
+    [searchWord],
+  );
+
+  const totalSearch = () => {
+    if (searchWord.length > 0) router.push(`/search?q=${searchWord}`);
+    setSearchWord('');
+  };
+
+  const enterKey = (e: KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      totalSearch();
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('keydown', enterKey);
+    return () => {
+      window.removeEventListener('keydown', enterKey);
+    };
+  });
+
   return (
     <div className={classes.search}>
-      <div className={classes.searchIcon}>
+      <div className={classes.searchIcon} onClick={totalSearch}>
         <SearchIcon />
       </div>
       <InputBase
@@ -56,7 +86,9 @@ export default function SearchBar() {
           root: classes.inputRoot,
           input: classes.inputInput,
         }}
+        value={searchWord}
         inputProps={{ 'aria-label': 'search' }}
+        onChange={changeSearchWord}
       />
     </div>
   );
