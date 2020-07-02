@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
@@ -10,10 +10,10 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Link from 'next/link';
 import { useAuth } from '../../../../utils/auth/AuthProvider';
+import { useQuery } from '@apollo/react-hooks';
+import searchGql from '../../../../lib/gql/searchGql';
 
 interface SearchTeamListCardProps {
-  teams: any;
-  setTeams: any;
   searchWord: string;
 }
 
@@ -40,11 +40,26 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SearchTeamListCard({
   searchWord,
-  teams,
-  setTeams,
 }: SearchTeamListCardProps) {
   const classes = useStyles();
   const [user, _] = useAuth();
+  const [teams, setTeams] = useState([]);
+  const { data, error } = useQuery(searchGql.GET_SEARCH_TEAM, {
+    variables: {
+      searchWord,
+      page: 1,
+    },
+  });
+
+  if (error) {
+    console.log('get teams error', error);
+  }
+  useEffect(() => {
+    if (data) {
+      setTeams(data.totalSearchTeam.teams);
+    }
+  }, [data, teams]);
+
   return (
     <>
       <Container className={classes.cardGrid} maxWidth="md">

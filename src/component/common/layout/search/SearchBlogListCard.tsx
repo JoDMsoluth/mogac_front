@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
@@ -9,10 +9,10 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Link from 'next/link';
+import { useQuery } from '@apollo/react-hooks';
+import searchGql from '../../../../lib/gql/searchGql';
 
 interface SearchBlogListCardProps {
-  posts: any;
-  setPosts: any;
   searchWord: string;
 }
 
@@ -37,12 +37,27 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SearchTeamListCard({
+export default function SearchBlogListCard({
   searchWord,
-  posts,
-  setPosts,
 }: SearchBlogListCardProps) {
   const classes = useStyles();
+  const [posts, setPosts] = useState([]);
+  const { data, error } = useQuery(searchGql.GET_SEARCH_BLOG, {
+    variables: {
+      searchWord,
+      page: 1,
+    },
+  });
+
+  if (error) {
+    console.log('get posts error', error);
+  }
+  useEffect(() => {
+    if (data) {
+      setPosts(data.totalSearchPost.posts);
+    }
+  }, [data, posts]);
+
   return (
     <>
       <Container className={classes.cardGrid} maxWidth="md">

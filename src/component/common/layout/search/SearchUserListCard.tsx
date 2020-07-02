@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
@@ -10,10 +10,10 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Link from 'next/link';
 import { useAuth } from '../../../../utils/auth/AuthProvider';
+import { useQuery } from '@apollo/react-hooks';
+import searchGql from '../../../../lib/gql/searchGql';
 
 interface SearchUserListCardProps {
-  users: any;
-  setUsers: any;
   searchWord: string;
 }
 
@@ -40,11 +40,26 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SearchUserListCard({
   searchWord,
-  users,
-  setUsers,
 }: SearchUserListCardProps) {
   const classes = useStyles();
   const [user, _] = useAuth();
+  const [users, setUsers] = useState([]);
+
+  const { data, error } = useQuery(searchGql.GET_SEARCH_USER, {
+    variables: {
+      searchWord,
+      page: 1,
+    },
+  });
+
+  if (error) {
+    console.log('get users error', error);
+  }
+  useEffect(() => {
+    if (data) {
+      setUsers(data.totalSearchUser.users);
+    }
+  }, [data, users]);
   return (
     <>
       <Container className={classes.cardGrid} maxWidth="md">
@@ -63,7 +78,7 @@ export default function SearchUserListCard({
                     <Typography gutterBottom variant="h5" component="h2">
                       {user.name}
                     </Typography>
-                    <Typography>{user.desc}</Typography>
+                    <Typography>{user.ableSkillSet}</Typography>
                   </CardContent>
                   <CardActions>
                     <Link href={`/view/user?userId=${user._id}`}>
