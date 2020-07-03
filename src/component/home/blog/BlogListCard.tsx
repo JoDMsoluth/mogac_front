@@ -69,7 +69,7 @@ const BlogListCard = ({ page }) => {
                   </CardContent>
                   <CardActions>
                     <Link
-                      href={`/view/post?post=${post._id}&name=${post.postedBy.name}`}
+                      href={`/view/post?post=${post._id}&userId=${post.postedBy._id}`}
                     >
                       <a>
                         <Button size="small" color="primary">

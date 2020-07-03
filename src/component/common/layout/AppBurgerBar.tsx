@@ -19,6 +19,7 @@ import {
   AccountBox,
 } from '@material-ui/icons';
 import { drawerWidth } from './AppLayout';
+import { useAuth } from '../../../utils/auth/AuthProvider';
 
 interface AppHeaderProps {
   open: boolean;
@@ -26,6 +27,7 @@ interface AppHeaderProps {
 }
 
 const AppBurgerBar = ({ open, handleDrawerClose }: AppHeaderProps) => {
+  const [{ data }, _] = useAuth();
   return (
     <>
       <Drawer variant="persistent" open={open}>
@@ -67,7 +69,7 @@ const AppBurgerBar = ({ open, handleDrawerClose }: AppHeaderProps) => {
                 </ListItem>
               </a>
             </Link>
-            <Link href="/blog">
+            <Link href={`/blog?userId=${data.getCurrentUser._id}`}>
               <a>
                 <ListItem button>
                   <ListItemIcon>

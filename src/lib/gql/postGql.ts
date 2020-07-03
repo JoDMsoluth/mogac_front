@@ -14,6 +14,7 @@ const GET_ALL_POSTS = gql`
         category
         tags
         postedBy {
+          _id
           name
           image_url
         }
@@ -21,7 +22,25 @@ const GET_ALL_POSTS = gql`
     }
   }
 `;
-
+const GET_ALL_POSTS_BY_USER = gql`
+  query getAllPostsByUser($userId: String!, $page: Int!) {
+    getAllPostsByUser(userId: $userId, page: $page) {
+      _id
+      name
+      image_url
+      posts {
+        _id
+        createdAt
+        title
+        desc
+        contents
+        views
+        category
+        tags
+      }
+    }
+  }
+`;
 const GET_POST_FOR_VIEW = gql`
   query getPostForView($postId: String!) {
     getPost(postId: $postId) {
@@ -64,8 +83,8 @@ const ADD_POST = gql`
 `;
 
 const GET_ALL_POSTS_BY_USER_FOR_POST_VIEW = gql`
-  query getAllPostsForPostView($name: String!) {
-    getAllPostsForPostView(name: $name) {
+  query getAllPostsForPostView($userId: String!) {
+    getAllPostsForPostView(userId: $userId) {
       posts {
         _id
         title
@@ -92,10 +111,10 @@ const getAllPosts = (page: number) => {
   }
 };
 
-const getAllPostsByUserForPostView = (name: string) => {
-  console.log('name', name);
+const getAllPostsByUserForPostView = (userId: string) => {
+  console.log('userId', userId);
   const { data, error } = useQuery(GET_ALL_POSTS_BY_USER_FOR_POST_VIEW, {
-    variables: { name },
+    variables: { userId },
   });
   if (error) {
     console.log('get posts error', error);
@@ -124,6 +143,7 @@ const getPostForView = (postId: string) => {
 
 const postGql = {
   ADD_POST,
+  GET_ALL_POSTS_BY_USER,
   getAllPosts,
   getPostForView,
   getAllPostsByUserForPostView,

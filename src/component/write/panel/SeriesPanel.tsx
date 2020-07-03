@@ -1,4 +1,4 @@
-import react, { useState, useCallback, FC } from 'react';
+import react, { useState, useCallback, FC, useEffect } from 'react';
 import { Select } from '@material-ui/core';
 import useInput from '../../../lib/hooks/useInput';
 import { useUser } from '../../../utils/user/UserProvide';
@@ -30,16 +30,17 @@ export default function SeriesPanel() {
     },
     [openPanel, seriesId],
   );
-  if (loading) {
-    return <div></div>;
-  }
   if (error) {
     console.error(error);
   }
-  if (data && !series) {
-    console.log(data);
-    dispatch({ type: 'ChangeSeries', data: data.getAllSeriesByUser.series });
-  }
+
+  useEffect(() => {
+    if (data) {
+      console.log('data', data);
+      dispatch({ type: 'ChangeSeries', data: data.getAllSeriesByUser.series });
+    }
+  }, [data, series, dispatch]);
+
   return (
     <>
       <S.SelectWrap>

@@ -7,16 +7,16 @@ import WithWrite from '../../utils/write/WithWrite';
 
 interface ViewPostPageProps {
   postId: string;
-  name: string;
+  userId: string;
 }
 
-const ViewPostPage: NextPage<ViewPostPageProps> = ({ postId, name }) => {
+const ViewPostPage: NextPage<ViewPostPageProps> = ({ postId, userId }) => {
   return (
     <>
       <WithWrite>
         <AppLayout>
           <main>
-            <PostView postId={postId} name={name} />
+            <PostView postId={postId} userId={userId} />
           </main>
         </AppLayout>
       </WithWrite>
@@ -25,9 +25,9 @@ const ViewPostPage: NextPage<ViewPostPageProps> = ({ postId, name }) => {
 };
 
 ViewPostPage.getInitialProps = async (ctx: NextPageContext) => {
-  const { post, name } = ctx.query;
-  console.log(post, name);
-  return { postId: post as string, name: name as string };
+  const { post, userId } = ctx.query;
+  console.log(post, userId);
+  return { postId: post as string, userId: userId as string };
 };
 
 export default ViewPostPage;

@@ -43,6 +43,11 @@ const GET_SEARCH_BLOG = gql`
         views
         category
         tags
+        postedBy {
+          _id
+          name
+          image_url
+        }
       }
       lastPage
     }

@@ -58,7 +58,7 @@ export default function SearchBar() {
   );
 
   const totalSearch = () => {
-    if (searchWord.length > 0) router.push(`/search?q=${searchWord}`);
+    if (searchWord.length > 0) router.push(`/search?q=${searchWord}&filter=blog`);
     setSearchWord('');
   };
 

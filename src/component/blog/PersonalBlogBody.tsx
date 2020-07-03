@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import React from 'react';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -7,14 +6,9 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from 'next/link';
-import { useQuery } from '@apollo/react-hooks';
-import searchGql from '../../../../lib/gql/searchGql';
-
-interface SearchBlogListCardProps {
-  searchWord: string;
-}
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -37,51 +31,44 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SearchBlogListCard({
-  searchWord,
-}: SearchBlogListCardProps) {
+interface PersonalBlogBodyProps {
+  page?: number;
+  posts: any;
+  userId: string;
+}
+const PersonalBlogBody = ({ page, posts, userId }: PersonalBlogBodyProps) => {
+  console.log('page', page);
   const classes = useStyles();
-  const [posts, setPosts] = useState([]);
-  const { data, error } = useQuery(searchGql.GET_SEARCH_BLOG, {
-    variables: {
-      searchWord,
-      page: 1,
-    },
-  });
-
-  if (error) {
-    console.log('get posts error', error);
-  }
-  useEffect(() => {
-    if (data) {
-      setPosts(data.totalSearchPost.posts);
-    }
-  }, [data, posts]);
+  console.log(posts);
 
   return (
     <>
       <Container className={classes.cardGrid} maxWidth="md">
         {/* End hero unit */}
         <Grid container spacing={4}>
-          {posts.length > 0 &&
-            posts.map((post) => (
-              <Grid item key={post._id} xs={12} sm={6} md={4}>
+          {posts?.length > 0 &&
+            posts.map((post, i) => (
+              <Grid item key={`${i}${post.title}`} xs={12} sm={6} md={4}>
                 <Card className={classes.card}>
                   <CardMedia
                     className={classes.cardMedia}
-                    image="https://source.unsplash.com/random"
+                    image={
+                      post.cover_img || 'https://source.unsplash.com/random'
+                    }
                     title="Image title"
                   />
                   <CardContent className={classes.cardContent}>
                     <Typography gutterBottom variant="h5" component="h2">
-                      {post.title}
+                      {post.title || `Heading`}
                     </Typography>
-                    <Typography>{post.desc}</Typography>
+                    <Typography>
+                      {post.desc ||
+                        post.content ||
+                        `This is a media card. You can use this section to describe the content.`}
+                    </Typography>
                   </CardContent>
                   <CardActions>
-                    <Link
-                      href={`/view/post?post=${post._id}&userId=${post.postedBy._id}`}
-                    >
+                    <Link href={`/view/post?post=${post._id}&userId=${userId}`}>
                       <a>
                         <Button size="small" color="primary">
                           View
@@ -99,4 +86,6 @@ export default function SearchBlogListCard({
       </Container>
     </>
   );
-}
+};
+
+export default PersonalBlogBody;

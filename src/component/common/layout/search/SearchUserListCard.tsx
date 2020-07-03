@@ -81,7 +81,7 @@ export default function SearchUserListCard({
                     <Typography>{user.ableSkillSet}</Typography>
                   </CardContent>
                   <CardActions>
-                    <Link href={`/view/user?userId=${user._id}`}>
+                    <Link href={`/blog?userId=${user._id}`}>
                       <a>
                         <Button size="small" color="primary">
                           View

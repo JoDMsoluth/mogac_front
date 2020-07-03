@@ -30,12 +30,12 @@ const mainFeaturedPost = {
 
 interface PostViewProps {
   postId: string;
-  name: string;
+  userId: string;
 }
-export default function PostView({ postId, name }: PostViewProps) {
+export default function PostView({ postId, userId }: PostViewProps) {
   const classes = useStyles();
   const post = postGql.getPostForView(postId);
-  const posts = postGql.getAllPostsByUserForPostView(name);
+  const posts = postGql.getAllPostsByUserForPostView(userId);
   const { state, dispatch } = useWrite();
 
   const index = posts && posts.findIndex((v) => v._id == postId);

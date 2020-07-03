@@ -23,7 +23,7 @@ export const initialWriteState: IinitialWriteState = {
   skillset: '',
   seriesId: '',
   seriesTitle: '',
-  series: null,
+  series: [],
   comments: null,
 };
 

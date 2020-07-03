@@ -26,7 +26,6 @@ export default function PostRightPanel() {
   );
 
   useEffect(() => {
-    console.log('category, skillset1', category, skillset);
     if (!loading) {
       if (categoryArray[0])
         dispatch({ type: 'ChangeCategory', data: categoryArray[0] });
