@@ -1,4 +1,4 @@
-import react, { useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Avatar } from '@material-ui/core';
 import palette from '../../../lib/pallete';
@@ -8,6 +8,7 @@ import { FlashOn } from '@material-ui/icons';
 const userAvatar = require('../../../static/images/avatar/1.jpg');
 
 interface UserAvatarProps {
+  id?: string;
   name?: string;
   skill?: string;
   level?: number;
@@ -16,6 +17,7 @@ interface UserAvatarProps {
 }
 
 export default function UserAvatar({
+  id,
   name,
   skill,
   level,
@@ -60,6 +62,7 @@ export default function UserAvatar({
           anchorEl={anchorEl}
           handleMenuClose={handleMenuClose}
           isTeam={isTeam}
+          userId={id}
         />
       </S.AvatarWrap>
     </>

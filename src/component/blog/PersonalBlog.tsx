@@ -29,8 +29,12 @@ const PersonalBlog = ({ userId }: PersonalBlogProps) => {
   }, [data, posts]);
   return (
     <>
-      <PersonalBlogHeader userName={posts.name} />
-      <PersonalBlogBody page={1} posts={posts.posts} userId={userId} />
+      {posts && (
+        <>
+          <PersonalBlogHeader userName={posts.name} />
+          <PersonalBlogBody page={1} posts={posts.posts} userId={userId} />
+        </>
+      )}
     </>
   );
 };

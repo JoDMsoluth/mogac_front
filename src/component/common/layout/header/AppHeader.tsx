@@ -36,10 +36,12 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
+
 interface AppHeaderProps {
   open: boolean;
   handleDrawerOpen: any;
 }
+
 export default function AppHeader({ open, handleDrawerOpen }: AppHeaderProps) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
