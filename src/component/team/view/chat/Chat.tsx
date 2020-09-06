@@ -6,8 +6,6 @@ import Messages from '../messages/Messages';
 import InfoBar from '../InfoBar/InfoBar';
 import Input from '../input/Input';
 
-import './Chat.css';
-
 let socket;
 
 const Chat = ({ initName, initRoom }) => {

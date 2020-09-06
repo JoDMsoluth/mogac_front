@@ -80,6 +80,8 @@ export default function NaverAPIMap({
           ableLocation={ableLocation}
           ableSkillSet={ableSkillSet}
           level={level}
+          currentLat={currentLat}
+          currentLng={currentLng}
         />
       ) : (
         ''

@@ -131,10 +131,14 @@ const GET_NEAR_USERS_BY_MATCHING = gql`
   query getNearUsersByMatching(
     $ableSkillSet: [String!]!
     $ableLocation: [String!]!
+    $x_pos: Float!
+    $y_pos: Float!
   ) {
     getNearUsersByMatching(
       ableSkillSet: $ableSkillSet
       ableLocation: $ableLocation
+      x_pos: $x_pos
+      y_pos: $y_pos
     ) {
       _id
       name

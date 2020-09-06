@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Message from '../component/message/Message';
 import Modal from '../component/modal/Modal';
-import MessageItem from '../component/common/layout/message/MessageItem';
+import MessageBox from '../component/common/layout/message/MessageBox';
 
 const TeamPage = () => {
   const [visible, setVisible] = useState(false);
@@ -17,9 +17,7 @@ const TeamPage = () => {
           render={<Message />}
         ></Modal>
       </main>
-      <div style={{ background: 'yellow' }}>
-        <MessageItem />
-      </div>
+      <div style={{ background: 'yellow' }}></div>
     </>
   );
 };

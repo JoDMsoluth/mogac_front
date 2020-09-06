@@ -1,3 +1,4 @@
+import { useQuery } from '@apollo/react-hooks';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -15,9 +16,9 @@ export default function MessageList() {
   return (
     <>
       <S.Container>
-        <span>{dummyData?.sendUser}</span>
-        <span>{dummyData?.sendDate}</span>
-        <span>{dummyData?.title}</span>
+        <td>{dummyData?.sendUser}</td>
+        <td>{dummyData?.sendDate}</td>
+        <td>{dummyData?.title}</td>
       </S.Container>
     </>
   );
@@ -25,11 +26,10 @@ export default function MessageList() {
 
 const S: any = {};
 
-S.Container = styled.div`
+S.Container = styled.tr`
   display: flex;
   justify-content: space-between;
-  width: 20rem;
-  height: 10rem;
+  height: 5rem;
   overflow: auto;
   margin: 0.5rem 0.5rem 0 0.5rem;
 `;

@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { IconButton, Badge } from '@material-ui/core';
+import { IconButton, Badge, NoSsr } from '@material-ui/core';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import styled from 'styled-components';
+import MessageBox from '../message/MessageBox';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -33,6 +34,7 @@ export default function ToolbarItemList({
   handleProfileMenuOpen,
   handleMobileMenuOpen,
 }: ToolbarItemListProps) {
+  const [toggleNoti, setToggleNoti] = useState(false);
   const classes = useStyles();
   const menuId = 'primary-search-account-menu';
   const mobileMenuId = 'primary-search-account-menu-mobile';
@@ -40,16 +42,18 @@ export default function ToolbarItemList({
     <>
       <div className={classes.grow} />
       <div className={classes.sectionDesktop}>
-        <IconButton aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="secondary">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <IconButton aria-label="show 17 new notifications" color="inherit">
+        {/* 알림 아이콘 */}
+        <S.NotificationIcon
+          aria-label="show 17 new notifications"
+          color="inherit"
+          onClick={() => setToggleNoti(!toggleNoti)}
+        >
           <Badge badgeContent={17} color="secondary">
             <NotificationsIcon />
+            <MessageBox toggle={toggleNoti} />
           </Badge>
-        </IconButton>
+        </S.NotificationIcon>
+        {/* 유저 아이콘 */}
         <IconButton
           edge="end"
           aria-label="account of current user"
@@ -61,6 +65,7 @@ export default function ToolbarItemList({
           <AccountCircle />
         </IconButton>
       </div>
+      {/* 모바일 버전 */}
       <div className={classes.sectionMobile}>
         <IconButton
           aria-label="show more"
@@ -75,3 +80,9 @@ export default function ToolbarItemList({
     </>
   );
 }
+
+const S: any = {};
+
+S.NotificationIcon = styled(IconButton)`
+  position: relative;
+`;

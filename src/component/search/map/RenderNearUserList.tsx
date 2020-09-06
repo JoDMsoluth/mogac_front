@@ -9,12 +9,16 @@ interface RenderNearUserListProps {
   ableLocation: any;
   ableSkillSet: any;
   level: number;
+  currentLat: number;
+  currentLng: number;
 }
 export default function RenderNearUserList({
   map,
   ableLocation,
   ableSkillSet,
   level,
+  currentLat,
+  currentLng,
 }) {
   console.log('make', makeAbleSkillSetLevel(ableSkillSet, level));
   const { error, loading, data } = useQuery(
@@ -23,6 +27,8 @@ export default function RenderNearUserList({
       variables: {
         ableLocation,
         ableSkillSet: makeAbleSkillSetLevel(ableSkillSet, level),
+        x_pos: currentLng,
+        y_pos: currentLat,
       },
     },
   );
