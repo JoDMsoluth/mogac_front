@@ -1,19 +1,22 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import UserAvatar from '../../common/utils/UserAvatar';
 import styled from 'styled-components';
 import { Button } from '@material-ui/core';
+import Modal from '../../modal/Modal';
 import palette from '../../../lib/pallete';
 import {
   getSkillFormat,
   skillLevelSum,
 } from '../../../lib/utils/skillLevelFormat';
 import { useRouter } from 'next/router';
+import InviteTeamModal from '../../modal/InviteTeamModal';
 
 interface SearchingUserCardProps {
   user: any;
 }
 export default function SearchingUserCard({ user }: SearchingUserCardProps) {
   const { ableSkillSet, ableLocation, image_url, name, level, _id } = user;
+  const [visibleTeamModal, setVisibleTeamModal] = useState<boolean>(false);
   const LocationFormat: { pubLocation: string; subLocation: string }[] = [];
   const router = useRouter();
 
@@ -68,12 +71,21 @@ export default function SearchingUserCard({ user }: SearchingUserCardProps) {
             <Button color="primary" variant="contained">
               쪽지
             </Button>
-            <Button color="primary" variant="contained">
+            <Button
+              color="primary"
+              variant="contained"
+              onClick={() => setVisibleTeamModal(!visibleTeamModal)}
+            >
               팀초대
             </Button>
           </S.ButtonWrap>
         </S.UserDescWrap>
       </S.SearchUserCardWarp>
+      <Modal
+        visible={visibleTeamModal}
+        setVisible={setVisibleTeamModal}
+        render={<InviteTeamModal userId={_id} />}
+      />
     </>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -13,6 +13,7 @@ import teamGql from '../../lib/gql/teamGql';
 import { useQuery } from '@apollo/react-hooks';
 import { userReducer } from '../../utils/user/UserReducer';
 import { useAuth } from '../../utils/auth/AuthProvider';
+import { useRouter } from 'next/router';
 
 interface TeamListCardProps {
   location: string;
@@ -52,7 +53,9 @@ const TeamListCard = ({
 }: TeamListCardProps) => {
   const classes = useStyles();
   const [user, _] = useAuth();
+  const router = useRouter();
   console.log(teams);
+
   const { data, error } =
     location || skillset
       ? useQuery(teamGql.GET_FILTER_TEAM, {
@@ -63,9 +66,11 @@ const TeamListCard = ({
       : useQuery(teamGql.GET_ALL_TEAM, {
           variables: { data: { page: 1, limit: 9 } },
         });
+
   if (error) {
     console.log('get teams error', error);
   }
+
   useEffect(() => {
     if (data) {
       console.log('data', data);
@@ -74,6 +79,16 @@ const TeamListCard = ({
         : setTeams(data.getAllTeam.teams);
     }
   }, [data, location, skillset, teams]);
+
+  const clickVisitRoom = useCallback(
+    (url, users: Array<string>, userId, adminId) => () => {
+      console.log('users, userId', users, userId, adminId);
+      // 권한이 있거나 관리자거나 둘 중하나면 입장
+      if (users.includes(userId) || adminId == userId) router.push(url);
+      else alert('권한이 없습니다.');
+    },
+    [],
+  );
 
   return (
     <>
@@ -96,15 +111,18 @@ const TeamListCard = ({
                     <Typography>{team.desc}</Typography>
                   </CardContent>
                   <CardActions>
-                    <Link
-                      href={`/view/team?room=${team.title}&name=${user.data.getCurrentUser.name}`}
+                    <Button
+                      size="small"
+                      color="primary"
+                      onClick={clickVisitRoom(
+                        `/view/team?room=${team?.title}&name=${user?.data.getCurrentUser.name}`,
+                        team?.users,
+                        user?.data.getCurrentUser._id,
+                        team?.adminId,
+                      )}
                     >
-                      <a>
-                        <Button size="small" color="primary">
-                          View
-                        </Button>
-                      </a>
-                    </Link>
+                      View
+                    </Button>
                     <Button size="small" color="primary">
                       Edit
                     </Button>

@@ -1,4 +1,4 @@
-import react from 'react';
+import React from 'react';
 import UserAvatar from '../../common/utils/UserAvatar';
 import styled from 'styled-components';
 import { Typography, Button } from '@material-ui/core';
