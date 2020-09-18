@@ -45,7 +45,7 @@ const AppBurgerBar = ({ open, handleDrawerClose }: AppHeaderProps) => {
                   <ListItemIcon>
                     <Home />
                   </ListItemIcon>
-                  <ListItemText primary="Home" />
+                  <ListItemText primary="홈" />
                 </ListItem>
               </a>
             </Link>
@@ -55,7 +55,7 @@ const AppBurgerBar = ({ open, handleDrawerClose }: AppHeaderProps) => {
                   <ListItemIcon>
                     <AccountBox />
                   </ListItemIcon>
-                  <ListItemText primary="Profile" />
+                  <ListItemText primary="프로필" />
                 </ListItem>
               </a>
             </Link>
@@ -65,7 +65,7 @@ const AppBurgerBar = ({ open, handleDrawerClose }: AppHeaderProps) => {
                   <ListItemIcon>
                     <Pageview />
                   </ListItemIcon>
-                  <ListItemText primary="Search" />
+                  <ListItemText primary="나에게 맞는 개발자 찾기" />
                 </ListItem>
               </a>
             </Link>
@@ -75,7 +75,7 @@ const AppBurgerBar = ({ open, handleDrawerClose }: AppHeaderProps) => {
                   <ListItemIcon>
                     <Inbox />
                   </ListItemIcon>
-                  <ListItemText primary="Blog" />
+                  <ListItemText primary="내 블로그" />
                 </ListItem>
               </a>
             </Link>
@@ -85,7 +85,7 @@ const AppBurgerBar = ({ open, handleDrawerClose }: AppHeaderProps) => {
                   <ListItemIcon>
                     <GroupTwoTone />
                   </ListItemIcon>
-                  <ListItemText primary="Team" />
+                  <ListItemText primary="스터디 팀 목록" />
                 </ListItem>
               </a>
             </Link>
@@ -95,7 +95,7 @@ const AppBurgerBar = ({ open, handleDrawerClose }: AppHeaderProps) => {
                   <ListItemIcon>
                     <Mail />
                   </ListItemIcon>
-                  <ListItemText primary="About" />
+                  <ListItemText primary="문의하기" />
                 </ListItem>
               </a>
             </Link>

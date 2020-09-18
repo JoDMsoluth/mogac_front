@@ -23,6 +23,7 @@ import {
   removeTokenFromCookies,
   logout,
 } from '../../utils/auth/helpers';
+import PushNotification from '../common/utils/PushNotification';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -97,6 +98,7 @@ const LoginForm = () => {
 
   return (
     <Grid container component="main" className={classes.root}>
+      {typeof window !== 'undefined' && <PushNotification />}
       <CssBaseline />
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>

@@ -31,7 +31,7 @@ const BlogHeader = () => {
             color="textPrimary"
             gutterBottom
           >
-            Blog Post List
+            블로그
           </Typography>
           <Typography
             variant="h5"
@@ -39,14 +39,15 @@ const BlogHeader = () => {
             color="textSecondary"
             paragraph
           >
-            블로그 포스트 페이지 입니다.
+            매일 블로그에 정리를 한다면 스터디를 하는데 좋은 동기부여가 될
+            것입니다. 자신이 공부한 내용을 다른 사람과 공유해보세요.
           </Typography>
 
           <div className={classes.heroButtons}>
             <Grid container spacing={2} justify="center">
               <Grid item>
                 <Button variant="contained" color="primary">
-                  블로그 필터링
+                  상세 검색
                 </Button>
               </Grid>
               <Grid item>

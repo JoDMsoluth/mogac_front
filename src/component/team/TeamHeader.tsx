@@ -52,7 +52,8 @@ const TeamHeader = ({
             color="textSecondary"
             paragraph
           >
-            팀 리스트 페이지입니다;
+            자신의 팀원들과 소통할 수 있습니다. 팀원들과 스터디 약속을
+            잡아보세요.
           </Typography>
 
           {location || skillset ? (
@@ -62,7 +63,7 @@ const TeamHeader = ({
               color="textSecondary"
               paragraph
             >
-              필터결과
+              상세검색결과
               <br></br>
               {location && `스터디 지역 : ${location}\n`}
               <br></br>

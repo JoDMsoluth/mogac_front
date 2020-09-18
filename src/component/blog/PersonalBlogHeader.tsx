@@ -33,7 +33,7 @@ const PersonalBlogHeader = ({ userName }) => {
             color="textPrimary"
             gutterBottom
           >
-            Blog Post List
+            블로그
           </Typography>
           <Typography
             variant="h5"
@@ -41,14 +41,14 @@ const PersonalBlogHeader = ({ userName }) => {
             color="textSecondary"
             paragraph
           >
-            {`${userName}님의 블로그 포스트 페이지 입니다.`}
+            {`${userName}님의 블로그입니다.`}
           </Typography>
 
           <div className={classes.heroButtons}>
             <Grid container spacing={2} justify="center">
               <Grid item>
                 <Button variant="contained" color="primary">
-                  블로그 필터링
+                  상세검색
                 </Button>
               </Grid>
             </Grid>
