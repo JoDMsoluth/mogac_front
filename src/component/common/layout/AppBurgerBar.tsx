@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import {
   IconButton,
@@ -69,7 +69,7 @@ const AppBurgerBar = ({ open, handleDrawerClose }: AppHeaderProps) => {
                 </ListItem>
               </a>
             </Link>
-            <Link href={`/blog?userId=${data.getCurrentUser._id}`}>
+            <Link href={`/blog?userId=${data?.getCurrentUser._id}`}>
               <a>
                 <ListItem button>
                   <ListItemIcon>

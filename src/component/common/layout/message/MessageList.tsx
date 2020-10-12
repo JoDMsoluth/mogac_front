@@ -1,35 +1,51 @@
-import { useQuery } from '@apollo/react-hooks';
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
+import palette from '../../../../lib/pallete';
+import formatDate from '../../../../lib/utils/dateFormat';
+import MessageModal from '../../../modal/MessageModal';
+import Modal from '../../../modal/Modal';
 
-const dummyData = {
-  _id: 'string',
-  sendDate: 'Date',
-  receiveDate: 'Date',
-  title: 'string',
-  contents: 'string',
-  sendUser: 'any',
-  receiveUser: 'any',
-};
+interface MeesageListProps {
+  data : any;
+  setVisibleReadMessage : any;
+  visibleReadMessage: boolean;
+  selectedMessage : any;
+  setSelectedMessage : any;
+}
 
-export default function MessageList() {
+export default function MessageList({ data, setVisibleReadMessage, visibleReadMessage, selectedMessage, setSelectedMessage } : MeesageListProps) {
+  console.log('noti data', data);
+  
+
+  const toggleReadMessageModal = useCallback((message) => () => {
+    setVisibleReadMessage(true);
+    setSelectedMessage(message)
+  }, [visibleReadMessage, setVisibleReadMessage]);
+
   return (
     <>
-      <S.Container>
-        <td>{dummyData?.sendUser}</td>
-        <td>{dummyData?.sendDate}</td>
-        <td>{dummyData?.title}</td>
-      </S.Container>
+      {data?.map((message) => (
+        <>
+          {/* 클릭시 메시지 보기로 이동 */}
+          <S.Container onClick={toggleReadMessageModal(message)}>
+            <div>{formatDate(message?.createdAt) || '날짜'}</div>
+            <div>{message?.sendUserName || '제목'} 보냄</div>
+            <div>{message?.title || '내용'}</div>
+          </S.Container>
+        </>
+      ))}
     </>
   );
 }
 
 const S: any = {};
 
-S.Container = styled.tr`
+S.Container = styled.div`
+  background: ${palette.gray3};
+  color: ${palette.gray7};
   display: flex;
   justify-content: space-between;
-  height: 5rem;
+  padding: 0.5rem;
   overflow: auto;
-  margin: 0.5rem 0.5rem 0 0.5rem;
+  margin: 0.3rem 1rem;
 `;

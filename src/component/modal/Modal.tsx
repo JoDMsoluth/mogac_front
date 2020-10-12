@@ -66,23 +66,11 @@ S.Container = styled.div`
 
 S.Wrap = styled.div`
   z-index: 1060;
-  background: ${palette.gray3};
   color: white;
   position: absolute;
-  margin: 1.75rem auto;
   border-radius: 3px;
-  max-width: 620px;
-  padding: 30px;
+  max-width: 40.75rem;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-`;
-
-S.Header = styled.div`
-  margin-right: 40px;
-  display: flex;
-  justify-content: flex-end;
-  & > div {
-    cursor: pointer;
-  }
 `;

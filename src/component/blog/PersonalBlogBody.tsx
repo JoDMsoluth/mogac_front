@@ -9,6 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from 'next/link';
+import Pagination from '../common/pagination/Pagination';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -37,7 +38,7 @@ interface PersonalBlogBodyProps {
   userId: string;
 }
 const PersonalBlogBody = ({ page, posts, userId }: PersonalBlogBodyProps) => {
-  console.log('page', page);
+  console.log('Math.ceil(posts?.length / 9)', Math.ceil(posts?.length / 9));
   const classes = useStyles();
   console.log(posts);
 
@@ -53,7 +54,7 @@ const PersonalBlogBody = ({ page, posts, userId }: PersonalBlogBodyProps) => {
                   <CardMedia
                     className={classes.cardMedia}
                     image={
-                      post?.cover_img || 'https://source.unsplash.com/random'
+                      post?.cover_img || `https://picsum.photos/200/300?random=${i+page}`
                     }
                     title="Image title"
                   />
@@ -84,6 +85,12 @@ const PersonalBlogBody = ({ page, posts, userId }: PersonalBlogBodyProps) => {
             ))}
         </Grid>
       </Container>
+      <Pagination
+        url={`/blog?userId=${userId}`}
+        page={page}
+        lastPage={Math.ceil(posts?.length / 9)}
+        isQuery
+      />
     </>
   );
 };

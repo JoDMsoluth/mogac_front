@@ -1,11 +1,19 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { IconButton, Badge, NoSsr } from '@material-ui/core';
+import { useQuery } from '@apollo/react-hooks';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import styled from 'styled-components';
 import MessageBox from '../message/MessageBox';
+import notificationGql from '../../../../lib/gql/notificationGql';
+import messageGql from '../../../../lib/gql/messageGql';
+import { useRouter } from 'next/router';
+import Modal from '../../../modal/Modal';
+import NotificationBox from '../notification/NotificationBox';
+
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -35,6 +43,71 @@ export default function ToolbarItemList({
   handleMobileMenuOpen,
 }: ToolbarItemListProps) {
   const [toggleNoti, setToggleNoti] = useState(false);
+  const [toggleMessage, setToggleMessage] = useState(false);
+  const [messages, setMessages] = useState(null);
+  const [notifications, setNotifications] = useState(null);
+
+  const { data: notificationData, error: notificationError, refetch: notificationRefetch } = useQuery(
+    notificationGql.GET_ALL_NOTIFICATIONS,
+    {
+      variables: {
+        page: 1,
+      },
+    },
+  );
+
+  
+  const { data: messageData, error: messageError, refetch: messageRefetch } = useQuery(
+    messageGql.GET_ALL_MESSAGES,
+    {
+      variables: {
+        page: 1,
+      },
+    },
+  );
+
+  if (notificationError) {
+    console.log('get notifications error', notificationError);
+  }
+  if (messageError) {
+    console.log('get messages error', messageError);
+  }
+
+  notificationRefetch
+  useEffect(() => {
+    const interval = setInterval(() => {
+      notificationRefetch()
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      messageRefetch()
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+  useEffect(() => {
+    if (notificationData) {
+      setNotifications(notificationData.getAllNotifications.docs);
+    }
+  }, [notificationData, notifications]);
+
+  useEffect(() => {
+    if (messageData) {
+      setMessages(messageData.getAllMessages.docs);
+    }
+  }, [messageData, messages]);
+
+  const changeToggleNoti = useCallback(() => {
+    setToggleNoti(!toggleNoti);
+    setToggleMessage(false);
+  }, [toggleNoti, toggleMessage]);
+
+  const changeToggleMessage = useCallback(() => {
+    setToggleMessage(!toggleMessage);
+    setToggleNoti(false);
+  }, [toggleNoti, toggleMessage]);
+
   const classes = useStyles();
   const menuId = 'primary-search-account-menu';
   const mobileMenuId = 'primary-search-account-menu-mobile';
@@ -42,15 +115,33 @@ export default function ToolbarItemList({
     <>
       <div className={classes.grow} />
       <div className={classes.sectionDesktop}>
+        <IconButton
+          aria-label={`show ${notifications?.length || "0"} new mails`}
+          color="inherit"
+          onClick={changeToggleMessage}
+        >
+          <Badge badgeContent={messages?.length || 0} color="secondary">
+            <MailIcon />
+            <Modal
+              visible={toggleMessage}
+              setVisible={setToggleMessage}
+              render={<MessageBox data={messages} />}
+            />
+          </Badge>
+        </IconButton>
         {/* 알림 아이콘 */}
         <S.NotificationIcon
-          aria-label="show 17 new notifications"
+          aria-label={`show ${notifications?.length || "0"} new notifications`}
           color="inherit"
-          onClick={() => setToggleNoti(!toggleNoti)}
+          onClick={changeToggleNoti}
         >
-          <Badge badgeContent={17} color="secondary">
+          <Badge badgeContent={notifications?.length || 0} color="secondary">
             <NotificationsIcon />
-            <MessageBox toggle={toggleNoti} />
+            <Modal
+              visible={toggleNoti}
+              setVisible={setToggleNoti}
+              render={<NotificationBox data={notifications} />}
+            />
           </Badge>
         </S.NotificationIcon>
         {/* 유저 아이콘 */}

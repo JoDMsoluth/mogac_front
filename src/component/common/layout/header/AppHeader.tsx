@@ -81,6 +81,7 @@ export default function AppHeader({ open, handleDrawerOpen }: AppHeaderProps) {
             Cosmos
           </Typography>
           <SearchBar />
+          {/* 아이템리스트 */}
           <ToolbarItemList
             handleProfileMenuOpen={handleProfileMenuOpen}
             handleMobileMenuOpen={handleMobileMenuOpen}

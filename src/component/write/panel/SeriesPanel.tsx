@@ -1,8 +1,4 @@
 import react, { useState, useCallback, FC, useEffect } from 'react';
-import { Select } from '@material-ui/core';
-import useInput from '../../../lib/hooks/useInput';
-import { useUser } from '../../../utils/user/UserProvide';
-import { useAuth } from '../../../utils/auth/AuthProvider';
 import { useQuery } from '@apollo/react-hooks';
 import UserGql from '../../../lib/gql/userGql';
 import styled from 'styled-components';
@@ -17,6 +13,8 @@ export default function SeriesPanel() {
   const { series, seriesTitle, seriesId } = state;
   const [openPanel, setOpenPanel] = useState<boolean>(false);
   const [toggleAddPanel, setToggleAddPanel] = useState<boolean>(false);
+
+  console.log('series', series);
 
   const changeOpenPanel = useCallback(() => {
     setOpenPanel(!openPanel);
@@ -39,7 +37,7 @@ export default function SeriesPanel() {
       console.log('data', data);
       dispatch({ type: 'ChangeSeries', data: data.getAllSeriesByUser.series });
     }
-  }, [data, series, dispatch]);
+  }, [data, dispatch]);
 
   return (
     <>

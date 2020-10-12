@@ -12,7 +12,7 @@ const ADD_TEAM = gql`
 `;
 
 const INVITE_USER_TO_TEAM = gql`
-  mutation inviteUserToTeam($userId: String!, $teamId: String!) {
+  mutation inviteUserToTeam($userId: ObjectId!, $teamId: ObjectId!) {
     inviteUserToTeam(userId: $userId, teamId: $teamId) {
       users
     }
@@ -20,8 +20,24 @@ const INVITE_USER_TO_TEAM = gql`
 `;
 
 const GET_ALL_TEAM_BY_USER = gql`
-  query getAllTeamsByUser {
-    getAllTeamsByUser {
+  query getAllTeamsByUser($userId: String!, $page: Int!) {
+    getAllTeamsByUser(userId: $userId, page: $page) {
+      teams {
+        _id
+        title
+        desc
+        location
+        category
+        users
+        adminId
+      }
+    }
+  }
+`;
+
+const GET_ALL_TEAM_BY_ME = gql`
+  query getAllTeamsByMe {
+    getAllTeamsByMe {
       _id
       adminId
       title
@@ -67,6 +83,7 @@ const teamGql = {
   GET_ALL_TEAM,
   GET_FILTER_TEAM,
   GET_ALL_TEAM_BY_USER,
+  GET_ALL_TEAM_BY_ME,
   INVITE_USER_TO_TEAM,
 };
 

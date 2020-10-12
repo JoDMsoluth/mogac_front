@@ -30,7 +30,7 @@ export default function EditPane() {
           name="title"
           value={state.title}
         />
-        <CodeWithCodemirror />
+        {typeof window !== 'undefined' && <CodeWithCodemirror />}
       </S.WriteHeadBarWrap>
     </>
   );

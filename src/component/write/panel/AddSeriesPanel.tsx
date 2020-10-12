@@ -42,6 +42,7 @@ export default function AddSeriesPanel({
       });
       if (result) {
         dispatch({ type: 'AddSeries', data: result.data.createSeries });
+        console.log('result.data.createSeries', result.data.createSeries);
       }
       setToggleAddPanel(false);
     },

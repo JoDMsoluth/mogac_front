@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -16,14 +16,12 @@ import Link from 'next/link';
 import { useMutation } from '@apollo/react-hooks';
 import UserGql from '../../lib/gql/userGql';
 import Router from 'next/router';
-import Cookies from 'js-cookie';
 
 import {
   saveTokenInCookies,
   removeTokenFromCookies,
   logout,
 } from '../../utils/auth/helpers';
-import PushNotification from '../common/utils/PushNotification';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -98,7 +96,6 @@ const LoginForm = () => {
 
   return (
     <Grid container component="main" className={classes.root}>
-      {typeof window !== 'undefined' && <PushNotification />}
       <CssBaseline />
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>

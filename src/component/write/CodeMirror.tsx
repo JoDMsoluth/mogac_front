@@ -1,4 +1,4 @@
-import React, { Component, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { Controlled as CodeMirror } from 'react-codemirror2';
 import 'codemirror/mode/markdown/markdown'; // 마크다운 문법 색상
 import 'codemirror/mode/javascript/javascript';

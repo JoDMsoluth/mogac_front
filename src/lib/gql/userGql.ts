@@ -42,8 +42,8 @@ const LOGOUT = gql`
     }
     */
 const SIGNUP = gql`
-  mutation createUser($data: SignupRequestType!) {
-    createUser(data: $data) {
+  mutation signup($data: SignupRequestType!) {
+    signup(data: $data) {
       name
     }
   }
@@ -84,6 +84,7 @@ const GET_CURRENT_USER = gql`
     getCurrentUser {
       name
       image_url
+      email
       _id
       ableSkillSet
     }
@@ -109,6 +110,7 @@ const GET_ALL_USER_BY_SEARCH = gql`
     ) {
       _id
       name
+      email
       image_url
       ableSkillSet
       ableLocation
@@ -142,6 +144,7 @@ const GET_NEAR_USERS_BY_MATCHING = gql`
     ) {
       _id
       name
+      email
       image_url
       ableSkillSet
       ableLocation

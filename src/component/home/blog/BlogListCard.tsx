@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -10,6 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from 'next/link';
 import postGql from '../../../lib/gql/postGql';
+import Pagination from '../../common/pagination/Pagination';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -38,22 +39,25 @@ interface BlogListCardProps {
 const BlogListCard = ({ page }) => {
   console.log('page', page);
   const classes = useStyles();
-  const posts = postGql.getAllPosts(page);
-  console.log(posts);
+  const data = postGql.getAllPosts(page);
+
+  if (!data) {
+    return null;
+  }
 
   return (
     <>
       <Container className={classes.cardGrid} maxWidth="md">
         {/* End hero unit */}
         <Grid container spacing={4}>
-          {posts?.length > 0 &&
-            posts.map((post, i) => (
+          {data?.posts?.length > 0 &&
+            data.posts.map((post, i) => (
               <Grid item key={`${i}${post.title}`} xs={12} sm={6} md={4}>
                 <Card className={classes.card}>
                   <CardMedia
                     className={classes.cardMedia}
                     image={
-                      post.cover_img || 'https://source.unsplash.com/random'
+                      post.cover_img || `https://picsum.photos/200/300?random=${i+page}`
                     }
                     title="Image title"
                   />
@@ -86,6 +90,7 @@ const BlogListCard = ({ page }) => {
             ))}
         </Grid>
       </Container>
+      <Pagination url="/" page={page} lastPage={data.lastPage} />
     </>
   );
 };

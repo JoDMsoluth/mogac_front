@@ -4,6 +4,7 @@ import { useQuery } from '@apollo/react-hooks';
 const GET_ALL_POSTS = gql`
   query getAllPosts($page: Int!) {
     getAllPosts(page: $page) {
+      lastPage
       posts {
         _id
         createdAt
@@ -107,7 +108,10 @@ const getAllPosts = (page: number) => {
 
   if (data) {
     console.log('data', data);
-    return data.getAllPosts.posts;
+    return {
+      lastPage: data.getAllPosts.lastPage,
+      posts: data.getAllPosts.posts,
+    };
   }
 };
 

@@ -7,7 +7,7 @@ import { ListAlt } from '@material-ui/icons';
 import { Button } from '@material-ui/core';
 
 export default function InviteTeamModal({ userId }) {
-  const { data, error, loading } = useQuery(teamGql.GET_ALL_TEAM_BY_USER);
+  const { data, error, loading } = useQuery(teamGql.GET_ALL_TEAM_BY_ME);
   const [inviteUserToTeam] = useMutation(teamGql.INVITE_USER_TO_TEAM);
   const [openPanel, setOpenPanel] = useState<boolean>(false);
   const [team, setTeam] = useState<{ title: string; id: string }>(null);
@@ -58,8 +58,8 @@ export default function InviteTeamModal({ userId }) {
           <ListAlt />
         </S.SelectIconWrap>
         <S.SelectOptionWrap open={openPanel}>
-          {data?.getAllTeamsByUser.length > 0 &&
-            data?.getAllTeamsByUser.map((v) => (
+          {data?.getAllTeamsByMe.length > 0 &&
+            data?.getAllTeamsByMe.map((v) => (
               <S.SelectOption
                 key={v._id}
                 onClick={changeTeam({ title: v.title, id: v._id })}

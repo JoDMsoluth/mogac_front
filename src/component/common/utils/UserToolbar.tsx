@@ -3,6 +3,7 @@ import { Menu, MenuItem } from '@material-ui/core';
 import { useRouter } from 'next/router';
 import Modal from '../../modal/Modal';
 import Message from '../../message/Message';
+import InviteTeamModal from '../../modal/InviteTeamModal';
 
 export default function UserToolbar({
   anchorEl,
@@ -11,7 +12,13 @@ export default function UserToolbar({
   userId,
 }) {
   const isMenuOpen = Boolean(anchorEl);
+  const [visibleTeamModal, setVisibleTeamModal] = useState<boolean>(false);
   const router = useRouter();
+
+  const toggleModal = useCallback(() => {
+    setVisibleTeamModal(true);
+  }, [visibleTeamModal, setVisibleTeamModal]);
+
   const [visible, setVisible] = useState(false);
   const onClickMessage = useCallback(() => {
     handleMenuClose();
@@ -34,13 +41,18 @@ export default function UserToolbar({
       >
         <MenuItem onClick={onClickBlog}>블로그</MenuItem>
         <MenuItem onClick={onClickMessage}>쪽지</MenuItem>
-        {isTeam ? '' : <MenuItem onClick={handleMenuClose}>팀초대</MenuItem>}
+        {isTeam ? '' : <MenuItem onClick={toggleModal}>팀초대</MenuItem>}
       </Menu>
       <Modal
         visible={visible}
         setVisible={setVisible}
         render={<Message />}
       ></Modal>
+      <Modal
+        visible={visibleTeamModal}
+        setVisible={setVisibleTeamModal}
+        render={<InviteTeamModal userId={userId} />}
+      />
     </>
   );
 }

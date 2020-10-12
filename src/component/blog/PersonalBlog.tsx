@@ -6,9 +6,10 @@ import PersonalBlogBody from './PersonalBlogBody';
 
 interface PersonalBlogProps {
   userId: string;
+  page: number;
 }
 
-const PersonalBlog = ({ userId }: PersonalBlogProps) => {
+const PersonalBlog = ({ userId, page }: PersonalBlogProps) => {
   const [posts, setPosts] = useState(null);
   console.log('posts', posts);
 
@@ -32,7 +33,7 @@ const PersonalBlog = ({ userId }: PersonalBlogProps) => {
       {posts && (
         <>
           <PersonalBlogHeader userName={posts.name} />
-          <PersonalBlogBody page={1} posts={posts.posts} userId={userId} />
+          <PersonalBlogBody page={page} posts={posts.posts} userId={userId} />
         </>
       )}
     </>

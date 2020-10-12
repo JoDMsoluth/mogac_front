@@ -21,6 +21,7 @@ const GET_SEARCH_USER = gql`
       users {
         _id
         name
+        email
         image_url
         ableSkillSet
         ableLocation

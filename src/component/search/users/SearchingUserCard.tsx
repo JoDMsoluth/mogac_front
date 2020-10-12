@@ -10,13 +10,15 @@ import {
 } from '../../../lib/utils/skillLevelFormat';
 import { useRouter } from 'next/router';
 import InviteTeamModal from '../../modal/InviteTeamModal';
+import MessageModal from '../../modal/MessageModal';
 
 interface SearchingUserCardProps {
   user: any;
 }
 export default function SearchingUserCard({ user }: SearchingUserCardProps) {
-  const { ableSkillSet, ableLocation, image_url, name, level, _id } = user;
+  const { ableSkillSet, ableLocation, image_url, name, level, _id, email } = user;
   const [visibleTeamModal, setVisibleTeamModal] = useState<boolean>(false);
+  const [visibleMessageModal, setVisibleMessageModal] = useState<boolean>(false);
   const LocationFormat: { pubLocation: string; subLocation: string }[] = [];
   const router = useRouter();
 
@@ -31,6 +33,14 @@ export default function SearchingUserCard({ user }: SearchingUserCardProps) {
 
   console.log(SkillFormat, LocationFormat);
 
+  const toggleTeamModal = useCallback(() => {
+    setVisibleTeamModal(true);
+  }, [visibleTeamModal, setVisibleTeamModal]);
+
+  const toggleMessageModal = useCallback(() => {
+    setVisibleMessageModal(true);
+  }, [visibleMessageModal, setVisibleMessageModal]);
+
   const onClickBlog = useCallback(() => {
     router.push(`/blog?userId=${_id}`);
   }, []);
@@ -42,7 +52,7 @@ export default function SearchingUserCard({ user }: SearchingUserCardProps) {
           <UserAvatar
             id={_id}
             name={name}
-            image_url={'https://source.unsplash.com/random'}
+            image_url={`https://picsum.photos/50/50?random=${Math.random()*1000%999}`}
             skill={highLevelSkill[0] as string}
             level={skillLevelSum(SkillLevelArray)}
           />
@@ -68,14 +78,10 @@ export default function SearchingUserCard({ user }: SearchingUserCardProps) {
             <Button color="primary" variant="contained" onClick={onClickBlog}>
               블로그
             </Button>
-            <Button color="primary" variant="contained">
+            <Button color="primary" variant="contained" onClick={toggleMessageModal}>
               쪽지
             </Button>
-            <Button
-              color="primary"
-              variant="contained"
-              onClick={() => setVisibleTeamModal(!visibleTeamModal)}
-            >
+            <Button color="primary" variant="contained" onClick={toggleTeamModal}>
               팀초대
             </Button>
           </S.ButtonWrap>
@@ -86,6 +92,15 @@ export default function SearchingUserCard({ user }: SearchingUserCardProps) {
         setVisible={setVisibleTeamModal}
         render={<InviteTeamModal userId={_id} />}
       />
+      <Modal
+        visible={visibleMessageModal}
+        setVisible={setVisibleMessageModal}
+        render={<MessageModal
+          sendUser={_id}
+          sendUserName={name}
+          sendUserEmail={email}
+        />}
+      />
     </>
   );
 }
@@ -95,6 +110,7 @@ const S: any = {};
 S.AvatarWrap = styled.div`
   width: 10rem;
 `;
+
 S.SearchUserCardWarp = styled.div`
   display: flex;
   justify-content: center;

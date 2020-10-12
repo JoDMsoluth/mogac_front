@@ -4,7 +4,6 @@ const ADD_SERIES = gql`
     createSeries(data: $data) {
       _id
       title
-      description
     }
   }
 `;

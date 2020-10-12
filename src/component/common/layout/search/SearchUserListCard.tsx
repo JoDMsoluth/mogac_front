@@ -12,6 +12,7 @@ import Link from 'next/link';
 import { useAuth } from '../../../../utils/auth/AuthProvider';
 import { useQuery } from '@apollo/react-hooks';
 import searchGql from '../../../../lib/gql/searchGql';
+import SearchingUserCard from '../../../search/users/SearchingUserCard';
 
 interface SearchUserListCardProps {
   searchWord: string;
@@ -42,7 +43,6 @@ export default function SearchUserListCard({
   searchWord,
 }: SearchUserListCardProps) {
   const classes = useStyles();
-  const [user, _] = useAuth();
   const [users, setUsers] = useState([]);
 
   const { data, error } = useQuery(searchGql.GET_SEARCH_USER, {
@@ -62,41 +62,9 @@ export default function SearchUserListCard({
   }, [data, users]);
   return (
     <>
-      <Container className={classes.cardGrid} maxWidth="md">
-        {/* End hero unit */}
-        <Grid container spacing={4}>
-          {users.length > 0 &&
-            users.map((user) => (
-              <Grid item key={user._id} xs={12} sm={6} md={4}>
-                <Card className={classes.card}>
-                  <CardMedia
-                    className={classes.cardMedia}
-                    image="https://source.unsplash.com/random"
-                    title="Image title"
-                  />
-                  <CardContent className={classes.cardContent}>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      {user.name}
-                    </Typography>
-                    <Typography>{user.ableSkillSet}</Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Link href={`/blog?userId=${user._id}`}>
-                      <a>
-                        <Button size="small" color="primary">
-                          View
-                        </Button>
-                      </a>
-                    </Link>
-                    <Button size="small" color="primary">
-                      Edit
-                    </Button>
-                  </CardActions>
-                </Card>
-              </Grid>
-            ))}
-        </Grid>
-      </Container>
+      <div>
+        {users && users.map((v, i) => <SearchingUserCard key={i} user={v} />)}
+      </div>
     </>
   );
 }

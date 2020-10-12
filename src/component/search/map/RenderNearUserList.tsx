@@ -1,8 +1,7 @@
-import react, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import UserGql from '../../../lib/gql/userGql';
 import { makeAbleSkillSetLevel } from '../../../lib/utils/skillLevelFormat';
-const userAvatar = require('../../../static/images/avatar/1.jpg');
 
 interface RenderNearUserListProps {
   map: any;
@@ -19,7 +18,7 @@ export default function RenderNearUserList({
   level,
   currentLat,
   currentLng,
-}) {
+} : RenderNearUserListProps) {
   console.log('make', makeAbleSkillSetLevel(ableSkillSet, level));
   const { error, loading, data } = useQuery(
     UserGql.GET_NEAR_USERS_BY_MATCHING,
@@ -43,12 +42,12 @@ export default function RenderNearUserList({
   if (data) {
     console.log('data', data);
     console.log('map', map);
-    data.getNearUsersByMatching.map((user) => {
+    data.getNearUsersByMatching.map((user, i) => {
       var marker = new naver.maps.Marker({
         position: new naver.maps.LatLng(user.y_pos, user.x_pos),
         map: map,
         icon: {
-          url: userAvatar,
+          url: `https://picsum.photos/50/50?random=${i}`,
           size: new naver.maps.Size(50, 52),
           origin: new naver.maps.Point(0, 0),
           anchor: new naver.maps.Point(25, 26),
@@ -59,7 +58,7 @@ export default function RenderNearUserList({
       var contentString = [
         `<div style="width: 12rem; height: 6rem; display: flex;flex-direction: column;justify-content: space-evenly;padding: 0.1rem;">`,
         `<div style="display: flex;">`,
-        `<img src="${userAvatar}"`,
+        `<img src="https://picsum.photos/50/50?random=${i}"`,
         `width="50"`,
         `height="50"`,
         `style="margin-left: 0.2rem;"`,

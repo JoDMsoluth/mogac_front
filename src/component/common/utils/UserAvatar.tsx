@@ -40,7 +40,7 @@ export default function UserAvatar({
         <S.AvatarImageWrap>
           <Avatar
             alt="JoHyehyeong"
-            src={userAvatar}
+            src={image_url || userAvatar}
             onClick={handleProfileMenuOpen}
           />
         </S.AvatarImageWrap>

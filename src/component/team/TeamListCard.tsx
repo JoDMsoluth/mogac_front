@@ -52,8 +52,9 @@ const TeamListCard = ({
   setTeams,
 }: TeamListCardProps) => {
   const classes = useStyles();
-  const [user, _] = useAuth();
+  const [{ data: user }, _] = useAuth();
   const router = useRouter();
+
   console.log(teams);
 
   const { data, error } =
@@ -63,8 +64,8 @@ const TeamListCard = ({
             data: { page: 1, limit: 9, location: location, category: skillset },
           },
         })
-      : useQuery(teamGql.GET_ALL_TEAM, {
-          variables: { data: { page: 1, limit: 9 } },
+      : useQuery(teamGql.GET_ALL_TEAM_BY_USER, {
+          variables: { userId: user?.getCurrentUser._id, page: 1 },
         });
 
   if (error) {
@@ -76,7 +77,7 @@ const TeamListCard = ({
       console.log('data', data);
       location || skillset
         ? setTeams(data.getFilterTeam.teams)
-        : setTeams(data.getAllTeam.teams);
+        : setTeams(data.getAllTeamsByUser.teams);
     }
   }, [data, location, skillset, teams]);
 
@@ -96,12 +97,12 @@ const TeamListCard = ({
         {/* End hero unit */}
         <Grid container spacing={4}>
           {teams.length > 0 &&
-            teams.map((team) => (
-              <Grid item key={team._id} xs={12} sm={6} md={4}>
+            teams.map((team, i) => (
+              <Grid item key={team._id} xs={12} sm={6} md={4} >
                 <Card className={classes.card}>
                   <CardMedia
                     className={classes.cardMedia}
-                    image="https://source.unsplash.com/random"
+                    image={`https://picsum.photos/200/300?random=${i+page}`}
                     title="Image title"
                   />
                   <CardContent className={classes.cardContent}>
@@ -115,9 +116,9 @@ const TeamListCard = ({
                       size="small"
                       color="primary"
                       onClick={clickVisitRoom(
-                        `/view/team?room=${team?.title}&name=${user?.data.getCurrentUser.name}`,
+                        `/view/team?room=${team?.title}&name=${user?.getCurrentUser.name}`,
                         team?.users,
-                        user?.data.getCurrentUser._id,
+                        user?.getCurrentUser._id,
                         team?.adminId,
                       )}
                     >
