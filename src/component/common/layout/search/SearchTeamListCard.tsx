@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
@@ -9,9 +9,11 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Link from 'next/link';
+import styled from 'styled-components';
 import { useAuth } from '../../../../utils/auth/AuthProvider';
 import { useQuery } from '@apollo/react-hooks';
 import searchGql from '../../../../lib/gql/searchGql';
+import { useRouter } from 'next/router';
 
 interface SearchTeamListCardProps {
   searchWord: string;
@@ -42,8 +44,10 @@ export default function SearchTeamListCard({
   searchWord,
 }: SearchTeamListCardProps) {
   const classes = useStyles();
-  const [user, _] = useAuth();
+  const [{ data: user }, _] = useAuth();
   const [teams, setTeams] = useState([]);
+  console.log('teams', teams)
+  const router = useRouter();
   const { data, error } = useQuery(searchGql.GET_SEARCH_TEAM, {
     variables: {
       searchWord,
@@ -59,6 +63,17 @@ export default function SearchTeamListCard({
       setTeams(data.totalSearchTeam.teams);
     }
   }, [data, teams]);
+
+  const clickVisitRoom = useCallback(
+    (url, users: Array<string>, userId, adminId) => () => {
+      console.log('users, userId', users, userId, adminId);
+      // 권한이 있거나 관리자거나 둘 중하나면 입장
+      if (users.includes(userId) || adminId == userId) router.push(url);
+      else alert('권한이 없습니다.');
+    },
+    [],
+  );
+
 
   return (
     <>
@@ -80,20 +95,29 @@ export default function SearchTeamListCard({
                     </Typography>
                     <Typography>{team.desc}</Typography>
                   </CardContent>
-                  <CardActions>
-                    <Link
-                      href={`/view/team?room=${team.title}&name=${user.data.getCurrentUser.name}`}
-                    >
+                  <S.ButtonContainer>
+                    <Link href
+                    ={`/search?q=${team?.adminName}&filter=user`}>
                       <a>
                         <Button size="small" color="primary">
-                          View
+                          방장 : {team?.adminName}
                         </Button>
                       </a>
                     </Link>
-                    <Button size="small" color="primary">
-                      Edit
+                  <Button
+                      size="small"
+                      color="primary"
+                      onClick={clickVisitRoom(
+                        `/view/team?room=${team?.title}&name=${user?.getCurrentUser?.name}`,
+                        team?.users,
+                        user?.getCurrentUser?._id,
+                        team?.adminId,
+                      )}
+                    >
+                      View
                     </Button>
-                  </CardActions>
+                    
+                  </S.ButtonContainer>
                 </Card>
               </Grid>
             ))}
@@ -102,3 +126,11 @@ export default function SearchTeamListCard({
     </>
   );
 }
+
+const S : any = {}
+
+S.ButtonContainer = styled(CardActions)`
+  font-weight: bold;
+  display :flex;
+  justify-content : space-between;
+`;

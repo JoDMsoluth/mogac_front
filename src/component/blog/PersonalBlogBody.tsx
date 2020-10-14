@@ -9,7 +9,9 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from 'next/link';
+import styled from 'styled-components';
 import Pagination from '../common/pagination/Pagination';
+import { useAuth } from '../../utils/auth/AuthProvider';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -38,6 +40,7 @@ interface PersonalBlogBodyProps {
   userId: string;
 }
 const PersonalBlogBody = ({ page, posts, userId }: PersonalBlogBodyProps) => {
+  const [{data}] = useAuth()
   console.log('Math.ceil(posts?.length / 9)', Math.ceil(posts?.length / 9));
   const classes = useStyles();
   console.log(posts);
@@ -68,7 +71,14 @@ const PersonalBlogBody = ({ page, posts, userId }: PersonalBlogBodyProps) => {
                         `This is a media card. You can use this section to describe the content.`}
                     </Typography>
                   </CardContent>
-                  <CardActions>
+                  <S.ButtonContainer>
+                    <Link href={`/search?q=${data?.getCurrentUser?.name}&filter=user`}>
+                      <a>
+                        <Button size="small" color="primary">
+                          작성자 : {data?.getCurrentUser?.name}
+                        </Button>
+                      </a>
+                    </Link>
                     <Link href={`/view/post?post=${post._id}&userId=${userId}`}>
                       <a>
                         <Button size="small" color="primary">
@@ -76,10 +86,7 @@ const PersonalBlogBody = ({ page, posts, userId }: PersonalBlogBodyProps) => {
                         </Button>
                       </a>
                     </Link>
-                    <Button size="small" color="primary">
-                      Edit
-                    </Button>
-                  </CardActions>
+                  </S.ButtonContainer>
                 </Card>
               </Grid>
             ))}
@@ -96,3 +103,14 @@ const PersonalBlogBody = ({ page, posts, userId }: PersonalBlogBodyProps) => {
 };
 
 export default PersonalBlogBody;
+
+
+const S : any = {}
+
+S.ButtonContainer = styled(CardActions)`
+  display :flex;
+  justify-content : space-between;
+  & span {
+    font-weight: bold;
+  }
+`;

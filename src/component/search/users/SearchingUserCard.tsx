@@ -11,6 +11,7 @@ import {
 import { useRouter } from 'next/router';
 import InviteTeamModal from '../../modal/InviteTeamModal';
 import MessageModal from '../../modal/MessageModal';
+import { useAuth } from '../../../utils/auth/AuthProvider';
 
 interface SearchingUserCardProps {
   user: any;
@@ -31,7 +32,7 @@ export default function SearchingUserCard({ user }: SearchingUserCardProps) {
     LocationFormat.push({ pubLocation: location[0], subLocation: location[1] });
   }
 
-  console.log(SkillFormat, LocationFormat);
+  
 
   const toggleTeamModal = useCallback(() => {
     setVisibleTeamModal(true);
@@ -96,9 +97,8 @@ export default function SearchingUserCard({ user }: SearchingUserCardProps) {
         visible={visibleMessageModal}
         setVisible={setVisibleMessageModal}
         render={<MessageModal
-          sendUser={_id}
-          sendUserName={name}
-          sendUserEmail={email}
+          receiveUser={_id}
+          receiveName={name}
         />}
       />
     </>
@@ -136,6 +136,7 @@ S.ButtonWrap = styled.div`
 S.SkillListWrap = styled.div`
   display: flex;
   margin-left: 2rem;
+  width : 15rem;
   & > div {
     width: 5rem;
   }
@@ -147,11 +148,13 @@ S.SkillListWrap = styled.div`
 S.LocationListWrap = styled.div`
   display: flex;
   margin-left: 2rem;
+  width : 15rem;
   & > div {
     width: 5rem;
   }
   @media (max-width: 763px) {
     margin-left: 0;
+    width : 9rem;
     & > div {
       width: 3rem;
     }

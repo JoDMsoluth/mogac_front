@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
+import styled from 'styled-components';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
@@ -71,7 +72,14 @@ const BlogListCard = ({ page }) => {
                         `This is a media card. You can use this section to describe the content.`}
                     </Typography>
                   </CardContent>
-                  <CardActions>
+                  <S.ButtonContainer>
+                    <Link href={`/search?q=${post?.postedBy?.name}&filter=user`}>
+                      <a>
+                        <Button size="small" color="primary">
+                          작성자 : {post?.postedBy?.name}
+                        </Button>
+                      </a>
+                    </Link>
                     <Link
                       href={`/view/post?post=${post._id}&userId=${post.postedBy._id}`}
                     >
@@ -81,10 +89,7 @@ const BlogListCard = ({ page }) => {
                         </Button>
                       </a>
                     </Link>
-                    <Button size="small" color="primary">
-                      Edit
-                    </Button>
-                  </CardActions>
+                  </S.ButtonContainer>
                 </Card>
               </Grid>
             ))}
@@ -96,3 +101,13 @@ const BlogListCard = ({ page }) => {
 };
 
 export default BlogListCard;
+
+const S : any = {}
+
+S.ButtonContainer = styled(CardActions)`
+  display :flex;
+  justify-content : space-between;
+  & span {
+    font-weight: bold;
+  }
+`;

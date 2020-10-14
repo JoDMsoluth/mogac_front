@@ -43,7 +43,9 @@ export default function ToolbarItemList({
   handleMobileMenuOpen,
 }: ToolbarItemListProps) {
   const [toggleNoti, setToggleNoti] = useState(false);
+  const [totalNoti, setTotalNoti] = useState(0);
   const [toggleMessage, setToggleMessage] = useState(false);
+  const [totalMessage, setTotalMessage] = useState(0);
   const [messages, setMessages] = useState(null);
   const [notifications, setNotifications] = useState(null);
 
@@ -89,12 +91,15 @@ export default function ToolbarItemList({
   useEffect(() => {
     if (notificationData) {
       setNotifications(notificationData.getAllNotifications.docs);
+      setTotalNoti(notificationData.getAllNotifications.totalIsView);
     }
   }, [notificationData, notifications]);
 
   useEffect(() => {
     if (messageData) {
+      console.log('messageData', messageData)
       setMessages(messageData.getAllMessages.docs);
+      setTotalMessage(messageData.getAllMessages.totalIsView);
     }
   }, [messageData, messages]);
 
@@ -116,11 +121,11 @@ export default function ToolbarItemList({
       <div className={classes.grow} />
       <div className={classes.sectionDesktop}>
         <IconButton
-          aria-label={`show ${notifications?.length || "0"} new mails`}
+          aria-label={`show ${totalMessage} new mails`}
           color="inherit"
           onClick={changeToggleMessage}
         >
-          <Badge badgeContent={messages?.length || 0} color="secondary">
+          <Badge badgeContent={totalMessage} color="secondary">
             <MailIcon />
             <Modal
               visible={toggleMessage}
@@ -131,11 +136,11 @@ export default function ToolbarItemList({
         </IconButton>
         {/* 알림 아이콘 */}
         <S.NotificationIcon
-          aria-label={`show ${notifications?.length || "0"} new notifications`}
+          aria-label={`show ${totalNoti} new notifications`}
           color="inherit"
           onClick={changeToggleNoti}
         >
-          <Badge badgeContent={notifications?.length || 0} color="secondary">
+          <Badge badgeContent={totalNoti} color="secondary">
             <NotificationsIcon />
             <Modal
               visible={toggleNoti}

@@ -19,7 +19,6 @@ export default function RenderNearUserList({
   currentLat,
   currentLng,
 } : RenderNearUserListProps) {
-  console.log('make', makeAbleSkillSetLevel(ableSkillSet, level));
   const { error, loading, data } = useQuery(
     UserGql.GET_NEAR_USERS_BY_MATCHING,
     {
@@ -69,9 +68,9 @@ export default function RenderNearUserList({
         `</div>`,
         `</div>`,
         `<div style="display: flex;justify-content: space-evenly;">`,
-        `<button>블로그</button>`,
-        `<button>쪽지</button>`,
-        `<button>팀초대</button>`,
+        `<a href="/blog?userId=${user._id}" target="_blank"><button>블로그</button></a>`,
+        `<a href="/blog?userId=${user._id}" target="_blank"><button>쪽지</button></a>`,
+        `<a href="/blog?userId=${user._id}" target="_blank"><button>팀초대</button></a>`,
         `</div>`,
         `</div>`,
       ].join('');

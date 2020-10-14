@@ -10,11 +10,10 @@ import { useMutation } from '@apollo/react-hooks';
 import { useAuth } from '../../utils/auth/AuthProvider';
 
 interface MessageModalProps {
-  sendUser: string;
-  sendUserName : string
-  sendUserEmail : string
+  receiveUser: string;
+  receiveName : string;
 }
-export default function MessageModal({sendUser, sendUserName, sendUserEmail} : MessageModalProps) {
+export default function MessageModal({receiveUser, receiveName} : MessageModalProps) {
   const [{data}] = useAuth()
   const [title, changeTitle] = useInput('');
   const [contents, changeContents] = useInput('');
@@ -31,9 +30,9 @@ export default function MessageModal({sendUser, sendUserName, sendUserEmail} : M
           data : {
             title,
             contents,
-            userId: sendUser,
-            sendUserName,
-            sendUserEmail,
+            userId: receiveUser,
+            sendUserName : data.getCurrentUser.name,
+            sendUserEmail : data.getCurrentUser.email,
             sendUser : data.getCurrentUser._id
           }
         },
@@ -42,14 +41,14 @@ export default function MessageModal({sendUser, sendUserName, sendUserEmail} : M
         alert('쪽지를 보냈습니다.');
       }
     },
-    [title, contents, sendUserName, sendUser, sendUserEmail],
+    [title, contents, receiveUser],
   );
 
   return (
     <>
       <S.Container>
         <S.Header>
-          <S.Name>받는 사람 : {sendUserName}</S.Name>
+          <S.Name>받는 사람 : {receiveName}</S.Name>
           <Button onClick={clickOk} color="primary" variant="contained" style={{marginBottom:"1rem"}}>
             쪽지하기
           </Button>

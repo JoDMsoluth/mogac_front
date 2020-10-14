@@ -15,6 +15,7 @@ const GET_ALL_MESSAGES = gql`
         sendUserName
         sendUserEmail
       }
+      totalIsView
     }
   }
 `;
@@ -36,9 +37,28 @@ const CREATE_MESSAGE = gql`
   }
 `;
 
+
+const UPDATE_MESSAGE_ISVIEW = gql`
+  mutation updateMessageIsView($id: String!) {
+    updateMessageIsView(id: $id) {
+        _id
+        userId
+        createdAt
+        updatedAt
+        isView
+        title
+        contents
+        sendUser
+        sendUserName
+        sendUserEmail
+    }
+  }
+`;
+
 const messageGql = {
   GET_ALL_MESSAGES,
   CREATE_MESSAGE,
+  UPDATE_MESSAGE_ISVIEW
 };
 
 export default messageGql;

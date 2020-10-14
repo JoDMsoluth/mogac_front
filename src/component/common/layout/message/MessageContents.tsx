@@ -43,9 +43,8 @@ export default function MessageContents ({selectedMessage, setVisibleReadMessage
             visible={visibleMessage}
             setVisible={setVisibleMessage}
             render={<MessageModal
-              sendUser={selectedMessage?.sendUser}
-              sendUserName={selectedMessage?.sendUserName}
-              sendUserEmail={selectedMessage?.sendUserEmail}
+              receiveUser={selectedMessage?.sendUser}
+              receiveName={selectedMessage?.sendUserName}
             />}
           />
         </>

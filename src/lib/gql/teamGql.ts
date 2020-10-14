@@ -30,6 +30,8 @@ const GET_ALL_TEAM_BY_USER = gql`
         category
         users
         adminId
+        adminName
+        adminEmail
       }
     }
   }
@@ -40,6 +42,8 @@ const GET_ALL_TEAM_BY_ME = gql`
     getAllTeamsByMe {
       _id
       adminId
+      adminName
+      adminEmail
       title
     }
   }
@@ -55,6 +59,8 @@ const GET_ALL_TEAM = gql`
         location
         category
         users
+        adminName
+        adminEmail
         adminId
       }
     }
@@ -71,6 +77,8 @@ const GET_FILTER_TEAM = gql`
         location
         category
         users
+        adminName
+        adminEmail
         adminId
       }
       lastPage

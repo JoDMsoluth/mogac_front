@@ -33,7 +33,7 @@ export default function UserAvatar({
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
-  console.log('anchorEl', anchorEl);
+  
   return (
     <>
       <S.AvatarWrap>

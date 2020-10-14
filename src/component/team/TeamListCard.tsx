@@ -11,7 +11,7 @@ import Container from '@material-ui/core/Container';
 import Link from 'next/link';
 import teamGql from '../../lib/gql/teamGql';
 import { useQuery } from '@apollo/react-hooks';
-import { userReducer } from '../../utils/user/UserReducer';
+import styled from 'styled-components';
 import { useAuth } from '../../utils/auth/AuthProvider';
 import { useRouter } from 'next/router';
 
@@ -102,7 +102,7 @@ const TeamListCard = ({
                 <Card className={classes.card}>
                   <CardMedia
                     className={classes.cardMedia}
-                    image={`https://picsum.photos/200/300?random=${i+page}`}
+                    image={`https://picsum.photos/200/300?random=${i}`}
                     title="Image title"
                   />
                   <CardContent className={classes.cardContent}>
@@ -111,7 +111,14 @@ const TeamListCard = ({
                     </Typography>
                     <Typography>{team.desc}</Typography>
                   </CardContent>
-                  <CardActions>
+                  <S.ButtonContainer>
+                    <Link href={`/search?q=${team?.adminName}&filter=user`}>
+                      <a>
+                        <Button size="small" color="primary">
+                          방장 : {team?.adminName}
+                        </Button>
+                      </a>
+                    </Link>
                     <Button
                       size="small"
                       color="primary"
@@ -124,10 +131,7 @@ const TeamListCard = ({
                     >
                       View
                     </Button>
-                    <Button size="small" color="primary">
-                      Edit
-                    </Button>
-                  </CardActions>
+                  </S.ButtonContainer>
                 </Card>
               </Grid>
             ))}
@@ -138,3 +142,11 @@ const TeamListCard = ({
 };
 
 export default TeamListCard;
+
+const S : any = {}
+
+S.ButtonContainer = styled(CardActions)`
+  font-weight: bold;
+  display :flex;
+  justify-content : space-between;
+`;

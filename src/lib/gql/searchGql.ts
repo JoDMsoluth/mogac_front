@@ -9,6 +9,10 @@ const GET_SEARCH_TEAM = gql`
         desc
         location
         category
+        adminId
+        adminName
+        adminEmail
+        users
       }
       lastPage
     }

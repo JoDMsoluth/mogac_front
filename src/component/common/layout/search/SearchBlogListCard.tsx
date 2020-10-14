@@ -9,6 +9,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Link from 'next/link';
+import styled from 'styled-components';
 import { useQuery } from '@apollo/react-hooks';
 import searchGql from '../../../../lib/gql/searchGql';
 
@@ -78,7 +79,14 @@ export default function SearchBlogListCard({
                     </Typography>
                     <Typography>{post.desc}</Typography>
                   </CardContent>
-                  <CardActions>
+                  <S.ButtonContainer>
+                    <Link href={`/search?q=${post?.postedBy?.name}&filter=user`}>
+                      <a>
+                        <Button size="small" color="primary">
+                          작성자 : {post?.postedBy?.name}
+                        </Button>
+                      </a>
+                    </Link>
                     <Link
                       href={`/view/post?post=${post._id}&userId=${post.postedBy._id}`}
                     >
@@ -88,10 +96,7 @@ export default function SearchBlogListCard({
                         </Button>
                       </a>
                     </Link>
-                    <Button size="small" color="primary">
-                      Edit
-                    </Button>
-                  </CardActions>
+                  </S.ButtonContainer>
                 </Card>
               </Grid>
             ))}
@@ -100,3 +105,13 @@ export default function SearchBlogListCard({
     </>
   );
 }
+
+const S : any = {}
+
+S.ButtonContainer = styled(CardActions)`
+  display :flex;
+  justify-content : space-between;
+  & span {
+    font-weight: bold;
+  }
+`;
