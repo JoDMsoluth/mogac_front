@@ -32,7 +32,7 @@ const PersonalBlog = ({ userId, page }: PersonalBlogProps) => {
     <>
       {posts && (
         <>
-          <PersonalBlogHeader userName={posts.name} />
+          <PersonalBlogHeader userId={userId} userName={posts.name} />
           <PersonalBlogBody page={page} posts={posts.posts} userId={userId} />
         </>
       )}

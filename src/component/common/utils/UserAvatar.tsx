@@ -11,6 +11,7 @@ interface UserAvatarProps {
   id?: string;
   name?: string;
   skill?: string;
+  desc?: string;
   level?: number;
   image_url?: string;
   isTeam?: boolean;
@@ -19,6 +20,7 @@ interface UserAvatarProps {
 export default function UserAvatar({
   id,
   name,
+  desc,
   skill,
   level,
   image_url,
@@ -47,14 +49,15 @@ export default function UserAvatar({
         <S.AvatarTextWrap>
           <S.AvatarHead>
             <S.AvatarName>&nbsp;{name || `Jo Hyehyeong`}</S.AvatarName>
-            <S.LevelWrap>
+            {/*<S.LevelWrap>
               <div>
                 <FlashOn />
               </div>
               <span>{level ? level : 0}</span>
             </S.LevelWrap>
+            */}
           </S.AvatarHead>
-          <S.AvatarDesc>&nbsp;{skill || `Newbie`}</S.AvatarDesc>
+          <S.AvatarDesc>&nbsp;{desc || skill || `Newbie`}</S.AvatarDesc>
         </S.AvatarTextWrap>
 
         {/* 툴바 */}

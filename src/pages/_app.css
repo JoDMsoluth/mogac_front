@@ -3,6 +3,7 @@ html {
   font-family: sans-serif; /* 1 */
   -ms-text-size-adjust: 100%; /* 2 */
   -webkit-text-size-adjust: 100%; /* 2 */
+  min-width: 360px;
 } /** * 기본 마진값을 제거. */
 * {
   box-sizing: border-box;

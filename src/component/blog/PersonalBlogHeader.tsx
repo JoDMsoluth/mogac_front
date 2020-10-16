@@ -1,12 +1,16 @@
-import react from 'react';
+import react, { useCallback, useState } from 'react';
 import { Container, Button } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import CategoryGql from '../../lib/gql/categoryGql';
+import { useAuth } from '../../utils/auth/AuthProvider';
+import Modal from '../modal/Modal';
+import RecommendModal from '../modal/RecommendModal';
 
 interface BlogHeaderProps {
   userName: string;
+  userId : string;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -19,9 +23,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const PersonalBlogHeader = ({ userName }) => {
+const PersonalBlogHeader = ({ userName, userId }) => {
   const classes = useStyles();
-  const { categoryArray, skillsetData } = CategoryGql.loadAllCategory();
+  const [{data}] = useAuth();
+  const [selectedSkill, setSelectedSkill] = useState(null);
+  const [visibleModal, setVisibleModal] = useState(false);
+
+
+  const clickSkill = useCallback((skill) => () => {
+    setVisibleModal(true)
+    setSelectedSkill(skill)
+  }, [visibleModal])
+
+  const reset = useCallback(() => {
+    setSelectedSkill(null)
+    setVisibleModal(false)
+  }, [selectedSkill, visibleModal])
+  
+  console.log('selectedSkill', selectedSkill)
+  
   return (
     <>
       <div className={classes.heroContent}>
@@ -46,15 +66,23 @@ const PersonalBlogHeader = ({ userName }) => {
 
           <div className={classes.heroButtons}>
             <Grid container spacing={2} justify="center">
+              {data?.getCurrentUser.ableSkillSet.map(skill => 
               <Grid item>
-                <Button variant="contained" color="primary">
-                  상세검색
+                <Button variant="contained" color="primary" onClick={clickSkill(skill)}>
+                  {skill.split(' ')[skill.split(' ').length-1]}
                 </Button>
               </Grid>
+              )}
             </Grid>
           </div>
         </Container>
       </div>
+      {/* 기술추천 모달 */}
+      {selectedSkill && <Modal 
+        visible={visibleModal}
+        setVisible={setVisibleModal}
+        render={<RecommendModal skillName={selectedSkill} userId={userId} />}
+      />}
     </>
   );
 };

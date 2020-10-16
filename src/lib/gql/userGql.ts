@@ -85,6 +85,7 @@ const GET_CURRENT_USER = gql`
       name
       image_url
       email
+      level
       _id
       ableSkillSet
     }
