@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { IconButton, Badge, NoSsr } from '@material-ui/core';
+import { IconButton, Badge, Avatar } from '@material-ui/core';
 import { useQuery } from '@apollo/react-hooks';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
@@ -13,6 +13,7 @@ import messageGql from '../../../../lib/gql/messageGql';
 import { useRouter } from 'next/router';
 import Modal from '../../../modal/Modal';
 import NotificationBox from '../notification/NotificationBox';
+import { useAuth } from '../../../../utils/auth/AuthProvider';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -42,6 +43,7 @@ export default function ToolbarItemList({
   handleProfileMenuOpen,
   handleMobileMenuOpen,
 }: ToolbarItemListProps) {
+  const [{data}] = useAuth();
   const [toggleNoti, setToggleNoti] = useState(false);
   const [totalNoti, setTotalNoti] = useState(0);
   const [toggleMessage, setToggleMessage] = useState(false);
@@ -157,8 +159,14 @@ export default function ToolbarItemList({
           aria-haspopup="true"
           onClick={handleProfileMenuOpen}
           color="inherit"
-        >
-          <AccountCircle />
+        > 
+          {data?.getCurrentUser?.image_url
+          ? <Avatar
+            alt="user_image"
+            src={data?.getCurrentUser?.image_url}
+            onClick={handleProfileMenuOpen}
+          />
+          : <AccountCircle /> }
         </IconButton>
       </div>
       {/* 모바일 버전 */}

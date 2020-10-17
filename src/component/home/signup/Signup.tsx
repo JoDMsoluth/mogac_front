@@ -140,6 +140,14 @@ export default function SignUp() {
           if (password.length < 6 || password.length > 30)
             return alert('password is more than 6, less then 30');
           console.log('length', ableLocation.length, ableSkillSet.length);
+
+          console.log(ableLocation, ableSkillSet, ableSkillSetLevel);
+          const sortedAbleLocation = await ableLocation.slice().sort();
+          const sortedAbleSkillSet = await ableSkillSet.slice().sort();
+          const sortedAbleSkillSetLevel = await ableSkillSetLevel.slice().slice(0,ableSkillSet.length).sort();
+          const recommendPoint = await ableSkillSet.map(skill => skill.concat('/0'));
+          console.log(ableLocation, ableSkillSet, ableSkillSetLevel, recommendPoint);
+
           const result = await signup({
             variables: {
               data: {
@@ -147,10 +155,11 @@ export default function SignUp() {
                 email,
                 password,
                 gender,
-                image_url,
-                ableLocation,
-                ableSkillSet,
-                level: ableSkillSetLevel,
+                image_url: `https://picsum.photos/id/${Math.floor(Math.random() * 1051)}/50/50`,
+                ableLocation : sortedAbleLocation,
+                ableSkillSet : sortedAbleSkillSet,
+                level: sortedAbleSkillSetLevel,
+                recommendPoint,
               },
             },
           });

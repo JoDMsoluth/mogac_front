@@ -14,8 +14,8 @@ const CREATE_RECOMMEND = gql`
 `;
 
 const GET_ALL_RECOMMENDS = gql`
-   query getAllRecommends($page: Int!, $skillName: String!) {
-    getAllRecommends(page: $page, skillName: $skillName) {
+   query getAllRecommends($page: Int!, $skillName: String!, $userId: String!) {
+    getAllRecommends(page: $page, skillName: $skillName, userId: $userId) {
       docs {
         _id
         userId

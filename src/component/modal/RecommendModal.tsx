@@ -40,6 +40,7 @@ interface RecommendModalProps {
   skillName: string;
   userId : string;
 }
+
 export default function RecommendModal({skillName, userId} : RecommendModalProps) {
   const [{ data }, _] = useAuth();
   const classes = useStyles();
@@ -47,9 +48,12 @@ export default function RecommendModal({skillName, userId} : RecommendModalProps
   const [contents, changeContents] = useInput('');
   const [recommends, setRecommends] = useState([]);
 
+  const [recommendUserList, setRecommendUserList] = useState([]);
+
+
   const [createRecommend] = useMutation(recommendGql.CREATE_RECOMMEND);
   const { loading, data : recommendList, error, refetch } = useQuery(recommendGql.GET_ALL_RECOMMENDS, {
-    variables: { page:1, skillName },
+    variables: { page:1, skillName, userId },
   });
   
   const clickOk = useCallback(
@@ -67,8 +71,8 @@ export default function RecommendModal({skillName, userId} : RecommendModalProps
         },
       });
       if (result) {
-        alert('기술 추천 했습니다.');
         refetch();
+        alert('기술 추천 했습니다.');
         // setRecommends(recommendList.getAllRecommends.docs);
       }
     },
@@ -80,43 +84,55 @@ export default function RecommendModal({skillName, userId} : RecommendModalProps
   
   useEffect(() => {
     if (recommendList) {
+      const userList = []
       setRecommends(recommendList.getAllRecommends.docs);
+      recommendList?.getAllRecommends?.docs?.forEach((doc : any) => {
+        userList.push(doc?.recommendedBy?._id)})
+      setRecommendUserList(userList);
     }
   }, [recommendList, recommends]);
 
 
+  console.log('recommendUserList', recommendUserList);
   return (
     <>
     <div className={classes.root}>
-      <div className={classes.commentHeader}>
-        <S.AvatarWrap>
-          <Avatar alt="JoHyehyeong" src={`https://picsum.photos/200/300?random=123`} />
-          <div>
-            <S.AvatarName>&nbsp;{data.getCurrentUser.name}</S.AvatarName>
-            <S.AvatarDesc>
-              &nbsp;{data.getCurrentUser.ableSkillSet[0]}
-            </S.AvatarDesc>
-          </div>
-        </S.AvatarWrap>
-        <Button variant="contained" onClick={clickOk}>
-          기술추천
-        </Button>
-      </div>
-      <TextField
-        id="outlined-full-width"
-        label="Recommend Input"
-        style={{ margin: 8 }}
-        placeholder="기술을 추천하는 이유를 적여주세요"
-        fullWidth
-        name="contents"
-        value={contents}
-        margin="normal"
-        multiline
-        InputLabelProps={{
-        shrink: true,
-        }}
-        variant="outlined"
-        onChange={changeContents} />
+      {/* 자기자신은 추천 못함 */}
+      {/* 이미 추천한 사람 추천 못함 */}
+      {!(userId === data?.getCurrentUser?._id ||
+        recommendUserList.includes(data?.getCurrentUser?._id)) &&
+      <>
+        <div className={classes.commentHeader}>
+          <S.AvatarWrap>
+            <Avatar alt="JoHyehyeong" src={data.getCurrentUser.image_url} />
+            <div>
+              <S.AvatarName>&nbsp;{data.getCurrentUser.name}</S.AvatarName>
+              <S.AvatarDesc>
+                &nbsp;{data.getCurrentUser.ableSkillSet[0]}
+              </S.AvatarDesc>
+            </div>
+          </S.AvatarWrap>
+          <Button variant="contained" onClick={clickOk}>
+            기술추천
+          </Button>
+        </div>
+        <TextField
+          id="outlined-full-width"
+          label="Recommend Input"
+          style={{ margin: 8 }}
+          placeholder="기술을 추천하는 이유를 적여주세요"
+          fullWidth
+          name="contents"
+          value={contents}
+          margin="normal"
+          multiline
+          InputLabelProps={{
+          shrink: true,
+          }}
+          variant="outlined"
+          onChange={changeContents} />
+        </>
+      }
       {!loading && !error && recommendList && <RecommendList recommends={recommends} /> }
       </div>
     </>

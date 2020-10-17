@@ -8,9 +8,10 @@ import { useAuth } from '../../utils/auth/AuthProvider';
 import Modal from '../modal/Modal';
 import RecommendModal from '../modal/RecommendModal';
 
-interface BlogHeaderProps {
+interface PersonalBlogHeaderProps {
   userName: string;
   userId : string;
+  userAbleSkill : any;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -23,9 +24,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const PersonalBlogHeader = ({ userName, userId }) => {
+const PersonalBlogHeader = ({ userName, userId, userAbleSkill } : PersonalBlogHeaderProps) => {
   const classes = useStyles();
-  const [{data}] = useAuth();
   const [selectedSkill, setSelectedSkill] = useState(null);
   const [visibleModal, setVisibleModal] = useState(false);
 
@@ -66,7 +66,7 @@ const PersonalBlogHeader = ({ userName, userId }) => {
 
           <div className={classes.heroButtons}>
             <Grid container spacing={2} justify="center">
-              {data?.getCurrentUser.ableSkillSet.map(skill => 
+              {userAbleSkill?.map(skill => 
               <Grid item>
                 <Button variant="contained" color="primary" onClick={clickSkill(skill)}>
                   {skill.split(' ')[skill.split(' ').length-1]}

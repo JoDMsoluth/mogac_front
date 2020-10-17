@@ -29,6 +29,7 @@ const GET_ALL_POSTS_BY_USER = gql`
       _id
       name
       image_url
+      ableSkillSet
       posts {
         _id
         createdAt
