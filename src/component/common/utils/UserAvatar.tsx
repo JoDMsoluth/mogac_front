@@ -10,19 +10,16 @@ const userAvatar = require('../../../static/images/avatar/1.jpg');
 interface UserAvatarProps {
   id?: string;
   name?: string;
-  skill?: string;
   desc?: string;
-  level?: number;
   image_url?: string;
   isTeam?: boolean;
+  totalPoint?: number;
 }
 
 export default function UserAvatar({
   id,
   name,
-  desc,
-  skill,
-  level,
+  totalPoint,
   image_url,
   isTeam = false,
 }: UserAvatarProps) {
@@ -49,15 +46,13 @@ export default function UserAvatar({
         <S.AvatarTextWrap>
           <S.AvatarHead>
             <S.AvatarName>&nbsp;{name || `Jo Hyehyeong`}</S.AvatarName>
-            {/*<S.LevelWrap>
+            <S.LevelWrap>
               <div>
                 <FlashOn />
               </div>
-              <span>{level ? level : 0}</span>
+              <span>{totalPoint ? totalPoint : 0}</span>
             </S.LevelWrap>
-            */}
           </S.AvatarHead>
-          <S.AvatarDesc>&nbsp;{desc || skill || `Newbie`}</S.AvatarDesc>
         </S.AvatarTextWrap>
 
         {/* 툴바 */}
@@ -82,6 +77,7 @@ S.AvatarImageWrap = styled.div`
 
 S.AvatarHead = styled.div`
   display: inline-flex;
+  flex-direction: column;
 `;
 S.LevelWrap = styled.div`
   & > svg {

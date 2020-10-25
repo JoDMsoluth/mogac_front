@@ -115,6 +115,8 @@ const GET_ALL_USER_BY_SEARCH = gql`
       image_url
       ableSkillSet
       ableLocation
+      recommendPoint
+      totalPoint
       level
     }
   }
@@ -149,6 +151,8 @@ const GET_NEAR_USERS_BY_MATCHING = gql`
       image_url
       ableSkillSet
       ableLocation
+      recommendPoint
+      totalPoint
       x_pos
       y_pos
     }

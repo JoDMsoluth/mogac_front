@@ -12,12 +12,22 @@ import { useRouter } from 'next/router';
 import InviteTeamModal from '../../modal/InviteTeamModal';
 import MessageModal from '../../modal/MessageModal';
 import { useAuth } from '../../../utils/auth/AuthProvider';
+import { ThumbUpAlt } from '@material-ui/icons';
+import transitions from '../../../lib/utils/transitions';
+
+export enum levelLabel {
+  master = 5,
+  senior = 4,
+  middle = 3,
+  junior = 2,
+  newbie = 1,
+}
 
 interface SearchingUserCardProps {
   user: any;
 }
 export default function SearchingUserCard({ user }: SearchingUserCardProps) {
-  const { ableSkillSet, ableLocation, image_url, name, level, _id, email } = user;
+  const { ableSkillSet, ableLocation, recommendPoint, image_url, name, level, _id, email, totalPoint } = user;
   const [visibleTeamModal, setVisibleTeamModal] = useState<boolean>(false);
   const [visibleMessageModal, setVisibleMessageModal] = useState<boolean>(false);
   const LocationFormat: { pubLocation: string; subLocation: string }[] = [];
@@ -46,6 +56,8 @@ export default function SearchingUserCard({ user }: SearchingUserCardProps) {
     router.push(`/blog?userId=${_id}`);
   }, []);
 
+  console.log('recommendPoint', recommendPoint)
+
   return (
     <>
       <S.SearchUserCardWarp>
@@ -53,17 +65,24 @@ export default function SearchingUserCard({ user }: SearchingUserCardProps) {
           <UserAvatar
             id={_id}
             name={name}
-            image_url={`https://picsum.photos/50/50?random=${Math.random()*1000%999}`}
-            skill={highLevelSkill[0] as string}
-            level={skillLevelSum(SkillLevelArray)}
+            image_url={image_url}
+            totalPoint={totalPoint}
           />
         </S.AvatarWrap>
         <S.UserDescWrap>
           <S.SkillListWrap>
-            {SkillFormat.map((skill) => (
+            {SkillFormat.map((skill, i) => (
               <div>
                 <div>{skill.skill}</div>
-                <div>{skill.level}</div>
+                <S.SkillLevelWrap>
+                  <div>{levelLabel[skill.level % 10]}</div>
+                  <S.LikeButtonWrap>
+                    <ThumbUpAlt /> 
+                    <S.LikeNumber>
+                      {recommendPoint && recommendPoint[i]?.split('/')[1]}
+                    </S.LikeNumber>
+                  </S.LikeButtonWrap>
+                </S.SkillLevelWrap>
               </div>
             ))}
           </S.SkillListWrap>
@@ -165,4 +184,48 @@ S.LocationListWrap = styled.div`
       align-self: center;
     }
   }
+`;
+
+S.SkillLevelWrap = styled.div`
+  position: relative;
+  & > div:first-child {
+    text-align: left;
+    font-size: 0.6rem;
+    line-height: 1.8rem;
+    font-weight: bold;
+  }
+`;
+
+S.LikeButtonWrap = styled.div`
+  position: absolute;
+  top: 0.4rem;
+  right: 1.8rem;
+  width: 1rem;
+  height: 1rem;
+  color: ${palette.blue8};
+  background: ${palette.gray2};
+  border-radius: 1rem;
+  padding: 0.2rem 0;
+  text-align: center;
+  & > svg {
+    width: 0.8rem;
+    height: 0.8rem;
+    position: absolute;
+    top: 0.1rem;
+    right: 0.1rem;
+    animation: ${transitions.shaking} 10s linear infinite;
+    animation-delay: 4s;
+  }
+  &:hover {
+    background: ${palette.gray3};
+  }
+  &:active {
+    background: ${palette.gray5};
+  }
+`;
+
+S.LikeNumber = styled.div`
+  position: absolute;
+  top: -0.27rem;
+  left: 1.2rem;
 `;

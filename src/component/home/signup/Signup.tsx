@@ -145,7 +145,7 @@ export default function SignUp() {
           const sortedAbleLocation = await ableLocation.slice().sort();
           const sortedAbleSkillSet = await ableSkillSet.slice().sort();
           const sortedAbleSkillSetLevel = await ableSkillSetLevel.slice().slice(0,ableSkillSet.length).sort();
-          const recommendPoint = await ableSkillSet.map(skill => skill.concat('/0'));
+          const recommendPoint = await sortedAbleSkillSet.map(skill => skill.concat('/0'));
           console.log(ableLocation, ableSkillSet, ableSkillSetLevel, recommendPoint);
 
           const result = await signup({

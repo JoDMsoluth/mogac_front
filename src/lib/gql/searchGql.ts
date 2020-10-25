@@ -29,6 +29,8 @@ const GET_SEARCH_USER = gql`
         image_url
         ableSkillSet
         ableLocation
+        recommendPoint
+        totalPoint
         level
       }
       lastPage
