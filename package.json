@@ -31,7 +31,7 @@
     "apollo-upload-client": "^13.0.0",
     "babel-jest": "25.1.0",
     "babel-plugin-graphql-tag": "2.5.0",
-    "codemirror": "^5.53.2",
+    "codemirror": "^5.58.2",
     "css-loader": "^3.5.3",
     "date-fns": "2.11.0",
     "graphql": "14.6.0",
